@@ -2,8 +2,8 @@
 
 An unofficial desktop tool to track and view your gacha records for Honkai Star Rail and Genshin Impact.
 
-Herta gif: Seseren (Twitter: [@Seseren_kr](https://twitter.com/Seseren_kr))
-All other media related to Honkai Star Rail or Genshin Impact belongs to miHoYo/HoYoverse.
+* Herta gif: Seseren (Twitter: [@Seseren_kr](https://twitter.com/Seseren_kr))
+* All other media related to Honkai Star Rail or Genshin Impact belongs to miHoYo/HoYoverse.
 
 ## Installation
 
@@ -27,7 +27,7 @@ Replace the .jar file with the newer version.
 
 ## Usage
 
-1. Launch the game whose records you wish to track and open your wish/wrap history. Ensure to open till the **Records** page for HSR.
+1. Launch the game whose records you wish to track and open your wish/wrap history. Ensure to open till the **Records** page for HSR.<br>
 ![HSR Records Page](docs/UsageHSRRecords.png)
 2. Close the game.
 3. Launch the tool by double clicking the .jar file.
