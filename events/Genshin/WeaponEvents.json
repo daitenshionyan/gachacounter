@@ -1,0 +1,567 @@
+{
+  "events": [ {
+    "begTime": "2020-09-28T00:00:00",
+    "endTime": "2020-10-18T17:59:00",
+    "rateUps": [
+      "Amos' Bow",
+      "Aquila Favonia",
+      "Favonius Lance",
+      "The Bell",
+      "The Flute",
+      "The Stringless",
+      "The Widsith"
+    ]
+  }, {
+    "begTime": "2020-10-18T18:00:00",
+    "endTime": "2020-11-10T15:59:00",
+    "rateUps": [
+      "Lost Prayer to the Sacred Winds",
+      "Wolf's Gravestone",
+      "Dragon's Bane",
+      "Sacrificial Bow",
+      "Sacrificial Fragments",
+      "Sacrificial Greatsword",
+      "Sacrificial Sword"
+    ]
+  }, {
+    "begTime": "2020-11-11T06:00:00",
+    "endTime": "2020-12-01T15:59:00",
+    "rateUps": [
+      "Skyward Harp",
+      "Memory of Dust",
+      "Eye of Perception",
+      "Favonius Lance",
+      "Rainslasher",
+      "Rust",
+      "The Flute"
+    ]
+  }, {
+    "begTime": "2020-12-01T16:00:00",
+    "endTime": "2020-12-22T14:59:00",
+    "rateUps": [
+      "Vortex Vanquisher",
+      "The Unforged",
+      "Dragon's Bane",
+      "Favonius Codex",
+      "Favonius Warbow",
+      "Lion's Roar",
+      "The Bell"
+    ]
+  }, {
+    "begTime": "2020-12-23T06:00:00",
+    "endTime": "2021-01-12T15:59:00",
+    "rateUps": [
+      "Summit Shaper",
+      "Skyward Atlas",
+      "Favonius Greatsword",
+      "Favonius Lance",
+      "The Stringless",
+      "Favonius Sword",
+      "Sacrificial Fragments"
+    ]
+  }, {
+    "begTime": "2021-01-12T18:00:00",
+    "endTime": "2021-02-02T14:59:00",
+    "rateUps": [
+      "Amos' Bow",
+      "Skyward Pride",
+      "Dragon's Bane",
+      "Eye of Perception",
+      "Favonius Warbow",
+      "The Bell",
+      "Sacrificial Sword"
+    ]
+  }, {
+    "begTime": "2021-02-03T06:00:00",
+    "endTime": "2021-02-23T15:59:00",
+    "rateUps": [
+      "Primordial Jade Winged-Spear",
+      "Primordial Jade Cutter",
+      "Eye of Perception",
+      "Favonius Lance",
+      "Rust",
+      "Sacrificial Greatsword",
+      "The Flute"
+    ]
+  }, {
+    "begTime": "2023-02-23T18:00:00",
+    "endTime": "2023-03-16T14:59:00",
+    "rateUps": [
+      "Wolf's Gravestone",
+      "Staff of Homa",
+      "Lion's Roar",
+      "Lithic Blade",
+      "Lithic Spear",
+      "Sacrificial Bow",
+      "The Widsith"
+    ]
+  }, {
+    "begTime": "2021-03-17T06:00:00",
+    "endTime": "2021-04-06T15:59:00",
+    "rateUps": [
+      "Elegy for the End",
+      "Skyward Blade",
+      "Dragon's Bane",
+      "Favonius Greatsword",
+      "Favonius Warbow",
+      "The Alley Flash",
+      "Wine And Song"
+    ]
+  }, {
+    "begTime": "2021-04-06T18:00:00",
+    "endTime": "2021-04-27T14:59:00",
+    "rateUps": [
+      "Skyward Harp",
+      "Lost Prayer to the Sacred Winds",
+      "Alley Hunter",
+      "Favonius Codex",
+      "Favonius Lance",
+      "Favonius Sword",
+      "Sacrificial Greatsword"
+    ]
+  }, {
+    "begTime": "2021-04-28T06:00:00",
+    "endTime": "2021-05-18T17:59:00",
+    "rateUps": [
+      "Summit Shaper",
+      "Memory of Dust",
+      "Sacrificial Bow",
+      "The Flute",
+      "Eye of Perception",
+      "Lithic Spear",
+      "Lithic Blade"
+    ]
+  }, {
+    "begTime": "2021-05-18T18:00:00",
+    "endTime": "2021-06-08T14:59:00",
+    "rateUps": [
+      "Song of Broken Pines",
+      "Aquila Favonia",
+      "Dragon's Bane",
+      "Rainslasher",
+      "Rust",
+      "Sacrificial Fragments",
+      "Sacrificial Sword"
+    ]
+  }, {
+    "begTime": "2021-06-09T06:00:00",
+    "endTime": "2021-06-29T17:59:00",
+    "rateUps": [
+      "Lost Prayer to the Sacred Winds",
+      "Skyward Pride",
+      "Favonius Lance",
+      "Lion's Roar",
+      "Mitternachts Waltz",
+      "The Bell",
+      "The Widsith"
+    ]
+  }, {
+    "begTime": "2021-06-29T18:00:00",
+    "endTime": "2021-07-20T14:59:00",
+    "rateUps": [
+      "Freedom-Sworn",
+      "Skyward Atlas",
+      "Alley Hunter",
+      "Dragon's Bane",
+      "Favonius Greatsword",
+      "The Alley Flash",
+      "Wine And Song"
+    ]
+  }, {
+    "begTime": "2021-07-21T06:00:00",
+    "endTime": "2021-08-10T17:59:00",
+    "rateUps": [
+      "Mistsplitter Reforged",
+      "Skyward Spine",
+      "Favonius Codex",
+      "Favonius Lance",
+      "Favonius Sword",
+      "Sacrificial Greatsword",
+      "The Stringless"
+    ]
+  }, {
+    "begTime": "2021-08-10T18:00:00",
+    "endTime": "2021-08-31T14:59:00",
+    "rateUps": [
+      "Thundering Pulse",
+      "Skyward Blade",
+      "Dragon's Bane",
+      "Favonius Warbow",
+      "Rainslasher",
+      "Sacrificial Fragments",
+      "Sacrificial Sword"
+    ]
+  }, {
+    "begTime": "2021-08-01T06:00:00",
+    "endTime": "2021-08-21T17:59:00",
+    "rateUps": [
+      "Engulfing Lightning",
+      "The Unforged",
+      "Favonius Lance",
+      "Lion's Roar",
+      "Sacrificial Bow",
+      "The Bell",
+      "The Widsith"
+    ]
+  }, {
+    "begTime": "2021-08-21T18:00:00",
+    "endTime": "2021-09-12T14:59:00",
+    "rateUps": [
+      "Everlasting Moonglow",
+      "Primordial Jade Cutter",
+      "Dragon's Bane",
+      "Favonius Codex",
+      "Favonius Greatsword",
+      "The Stringless",
+      "The Flute"
+    ]
+  }, {
+    "begTime": "2021-10-13T06:00:00",
+    "endTime": "2021-11-02T17:59:00",
+    "rateUps": [
+      "Polar Star",
+      "Memory of Dust",
+      "Akuoumaru",
+      "Eye of Perception",
+      "Favonius Lance",
+      "Favonius Sword",
+      "Rust"
+    ]
+  }, {
+    "begTime": "2021-11-02T18:00:00",
+    "endTime": "2021-11-23T14:59:00",
+    "rateUps": [
+      "Staff of Homa",
+      "Elegy for the End",
+      "Mouun's Moon",
+      "Rainslasher",
+      "Sacrificial Sword",
+      "The Widsith",
+      "Wavebreaker's Fin"
+    ]
+  }, {
+    "begTime": "2021-11-24T06:00:00",
+    "endTime": "2021-12-14T17:59:00",
+    "rateUps": [
+      "Song of Broken Pines",
+      "Freedom-Sworn",
+      "Alley Hunter",
+      "Lion's Roar",
+      "Dragon's Bane",
+      "Wine And Song",
+      "Sacrificial Greatsword"
+    ]
+  }, {
+    "begTime": "2021-12-14T18:00:00",
+    "endTime": "2022-01-04T17:59:00",
+    "rateUps": [
+      "Skyward Harp",
+      "Redhorn Stonethresher",
+      "Favonius Lance",
+      "The Alley Flash",
+      "Mitternachts Waltz",
+      "The Bell",
+      "Sacrificial Fragments"
+    ]
+  }, {
+    "begTime": "2022-01-05T06:00:00",
+    "endTime": "2022-01-25T17:59:00",
+    "rateUps": [
+      "Calamity Queller",
+      "Primordial Jade Winged-Spear",
+      "Lithic Spear",
+      "The Flute",
+      "Favonius Greatsword",
+      "The Widsith",
+      "Favonius Warbow"
+    ]
+  }, {
+    "begTime": "2022-01-25T18:00:00",
+    "endTime": "2022-02-15T14:59:00",
+    "rateUps": [
+      "Amos' Bow",
+      "Vortex Vanquisher",
+      "Dragon's Bane",
+      "The Flute",
+      "Lithic Blade",
+      "Favonius Codex",
+      "Sacrificial Bow"
+    ]
+  }, {
+    "begTime": "2022-02-16T06:00:00",
+    "endTime": "2022-03-08T17:59:00",
+    "rateUps": [
+      "Kagura's Verity",
+      "Primordial Jade Cutter",
+      "Wavebreaker's Fin",
+      "Sacrificial Sword",
+      "Rainslasher",
+      "Eye of Perception",
+      "The Stringless"
+    ]
+  }, {
+    "begTime": "2022-03-08T18:00:00",
+    "endTime": "2022-03-29T14:59:00",
+    "rateUps": [
+      "Engulfing Lightning",
+      "Everlasting Moonglow",
+      "Akuoumaru",
+      "Mouun's Moon",
+      "Lion's Roar",
+      "Favonius Lance",
+      "Sacrificial Fragments"
+    ]
+  }, {
+    "begTime": "2022-03-30T06:00:00",
+    "endTime": "2022-04-19T17:59:00",
+    "rateUps": [
+      "Haran Geppaku Futsu",
+      "Elegy for the End",
+      "Rust",
+      "The Flute",
+      "Dragon's Bane",
+      "Sacrificial Greatsword",
+      "The Widsith"
+    ]
+  }, {
+    "begTime": "2022-04-19T18:00:00",
+    "endTime": "2022-05-30T14:59:00",
+    "rateUps": [
+      "Mistsplitter Reforged",
+      "The Unforged",
+      "The Bell",
+      "Favonius Warbow",
+      "Favonius Sword",
+      "Favonius Lance",
+      "Favonius Codex"
+    ]
+  }, {
+    "begTime": "2022-05-31T06:00:00",
+    "endTime": "2022-06-21T17:59:00",
+    "rateUps": [
+      "Aqua Simulacra",
+      "Primordial Jade Winged-Spear",
+      "Lithic Spear",
+      "Sacrificial Sword",
+      "Sacrificial Bow",
+      "Eye of Perception",
+      "Favonius Greatsword"
+    ]
+  }, {
+    "begTime": "2022-06-21T18:00:00",
+    "endTime": "2022-07-12T14:59:00",
+    "rateUps": [
+      "Redhorn Stonethresher",
+      "Memory of Dust",
+      "Lithic Blade",
+      "Lion's Roar",
+      "Dragon's Bane",
+      "Sacrificial Fragments",
+      "The Stringless"
+    ]
+  }, {
+    "begTime": "2022-07-13T06:00:00",
+    "endTime": "2022-08-02T17:59:00",
+    "rateUps": [
+      "Freedom-Sworn",
+      "Lost Prayer to the Sacred Winds",
+      "The Alley Flash",
+      "Mitternachts Waltz",
+      "Rainslasher",
+      "Favonius Lance",
+      "The Widsith"
+    ]
+  }, {
+    "begTime": "2022-08-02T18:00:00",
+    "endTime": "2022-08-23T14:59:00",
+    "rateUps": [
+      "Thundering Pulse",
+      "Summit Shaper",
+      "Wine And Song",
+      "Sacrificial Greatsword",
+      "The Flute",
+      "Dragon's Bane",
+      "Alley Hunter"
+    ]
+  }, {
+    "begTime": "2022-08-24T06:00:00",
+    "endTime": "2022-09-09T17:59:00",
+    "rateUps": [
+      "Hunter's Path",
+      "Vortex Vanquisher",
+      "Favonius Sword",
+      "The Bell",
+      "Favonius Lance",
+      "Favonius Codex",
+      "The Stringless"
+    ]
+  }, {
+    "begTime": "2022-09-09T18:00:00",
+    "endTime": "2022-09-27T14:59:00",
+    "rateUps": [
+      "Everlasting Moonglow",
+      "Amos' Bow",
+      "Sacrificial Sword",
+      "Eye of Perception",
+      "Dragon's Bane",
+      "Favonius Greatsword",
+      "Rust"
+    ]
+  }, {
+    "begTime": "2022-09-28T06:00:00",
+    "endTime": "2022-10-14T17:59:00",
+    "rateUps": [
+      "Staff of the Scarlet Sands",
+      "Elegy for the End",
+      "Makhaira Aquamarine",
+      "Lion's Roar",
+      "Favonius Lance",
+      "Sacrificial Fragments",
+      "Favonius Codex"
+    ]
+  }, {
+    "begTime": "2022-10-14T18:00:00",
+    "endTime": "2022-11-01T14:59:00",
+    "rateUps": [
+      "Key of Khaj-Nisut",
+      "Primordial Jade Cutter",
+      "Xiphos' Moonlight",
+      "Sacrificial Bow",
+      "Dragon's Bane",
+      "Rainslasher",
+      "Wandering Evenstar"
+    ]
+  }, {
+    "begTime": "2022-11-02T06:00:00",
+    "endTime": "2022-11-18T17:59:00",
+    "rateUps": [
+      "A Thousand Floating Dreams",
+      "Thundering Pulse",
+      "The Flute",
+      "Sacrificial Greatsword",
+      "Favonius Lance",
+      "The Widsith",
+      "Rust"
+    ]
+  }, {
+    "begTime": "2022-11-18T18:00:00",
+    "endTime": "2022-12-06T14:59:00",
+    "rateUps": [
+      "Kagura's Verity",
+      "Polar Star",
+      "Dragon's Bane",
+      "Favonius Codex",
+      "The Stringless",
+      "The Bell",
+      "Favonius Sword"
+    ]
+  }, {
+    "begTime": "2022-12-07T06:00:00",
+    "endTime": "2022-12-27T17:59:00",
+    "rateUps": [
+      "Tulaytullah's Remembrance",
+      "Redhorn Stonethresher",
+      "Wavebreaker's Fin",
+      "Sacrificial Sword",
+      "Favonius Greatsword",
+      "Eye of Perception",
+      "Favonius Warbow"
+    ]
+  }, {
+    "begTime": "2022-12-27T18:00:00",
+    "endTime": "2023-01-17T14:59:00",
+    "rateUps": [
+      "Haran Geppaku Futsu",
+      "Engulfing Lightning",
+      "Akuoumaru",
+      "Mouun's Moon",
+      "Lion's Roar",
+      "Favonius Lance",
+      "Sacrificial Fragments"
+    ]
+  }, {
+    "begTime": "2023-01-18T06:00:00",
+    "endTime": "2023-02-07T17:59:00",
+    "rateUps": [
+      "Light of Foliar Incision",
+      "Primordial Jade Winged-Spear",
+      "Lithic Spear",
+      "The Flute",
+      "Rainslasher",
+      "The Widsith",
+      "Sacrificial Bow"
+    ]
+  }, {
+    "begTime": "2023-02-07T18:00:00",
+    "endTime": "2023-02-28T14:59:00",
+    "rateUps": [
+      "Aqua Simulacra",
+      "Staff of Homa",
+      "Lithic Blade",
+      "Favonius Sword",
+      "Dragon's Bane",
+      "Favonius Codex",
+      "Rust"
+    ]
+  }, {
+    "begTime": "2023-03-01T06:00:00",
+    "endTime": "2023-03-21T17:59:00",
+    "rateUps": [
+      "Beacon of the Reed Sea",
+      "Staff of the Scarlet Sands",
+      "The Alley Flash",
+      "Alley Hunter",
+      "Sacrificial Greatsword",
+      "Dragon's Bane",
+      "Eye of Perception"
+    ]
+  }, {
+    "begTime": "2023-03-21T18:00:00",
+    "endTime": "2023-04-11T14:59:00",
+    "rateUps": [
+      "Mistsplitter Reforged",
+      "Calamity Queller",
+      "Wine And Song",
+      "Sacrificial Sword",
+      "The Bell",
+      "Favonius Lance",
+      "Favonius Warbow"
+    ]
+  }, {
+    "begTime": "2023-04-12T06:00:00",
+    "endTime": "2023-05-02T17:59:00",
+    "rateUps": [
+      "A Thousand Floating Dreams",
+      "Key of Khaj-Nisut",
+      "Xiphos' Moonlight",
+      "Favonius Greatsword",
+      "Dragon's Bane",
+      "Sacrificial Fragments",
+      "The Stringless"
+    ]
+  }, {
+    "begTime": "2023-05-02T18:00:00",
+    "endTime": "2023-05-23T14:59:00",
+    "rateUps": [
+      "Amos' Bow",
+      "Jadefall's Splendor",
+      "Makhaira Aquamarine",
+      "Wandering Evenstar",
+      "Lion's Roar",
+      "Sacrificial Bow",
+      "Favonius Lance"
+    ]
+  }, {
+    "begTime": "2023-05-24T06:00:00",
+    "endTime": "2023-06-13T17:59:00",
+    "rateUps": [
+      "Thundering Pulse",
+      "Kagura's Verity",
+      "Akuoumaru",
+      "The Flute",
+      "Dragon's Bane",
+      "The Widsith",
+      "Rust"
+    ]
+  } ]
+}

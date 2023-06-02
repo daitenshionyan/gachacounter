@@ -1,0 +1,457 @@
+{
+  "events": [ {
+    "begTime": "2020-09-28T00:00:00",
+    "endTime": "2020-10-18T17:59:00",
+    "rateUps": [
+      "Venti",
+      "Barbara",
+      "Xiangling",
+      "Fischl"
+    ]
+  }, {
+    "begTime": "2020-10-18T18:00:00",
+    "endTime": "2020-11-10T15:59:00",
+    "rateUps": [
+      "Klee",
+      "Noelle",
+      "Sucrose",
+      "Xingqiu"
+    ]
+  }, {
+    "begTime": "2020-11-11T06:00:00",
+    "endTime": "2020-12-01T15:59:00",
+    "rateUps": [
+      "Tartaglia",
+      "Beidou",
+      "Ningguang",
+      "Diona"
+    ]
+  }, {
+    "begTime": "2020-12-01T16:00:00",
+    "endTime": "2020-12-22T14:59:00",
+    "rateUps": [
+      "Zhongli",
+      "Chongyun",
+      "Razor",
+      "Xinyan"
+    ]
+  }, {
+    "begTime": "2020-12-23T06:00:00",
+    "endTime": "2021-01-12T15:59:00",
+    "rateUps": [
+      "Albedo",
+      "Bennett",
+      "Fischl",
+      "Sucrose"
+    ]
+  }, {
+    "begTime": "2021-01-12T18:00:00",
+    "endTime": "2021-02-02T14:59:00",
+    "rateUps": [
+      "Ganyu",
+      "Xingqiu",
+      "Xiangling",
+      "Noelle"
+    ]
+  }, {
+    "begTime": "2021-02-03T06:00:00",
+    "endTime": "2021-02-17T15:59:00",
+    "rateUps": [
+      "Xiao",
+      "Diona",
+      "Xinyan",
+      "Beidou"
+    ]
+  }, {
+    "begTime": "2021-02-17T16:00:00",
+    "endTime": "2021-03-02T15:59:00",
+    "rateUps": [
+      "Keqing",
+      "Barbara",
+      "Ningguang",
+      "Xingqiu"
+    ]
+  }, {
+    "begTime": "2021-03-02T18:00:00",
+    "endTime": "2021-03-16T14:59:00",
+    "rateUps": [
+      "Hu Tao",
+      "Xiangling",
+      "Chongyun",
+      "Xingqiu"
+    ]
+  }, {
+    "begTime": "2021-03-17T06:00:00",
+    "endTime": "2021-04-06T15:59:00",
+    "rateUps": [
+      "Venti",
+      "Noelle",
+      "Sucrose",
+      "Razor"
+    ]
+  }, {
+    "begTime": "2021-04-06T18:00:00",
+    "endTime": "2021-04-27T14:59:00",
+    "rateUps": [
+      "Tartaglia",
+      "Rosaria",
+      "Barbara",
+      "Fischl"
+    ]
+  }, {
+    "begTime": "2021-04-28T06:00:00",
+    "endTime": "2021-05-18T17:59:00",
+    "rateUps": [
+      "Zhongli",
+      "Yanfei",
+      "Diona",
+      "Noelle"
+    ]
+  }, {
+    "begTime": "2021-05-18T18:00:00",
+    "endTime": "2021-06-08T14:59:00",
+    "rateUps": [
+      "Eula",
+      "Xingqiu",
+      "Beidou",
+      "Xinyan"
+    ]
+  }, {
+    "begTime": "2021-06-09T06:00:00",
+    "endTime": "2021-06-29T17:59:00",
+    "rateUps": [
+      "Klee",
+      "Fischl",
+      "Sucrose",
+      "Barbara"
+    ]
+  }, {
+    "begTime": "2021-06-29T18:00:00",
+    "endTime": "2021-07-20T14:59:00",
+    "rateUps": [
+      "Kaedehara Kazuha",
+      "Rosaria",
+      "Razor",
+      "Bennett"
+    ]
+  }, {
+    "begTime": "2021-07-21T06:00:00",
+    "endTime": "2021-08-10T17:59:00",
+    "rateUps": [
+      "Kamisato Ayaka",
+      "Chongyun",
+      "Ningguang",
+      "Yanfei"
+    ]
+  }, {
+    "begTime": "2021-08-10T18:00:00",
+    "endTime": "2021-08-31T14:59:00",
+    "rateUps": [
+      "Yoimiya",
+      "Diona",
+      "Sayu",
+      "Xinyan"
+    ]
+  }, {
+    "begTime": "2021-09-01T06:00:00",
+    "endTime": "2021-09-21T17:59:00",
+    "rateUps": [
+      "Raiden Shogun",
+      "Kujou Sara",
+      "Sucrose",
+      "Xiangling"
+    ]
+  }, {
+    "begTime": "2021-09-21T18:00:00",
+    "endTime": "2021-10-12T14:59:00",
+    "rateUps": [
+      "Sangonomiya Kokomi",
+      "Rosaria",
+      "Beidou",
+      "Xingqiu"
+    ]
+  }, {
+    "begTime": "2021-10-13T06:00:00",
+    "endTime": "2021-11-02T17:59:00",
+    "rateUps": [
+      "Tartaglia",
+      "Chongyun",
+      "Ningguang",
+      "Yanfei"
+    ]
+  }, {
+    "begTime": "2021-11-02T18:00:00",
+    "endTime": "2021-11-23T14:59:00",
+    "rateUps": [
+      "Hu Tao",
+      "Thoma",
+      "Sayu",
+      "Diona"
+    ]
+  }, {
+    "begTime": "2021-11-24T06:00:00",
+    "endTime": "2021-12-14T17:59:00",
+    "rateUps": [
+      "Albedo",
+      "Eula",
+      "Rosaria",
+      "Noelle",
+      "Bennett"
+    ]
+  }, {
+    "begTime": "2021-12-14T18:00:00",
+    "endTime": "2022-01-04T17:59:00",
+    "rateUps": [
+      "Arataki Itto",
+      "Barbara",
+      "Xiangling",
+      "Gorou"
+    ]
+  }, {
+    "begTime": "2022-01-05T06:00:00",
+    "endTime": "2022-01-25T17:59:00",
+    "rateUps": [
+      "Shenhe",
+      "Xiao",
+      "Yun Jin",
+      "Ningguang",
+      "Chongyun"
+    ]
+  }, {
+    "begTime": "2022-01-25T18:00:00",
+    "endTime": "2022-02-15T14:59:00",
+    "rateUps": [
+      "Zhongli",
+      "Ganyu",
+      "Xingqiu",
+      "Beidou",
+      "Yanfei"
+    ]
+  }, {
+    "begTime": "2022-02-16T06:00:00",
+    "endTime": "2022-03-08T17:59:00",
+    "rateUps": [
+      "Yae Miko",
+      "Thoma",
+      "Diona",
+      "Fischl"
+    ]
+  }, {
+    "begTime": "2022-03-08T18:00:00",
+    "endTime": "2022-03-29T14:59:00",
+    "rateUps": [
+      "Raiden Shogun",
+      "Sangonomiya Kokomi",
+      "Xinyan",
+      "Kujou Sara",
+      "Bennett"
+    ]
+  }, {
+    "begTime": "2022-03-30T06:00:00",
+    "endTime": "2022-04-19T17:59:00",
+    "rateUps": [
+      "Kamisato Ayato",
+      "Venti",
+      "Yun Jin",
+      "Sucrose",
+      "Xiangling"
+    ]
+  }, {
+    "begTime": "2022-04-19T18:00:00",
+    "endTime": "2022-05-30T14:59:00",
+    "rateUps": [
+      "Kamisato Ayaka",
+      "Rosaria",
+      "Razor",
+      "Sayu"
+    ]
+  }, {
+    "begTime": "2022-05-31T06:00:00",
+    "endTime": "2022-06-21T17:59:00",
+    "rateUps": [
+      "Yelan",
+      "Xiao",
+      "Barbara",
+      "Noelle",
+      "Yanfei"
+    ]
+  }, {
+    "begTime": "2022-06-21T18:00:00",
+    "endTime": "2022-07-12T14:59:00",
+    "rateUps": [
+      "Arataki Itto",
+      "Gorou",
+      "Chongyun",
+      "Kuki Shinobu"
+    ]
+  }, {
+    "begTime": "2022-07-13T06:00:00",
+    "endTime": "2022-08-02T17:59:00",
+    "rateUps": [
+      "Kaedehara Kazuha",
+      "Klee",
+      "Shikanoin Heizou",
+      "Thoma",
+      "Ningguang"
+    ]
+  }, {
+    "begTime": "2022-08-02T18:00:00",
+    "endTime": "2022-08-23T14:59:00",
+    "rateUps": [
+      "Yoimiya",
+      "Yun Jin",
+      "Yanfei",
+      "Bennett"
+    ]
+  }, {
+    "begTime": "2022-08-24T06:00:00",
+    "endTime": "2022-09-09T17:59:00",
+    "rateUps": [
+      "Tighnari",
+      "Zhongli",
+      "Collei",
+      "Diona",
+      "Fischl"
+    ]
+  }, {
+    "begTime": "2022-09-09T18:00:00",
+    "endTime": "2022-09-27T14:59:00",
+    "rateUps": [
+      "Ganyu",
+      "Sangonomiya Kokomi",
+      "Dori",
+      "Sucrose",
+      "Xingqiu"
+    ]
+  }, {
+    "begTime": "2022-09-28T06:00:00",
+    "endTime": "2022-10-14T17:59:00",
+    "rateUps": [
+      "Cyno",
+      "Venti",
+      "Kuki Shinobu",
+      "Candace",
+      "Sayu"
+    ]
+  }, {
+    "begTime": "2022-10-14T18:00:00",
+    "endTime": "2022-11-01T14:59:00",
+    "rateUps": [
+      "Nilou",
+      "Albedo",
+      "Barbara",
+      "Beidou",
+      "Xiangling"
+    ]
+  }, {
+    "begTime": "2022-11-02T06:00:00",
+    "endTime": "2022-11-18T17:59:00",
+    "rateUps": [
+      "Nahida",
+      "Yoimiya",
+      "Noelle",
+      "Razor",
+      "Bennett"
+    ]
+  }, {
+    "begTime": "2022-11-18T18:00:00",
+    "endTime": "2022-12-06T14:59:00",
+    "rateUps": [
+      "Yae Miko",
+      "Tartaglia",
+      "Layla",
+      "Thoma",
+      "Shikanoin Heizou"
+    ]
+  }, {
+    "begTime": "2022-12-07T06:00:00",
+    "endTime": "2022-12-27T17:59:00",
+    "rateUps": [
+      "Wanderer",
+      "Arataki Itto",
+      "Faruzan",
+      "Gorou",
+      "Yanfei"
+    ]
+  }, {
+    "begTime": "2022-12-27T18:00:00",
+    "endTime": "2023-01-17T14:59:00",
+    "rateUps": [
+      "Raiden Shogun",
+      "Kamisato Ayato",
+      "Kujou Sara",
+      "Rosaria",
+      "Sayu"
+    ]
+  }, {
+    "begTime": "2023-01-18T06:00:00",
+    "endTime": "2023-02-07T17:59:00",
+    "rateUps": [
+      "Alhaitham",
+      "Xiao",
+      "Yaoyao",
+      "Yun Jin",
+      "Xinyan"
+    ]
+  }, {
+    "begTime": "2023-02-07T18:00:00",
+    "endTime": "2023-02-28T14:59:00",
+    "rateUps": [
+      "Hu Tao",
+      "Yelan",
+      "Xingqiu",
+      "Ningguang",
+      "Beidou"
+    ]
+  }, {
+    "begTime": "2023-03-01T06:00:00",
+    "endTime": "2023-03-21T17:59:00",
+    "rateUps": [
+      "Dehya",
+      "Cyno",
+      "Barbara",
+      "Collei",
+      "Bennett"
+    ]
+  }, {
+    "begTime": "2023-03-21T18:00:00",
+    "endTime": "2023-04-11T14:59:00",
+    "rateUps": [
+      "Shenhe",
+      "Kamisato Ayaka",
+      "Mika",
+      "Sucrose",
+      "Diona"
+    ]
+  }, {
+    "begTime": "2023-04-12T06:00:00",
+    "endTime": "2023-05-02T17:59:00",
+    "rateUps": [
+      "Nahida",
+      "Nilou",
+      "Kuki Shinobu",
+      "Layla",
+      "Dori"
+    ]
+  }, {
+    "begTime": "2023-05-02T18:00:00",
+    "endTime": "2023-05-23T14:59:00",
+    "rateUps": [
+      "Baizhu",
+      "Ganyu",
+      "Kaveh",
+      "Candace",
+      "Fischl"
+    ]
+  }, {
+    "begTime": "2023-05-24T06:00:00",
+    "endTime": "2023-06-13T17:59:00",
+    "rateUps": [
+      "Yoimiya",
+      "Yae Miko",
+      "Kirara",
+      "Yun Jin",
+      "Chongyun"
+    ]
+  } ]
+}

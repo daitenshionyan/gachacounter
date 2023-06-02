@@ -1,0 +1,11 @@
+{
+  "events": [ {
+    "begTime": "2023-05-17T18:00:00",
+    "endTime": "2023-06-06T14:59:00",
+    "rateUps": [ "Jing Yuan", "Sushang", "March 7th", "Tingyun" ]
+  }, {
+    "begTime": "2023-04-26T00:00:00",
+    "endTime": "2023-05-17T17:59:00",
+    "rateUps": [ "Seele", "Natasha", "Hook", "Pela" ]
+  } ]
+}
