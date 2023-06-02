@@ -1,0 +1,451 @@
+.root {
+  -fx-base: rgb(76, 78, 92);
+  -true-background: rgb(27, 29, 42);
+  -fx-background: -true-background;
+
+
+  -active-color: rgb(101, 127, 248);
+
+  -fx-selection-bar: -active-color;
+
+
+  /* disable */
+  -fx-hover-base: -fx-base;
+  -fx-text-background-color: white;
+  -fx-text-inner-color: white;
+}
+
+
+
+
+/*
+===========================================================================
+      Menu Bar
+===========================================================================
+*/
+
+
+.menu-bar {
+  -fx-background-color: derive(-fx-background, 20%);
+}
+
+.menu-bar > .container > .menu-button:hover,
+.menu-bar > .container > .menu-button:focused,
+.menu-bar > .container > .menu-button:showing {
+  -fx-background-radius: 5;
+  -fx-background-insets: 2;
+}
+
+.menu-button .context-menu {
+  -fx-background-color: derive(-true-background, 20%);
+  -fx-background-radius: 10;
+  -fx-padding: 5;
+  -fx-translate-y: 5;
+}
+
+.menu-button .context-menu .menu-item:focused {
+  -fx-background-radius: 5;
+  -fx-background-insets: 0;
+}
+
+
+/*
+===========================================================================
+      Button
+===========================================================================
+*/
+
+.button,
+.combo-box {
+  -button-color: derive(-fx-color, 10%);
+  -fx-background-color: -button-color;
+  -fx-background-insets: 0;
+  -fx-background-radius: 13;
+
+  -fx-border-color: derive(-button-color, 10%);
+  -fx-border-radius: 13;
+}
+
+.button.button-action-color {
+  -button-color: -active-color;
+}
+
+.button:hover,
+.combo-box:hover {
+  -fx-background-color: derive(-button-color, -20%);
+}
+
+.button:armed,
+.combo-box:armed {
+  -fx-background-color: derive(-button-color, -40%);
+}
+
+
+/*
+===========================================================================
+      Combo Box Pop up
+===========================================================================
+*/
+
+
+.combo-box .combo-box-popup .list-view {
+  -fx-background-color: -fx-color;
+  -fx-background-radius: 10;
+  -fx-padding: 5;
+  -fx-translate-y: 5;
+}
+
+.combo-box .combo-box-popup .list-view .list-cell {
+  -fx-background-color: transparent;
+  -fx-background-radius: 5;
+}
+
+.combo-box .combo-box-popup .list-view .list-cell:hover {
+  -fx-background-color: derive(-fx-color, 20%);
+}
+
+.combo-box .combo-box-popup .list-view .list-cell:selected {
+  -fx-background-color: derive(-fx-color, -20%);
+}
+
+
+/*
+===========================================================================
+      Text Field
+===========================================================================
+*/
+
+
+.text-field {
+  -fx-background-color: rgba(255, 255, 255, 0.200);
+  -fx-background-radius: 13;
+
+  -fx-border-color: rgb(182, 174, 187);
+  -fx-border-radius: 13;
+  -fx-border-width: 1;
+
+  -fx-text-fill: white;
+}
+
+
+/*
+===========================================================================
+      Summary Box
+===========================================================================
+*/
+
+
+.label.game-item-label {
+  -fx-font-size: 14;
+  -fx-font-weight: bold;
+}
+
+
+/*
+===========================================================================
+      Check Box
+===========================================================================
+*/
+
+.check-box {
+  -box-color: rgb(80, 80, 80);
+}
+
+.check-box .box {
+  -fx-background-color: -box-color;
+  -fx-background-insets: 0;
+  -fx-background-radius: 5;
+
+  -fx-border-color: derive(-box-color, 70%);
+  -fx-border-radius: 5;
+  -fx-border-width: 1;
+}
+
+.check-box:selected {
+  -box-color: -active-color;
+}
+
+.check-box:hover .box {
+  -fx-background-color: derive(-box-color, 20%);
+}
+
+.check-box:selected .mark {
+  -fx-background-color: white;
+}
+
+
+/*
+===========================================================================
+      Progress Bar
+===========================================================================
+*/
+
+
+.progress-bar > .track {
+  -fx-background-color: derive(-fx-background, -50%), derive(-fx-background, 40%);
+  -fx-background-insets: 0, 2;
+  -fx-bacground-radius: 5;
+}
+
+.progress-bar > .bar {
+  -fx-background-color: -active-color;
+  -fx-background-insets: 2;
+}
+
+
+/*
+===========================================================================
+      Summary Box
+===========================================================================
+*/
+
+.label.title-label {
+  -fx-font-weight: bold;
+  -fx-font-size: 24;
+  -fx-text-fill: rgb(224, 152, 19);
+}
+
+.label.sub-title-label {
+  -fx-font-weight: bold;
+  -fx-font-size: 14;
+  -fx-text-fill: rgb(221, 196, 150);
+}
+
+.label.main-value-label {
+  -fx-font-weight: bold;
+  -fx-font-size: 14;
+}
+
+.label.sub-value-label {
+  -fx-font-size: 9;
+  -fx-text-fill: rgb(218, 218, 218)
+}
+
+.label.rate-up-next {
+  -fx-text-fill: rgb(0, 255, 208);
+}
+
+.summary-card-box {
+  -fx-background-color: rgba(148, 148, 148, 0.3);
+  -fx-background-radius: 10;
+}
+
+/*
+===========================================================================
+      Entry Box
+===========================================================================
+*/
+
+.label.entry-title-label {
+  -fx-font-weight: bold;
+  -fx-font-size: 24;
+}
+
+.label.entry-count-label {
+  -fx-font-weight: bold;
+  -fx-font-size: 20;
+}
+
+.label.entry-item-id-label {
+  -fx-font-size: 9;
+  -fx-font-style: italic;
+  -fx-text-fill: rgb(218, 218, 218)
+}
+
+.label.rate-up-won {
+  -fx-text-fill: rgb(0, 255, 136);
+}
+
+.label.rate-up-loss {
+  -fx-text-fill: rgb(165, 60, 60);
+}
+
+.item-box .item-box-header {
+  -fx-background-radius: 10 10 0 0;
+}
+
+.item-box .item-box-footer {
+  -fx-background-radius: 0 0 10 10;
+}
+
+/* 5 stars */
+
+.item-box.ssr-box-color > .item-box-header,
+.item-box.ssr-box-color > .item-box-footer {
+  -fx-background-color: rgba(255, 190, 106, 0.5);
+}
+
+.item-box.ssr-box-color > .item-box-extension {
+  -fx-background-color: rgba(255, 190, 106, 0.25);
+}
+
+.item-box.ssr-box-color > .item-box-footer > .button.expand-button {
+  -button-color: rgb(248, 204, 102, 0.5);
+}
+
+/* 4 stars */
+
+.item-box.sr-box-color > .item-box-header,
+.item-box.sr-box-color > .item-box-footer {
+  -fx-background-color: rgba(173, 126, 255, 0.5);
+}
+
+.item-box.sr-box-color > .item-box-extension {
+  -fx-background-color: rgba(173, 126, 255, 0.25);
+}
+
+.item-box.sr-box-color > .item-box-footer > .button.expand-button {
+  -button-color: rgba(175, 132, 249, 0.5);
+}
+
+/* 3 stars */
+
+.item-box.r-box-color > .item-box-header,
+.item-box.r-box-color > .item-box-footer {
+  -fx-background-color: rgba(149, 255, 251, 0.5);
+}
+
+.item-box.r-box-color > .item-box-extension {
+  -fx-background-color: rgba(149, 255, 251, 0.25);
+}
+
+.item-box.r-box-color > .item-box-footer > .button.expand-button {
+  -button-color: rgba(91, 226, 222, 0.5);
+}
+
+.item-icon-display-box {
+  -fx-background-color: #727b8a89;
+  -fx-border-color: derive(-fx-color, -15%);
+  -fx-border-width: 2;
+}
+
+/*
+===========================================================================
+      Scroll Pane
+===========================================================================
+*/
+
+.scroll-bar {
+  -fx-background-color: transparent;
+}
+
+.scroll-bar .track {
+  -fx-background-color: transparent;
+  -fx-background-insets: 1 1 1 0;
+  -fx-border-color: transparent;
+}
+
+.scroll-bar .increment-button,
+.scroll-bar .decrement-button,
+.scroll-bar .increment-arrow,
+.scroll-bar .decrement-arrow {
+  -fx-background-color: transparent;
+  -fx-shape: " ";
+  -fx-padding: 0 5 0 0;
+}
+
+.scroll-bar .thumb {
+  -fx-background-color: derive(-fx-color, -50%);
+  -fx-background-radius: 5;
+  -fx-padding: 5;
+}
+
+.scroll-pane,
+.scroll-pane .viewport {
+  -fx-background-color: transparent;
+}
+
+/*
+===========================================================================
+      Table View
+===========================================================================
+*/
+
+.table-view,
+.table-view > .column-header-background,
+.table-view > .column-header-background > .filler,
+.table-view > .column-header-background > .nested-column-header,
+.table-view > .column-header-background > .nested-column-header > .column-header {
+  -fx-background-color: transparent;
+}
+
+.table-view .table-column {
+  -fx-alignment: CENTER;
+  -fx-border-width: 0 0 1 0;
+  -fx-border-color: black;
+}
+
+.table-view > .column-header-background > .nested-column-header > .column-header {
+  -fx-border-width: 2 0 2 0;
+  -fx-border-color: black;
+}
+
+.table-view .indexed-cell {
+  -fx-background-color: transparent;
+}
+
+.table-row-cell {
+  -fx-table-cell-border-color: transparent;
+}
+
+/*
+===========================================================================
+      Tab Pane
+===========================================================================
+*/
+
+.tab-pane > .tab-header-area > .tab-header-background {
+  -fx-background-color: rgba(119, 119, 119, 0.3);
+  -fx-background-radius: 10 10 0 0
+}
+
+.tab-pane > .tab-content-area {
+  -fx-background-color: rgba(119, 119, 119, 0.5);
+  -fx-background-radius: 0 0 10 10;
+}
+
+.tab-pane > .tab-header-area > .headers-region > .tab {
+  -fx-background-color: -fx-color;
+  -fx-padding: 0 10 0 5;
+  -fx-shape: "M 0 0 L 0 -25 L 45 -25 L 50 0 Z";
+}
+
+.tab-pane > .tab-header-area > .headers-region > .tab:selected {
+  -fx-background-color: derive(-fx-color, 30%);
+}
+
+.tab-pane > .tab-header-area > .headers-region > .tab .tab-label {
+  -fx-font-size: 14;
+  -fx-font-weight: bold;
+}
+
+.tab-pane:focused > .tab-header-area > .headers-region > .tab:selected .focus-indicator {
+  -fx-border-color: transparent;
+}
+
+/*
+===========================================================================
+      Charts
+===========================================================================
+*/
+
+.chart-horizontal-grid-lines {
+  -fx-stroke: derive(-fx-background, 40%);
+}
+
+/*
+===========================================================================
+      Error Window
+===========================================================================
+*/
+
+.label.error-title {
+  -fx-font-weight: bold;
+  -fx-font-size: 24;
+  -fx-text-fill: rgb(255, 148, 148);
+}
+
+.label.error-content {
+  -fx-font-weight: bold;
+  -fx-font-size: 14;
+}
