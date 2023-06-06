@@ -7,6 +7,7 @@ import org.apache.logging.log4j.core.LoggerContext;
 import org.apache.logging.log4j.core.config.Configuration;
 import org.apache.logging.log4j.core.config.LoggerConfig;
 
+import com.hanyans.gachacounter.core.Version;
 import com.hanyans.gachacounter.core.util.FileUtil;
 import com.hanyans.gachacounter.gui.CounterPanel;
 import com.hanyans.gachacounter.logic.LogicManager;
@@ -21,6 +22,8 @@ import javafx.stage.Stage;
 
 
 public class MainApp extends Application {
+    public static final Version VERSION = new Version(0, 2, 0);
+
     private static final String ICON_FILE = "/view/img/icon.png";
 
     private static final Logger logger = LogManager.getFormatterLogger(MainApp.class);
@@ -33,7 +36,7 @@ public class MainApp extends Application {
 
     @Override
     public void start(Stage mainStage) throws Exception {
-        logger.info("=========< APPLICATION START >=========");
+        logger.info("=========< APPLICATION START %s >=========", VERSION);
 
         storage = new StorageManager();
 
@@ -42,7 +45,7 @@ public class MainApp extends Application {
 
         setLogLevel(preference.getLogLevel());
 
-        logic = new LogicManager(storage, preference);
+        logic = new LogicManager(VERSION, storage, preference);
 
         CounterPanel panel = new CounterPanel(logic, mainStage);
         mainStage.setScene(new Scene(panel.getRoot()));
@@ -51,6 +54,7 @@ public class MainApp extends Application {
         setStageIcon(mainStage);
         mainStage.show();
 
+        logic.checkForAppUpdates();
         logic.handleIoError(prefLoadReport.exList, "Error while loading preference");
     }
 
@@ -60,7 +64,7 @@ public class MainApp extends Application {
         if (logic != null) {
             logic.shutdown();
         }
-        logger.info("=========< APPLICATION CLOSE >=========");
+        logger.info("=========< APPLICATION CLOSE %s >=========", VERSION);
     }
 
 

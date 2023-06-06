@@ -12,8 +12,12 @@ import java.util.function.Consumer;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.kohsuke.github.GHRelease;
+import org.kohsuke.github.GitHub;
 
+import com.hanyans.gachacounter.core.AppUpdateMessage;
 import com.hanyans.gachacounter.core.ErrorMessage;
+import com.hanyans.gachacounter.core.Version;
 import com.hanyans.gachacounter.core.task.ConsumerTask;
 import com.hanyans.gachacounter.core.task.RunnableTask;
 import com.hanyans.gachacounter.core.task.TrackableTask;
@@ -65,6 +69,7 @@ public class LogicManager implements Logic {
 
     private final ObjectProperty<Game> gameProperty = new SimpleObjectProperty<>();
 
+    private final Version version;
     private final Storage storage;
     private final UserPreference preference;
 
@@ -72,11 +77,13 @@ public class LogicManager implements Logic {
 
     private ConsumerTask<GachaReport> reportCompletionTask = ConsumerTask.blankTask();
     private Consumer<ErrorMessage> errMsgHandler = msg -> {};
+    private Consumer<AppUpdateMessage> updateHandler = msg -> {};
 
     private HashMap<Long, Boolean> uidFilterMap = new HashMap<>();
 
 
-    public LogicManager(Storage storage, UserPreference preference) {
+    public LogicManager(Version version, Storage storage, UserPreference preference) {
+        this.version = version;
         this.storage = storage;
         this.preference = preference;
     }
@@ -218,6 +225,24 @@ public class LogicManager implements Logic {
     }
 
 
+    public void checkForAppUpdates() {
+        try {
+            GHRelease release = GitHub.connectAnonymously().getRepository("daitenshionyan/gachacounter")
+                    .getLatestRelease();
+            Version sourceVer = Version.parse(release.getTagName());
+            if (version.isBefore(sourceVer)) {
+                logger.info("New update available (%s -> %s)", version, sourceVer);
+                handleAppUpdateMessage(release);
+            } else {
+                logger.info("Application is up to date");
+            }
+        } catch (Throwable ex) {
+            logger.warn("Failed to check for updates", ex);
+            handleErrorMessage("Failed to check for updates", ex.toString());
+        }
+    }
+
+
     /*
      * ========================================================================
      *      IO
@@ -322,6 +347,26 @@ public class LogicManager implements Logic {
 
     private void handleErrorMessage(Throwable ex) {
         handleErrorMessage(ex.getClass().getSimpleName(), ex.getMessage());
+    }
+
+
+    @Override
+    public synchronized void setAppUpdateMessageHandler(Consumer<AppUpdateMessage> handler) {
+        this.updateHandler = handler;
+    }
+
+
+    private synchronized void handleAppUpdateMessage(AppUpdateMessage msg) {
+        updateHandler.accept(msg);
+    }
+
+
+    private synchronized void handleAppUpdateMessage(GHRelease release) {
+        AppUpdateMessage message = new AppUpdateMessage(
+            String.format("A new update is available (%s -> %s)",
+                    version, release.getTagName()),
+            release.getHtmlUrl());
+        handleAppUpdateMessage(message);
     }
 
 

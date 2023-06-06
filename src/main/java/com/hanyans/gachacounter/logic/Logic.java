@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.function.Consumer;
 
+import com.hanyans.gachacounter.core.AppUpdateMessage;
 import com.hanyans.gachacounter.core.ErrorMessage;
 import com.hanyans.gachacounter.core.task.ConsumerTask;
 import com.hanyans.gachacounter.model.UserPreference;
@@ -113,4 +114,18 @@ public interface Logic {
      * Manually saves the current state of data.
      */
     public void manualSave();
+
+
+    /**
+     * Checks if there is a newer version of the application.
+     */
+    public void checkForAppUpdates();
+
+
+    /**
+     * Sets the handler to handle application update messages.
+     *
+     * @param handler - the update message handler to set to.
+     */
+    public void setAppUpdateMessageHandler(Consumer<AppUpdateMessage> handler);
 }

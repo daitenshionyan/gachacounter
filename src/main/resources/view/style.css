@@ -435,14 +435,22 @@
 
 /*
 ===========================================================================
-      Error Window
+      Popup Window
 ===========================================================================
 */
 
-.label.error-title {
+.label.error-title,
+.label.update-title {
   -fx-font-weight: bold;
   -fx-font-size: 24;
+}
+
+.label.error-title {
   -fx-text-fill: rgb(255, 148, 148);
+}
+
+.label.update-title {
+  -fx-text-fill: rgb(157, 255, 148);
 }
 
 .label.error-content {
