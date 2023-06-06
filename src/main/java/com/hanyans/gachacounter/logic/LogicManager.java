@@ -14,7 +14,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.hanyans.gachacounter.core.AppUpdateMessage;
-import com.hanyans.gachacounter.core.ErrorMessage;
+import com.hanyans.gachacounter.core.PopupMessage;
 import com.hanyans.gachacounter.core.Version;
 import com.hanyans.gachacounter.core.task.ConsumerTask;
 import com.hanyans.gachacounter.core.task.RunnableTask;
@@ -23,6 +23,7 @@ import com.hanyans.gachacounter.logic.task.AppUpdateCheckTask;
 import com.hanyans.gachacounter.logic.task.CounterTask;
 import com.hanyans.gachacounter.logic.task.GachaCounterTask;
 import com.hanyans.gachacounter.logic.task.HistoryRetrieverTask;
+import com.hanyans.gachacounter.logic.task.UpdateDataTask;
 import com.hanyans.gachacounter.logic.task.UrlGrabberTask;
 import com.hanyans.gachacounter.model.BannerHistory;
 import com.hanyans.gachacounter.model.GameGachaData;
@@ -75,7 +76,7 @@ public class LogicManager implements Logic {
     private volatile boolean isRunning = false;
 
     private ConsumerTask<GachaReport> reportCompletionTask = ConsumerTask.blankTask();
-    private Consumer<ErrorMessage> errMsgHandler = msg -> {};
+    private Consumer<PopupMessage> errMsgHandler = msg -> {};
     private Consumer<AppUpdateMessage> updateHandler = msg -> {};
 
     private HashMap<Long, Boolean> uidFilterMap = new HashMap<>();
@@ -241,6 +242,23 @@ public class LogicManager implements Logic {
     }
 
 
+    @Override
+    public void updateData() {
+        if (!canRun("UPDATE DATA", false)) {
+            return;
+        }
+        setRunningState(true);
+        UpdateDataTask task = new UpdateDataTask();
+        task.setOnComplete(msg -> {
+            handlePopupMessage(msg);
+            setRunningState(false);
+        });
+        task.setOnException(this::handleAppUpdateCheckFailure);
+        bindTaskProperty(task);
+        executor.execute(task);
+    }
+
+
     /*
      * ========================================================================
      *      IO
@@ -335,18 +353,18 @@ public class LogicManager implements Logic {
 
 
     @Override
-    public synchronized void setErrorMessageHandler(Consumer<ErrorMessage> errMsgHandler) {
+    public synchronized void setPopupMessageHandler(Consumer<PopupMessage> errMsgHandler) {
         this.errMsgHandler = errMsgHandler;
     }
 
 
-    private synchronized void handleErrorMessage(ErrorMessage msg) {
+    private synchronized void handlePopupMessage(PopupMessage msg) {
         errMsgHandler.accept(msg);
     }
 
 
     private void handleErrorMessage(String title, String content) {
-        handleErrorMessage(new ErrorMessage(title, content));
+        handlePopupMessage(new PopupMessage(title, content, PopupMessage.MsgType.Error));
     }
 
 

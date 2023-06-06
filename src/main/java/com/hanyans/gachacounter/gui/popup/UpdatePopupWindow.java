@@ -15,13 +15,14 @@ import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
 import javafx.scene.layout.Region;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 
-public class UpdateWindow extends Stage {
-    public UpdateWindow(Stage parentStage, boolean hasUpdate, String message, URL url) {
+public class UpdatePopupWindow extends Stage {
+    public UpdatePopupWindow(Stage parentStage, boolean hasUpdate, String message, URL url) {
         UpdatePanel panel = new UpdatePanel(this, hasUpdate, message, url);
         setScene(new Scene(panel.getRoot()));
         setResizable(false);
@@ -33,7 +34,7 @@ public class UpdateWindow extends Stage {
 
 
     public static void displayAndWait(Stage stage, AppUpdateMessage msg) {
-        UpdateWindow window = new UpdateWindow(
+        UpdatePopupWindow window = new UpdatePopupWindow(
                 stage,
                 msg.hasUpdate,
                 msg.message,
@@ -48,13 +49,13 @@ public class UpdateWindow extends Stage {
     private static class UpdatePanel extends UiComponent<Region> {
         private static final String FXML_FILE = "UpdatePanel.fxml";
 
-        private final Logger logger = LogManager.getFormatterLogger(UpdateWindow.class);
+        private final Logger logger = LogManager.getFormatterLogger(UpdatePopupWindow.class);
 
         private final Stage stage;
         private final URL url;
 
         @FXML private Label titleLabel;
-        @FXML private Label contentLabel;
+        @FXML private TextArea contentArea;
         @FXML private Button goButton;
 
 
@@ -63,7 +64,7 @@ public class UpdateWindow extends Stage {
             this.stage = stage;
             this.url = url;
             titleLabel.setText(hasUpdate ? "Updates available" : "Up to date");
-            contentLabel.setText(message);
+            contentArea.setText(message);
 
             // hide go button if up to date
             goButton.setVisible(hasUpdate);

@@ -20,7 +20,7 @@ import java.util.Objects;
  * Utility class containing static methods to aid in file related operations.
  */
 public class FileUtil {
-    private static final int BUFFER_SIZE = 2097152; // 2MB
+    private static final int BUFFER_SIZE = 1024;
 
 
     /**

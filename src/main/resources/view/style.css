@@ -453,7 +453,13 @@
   -fx-text-fill: rgb(157, 255, 148);
 }
 
-.label.error-content {
+.label.error-content,
+.text-area.popup-window-text-area {
   -fx-font-weight: bold;
   -fx-font-size: 14;
+}
+
+.text-area.popup-window-text-area,
+.text-area.popup-window-text-area .scroll-pane .content {
+  -fx-background-color: transparent;
 }
