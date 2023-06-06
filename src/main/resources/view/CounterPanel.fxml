@@ -39,8 +39,8 @@
                 </Menu>
                   <Menu mnemonicParsing="false" text="Help">
                     <items>
-                        <MenuItem mnemonicParsing="false" onAction="#handleUpdateData" text="Update data" />
-                      <MenuItem mnemonicParsing="false" onAction="#handleCheckForUpdates" text="Check for updates..." />
+                        <MenuItem mnemonicParsing="false" onAction="#handleUpdateData" text="Download data files" />
+                      <MenuItem mnemonicParsing="false" onAction="#handleCheckForUpdates" text="Check for app update" />
                     </items>
                   </Menu>
               </menus>

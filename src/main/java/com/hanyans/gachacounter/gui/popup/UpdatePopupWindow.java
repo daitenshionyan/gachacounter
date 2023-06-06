@@ -23,7 +23,7 @@ import javafx.stage.Stage;
 
 public class UpdatePopupWindow extends Stage {
     public UpdatePopupWindow(Stage parentStage, boolean hasUpdate, String message, URL url) {
-        UpdatePanel panel = new UpdatePanel(this, hasUpdate, message, url);
+        UpdatePopupPanel panel = new UpdatePopupPanel(this, hasUpdate, message, url);
         setScene(new Scene(panel.getRoot()));
         setResizable(false);
         initModality(Modality.WINDOW_MODAL);
@@ -46,8 +46,8 @@ public class UpdatePopupWindow extends Stage {
 
 
 
-    private static class UpdatePanel extends UiComponent<Region> {
-        private static final String FXML_FILE = "UpdatePanel.fxml";
+    private static class UpdatePopupPanel extends UiComponent<Region> {
+        private static final String FXML_FILE = "UpdatePopupPanel.fxml";
 
         private final Logger logger = LogManager.getFormatterLogger(UpdatePopupWindow.class);
 
@@ -59,7 +59,7 @@ public class UpdatePopupWindow extends Stage {
         @FXML private Button goButton;
 
 
-        UpdatePanel(Stage stage, boolean hasUpdate, String message, URL url) {
+        UpdatePopupPanel(Stage stage, boolean hasUpdate, String message, URL url) {
             super(FXML_FILE);
             this.stage = stage;
             this.url = url;
