@@ -55,7 +55,7 @@ public class MainApp extends Application {
         mainStage.show();
 
         if (preference.isCheckUpdateOnStart()) {
-            logic.checkForAppUpdates();
+            logic.checkForAppUpdates(false);
         }
         logic.handleIoError(prefLoadReport.exList, "Error while loading preference");
     }

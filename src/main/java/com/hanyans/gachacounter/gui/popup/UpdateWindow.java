@@ -13,6 +13,7 @@ import com.hanyans.gachacounter.gui.UiComponent;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Region;
 import javafx.stage.Modality;
@@ -20,8 +21,8 @@ import javafx.stage.Stage;
 
 
 public class UpdateWindow extends Stage {
-    public UpdateWindow(Stage parentStage, String message, URL url) {
-        UpdatePanel panel = new UpdatePanel(this, message, url);
+    public UpdateWindow(Stage parentStage, boolean hasUpdate, String message, URL url) {
+        UpdatePanel panel = new UpdatePanel(this, hasUpdate, message, url);
         setScene(new Scene(panel.getRoot()));
         setResizable(false);
         initModality(Modality.WINDOW_MODAL);
@@ -32,7 +33,11 @@ public class UpdateWindow extends Stage {
 
 
     public static void displayAndWait(Stage stage, AppUpdateMessage msg) {
-        UpdateWindow window = new UpdateWindow(stage, msg.message, msg.url);
+        UpdateWindow window = new UpdateWindow(
+                stage,
+                msg.hasUpdate,
+                msg.message,
+                msg.url);
         window.showAndWait();
     }
 
@@ -50,14 +55,19 @@ public class UpdateWindow extends Stage {
 
         @FXML private Label titleLabel;
         @FXML private Label contentLabel;
+        @FXML private Button goButton;
 
 
-        UpdatePanel(Stage stage, String message, URL url) {
+        UpdatePanel(Stage stage, boolean hasUpdate, String message, URL url) {
             super(FXML_FILE);
             this.stage = stage;
             this.url = url;
-            titleLabel.setText("Update Available");
+            titleLabel.setText(hasUpdate ? "Updates available" : "Up to date");
             contentLabel.setText(message);
+
+            // hide go button if up to date
+            goButton.setVisible(hasUpdate);
+            goButton.setManaged(hasUpdate);
         }
 
 

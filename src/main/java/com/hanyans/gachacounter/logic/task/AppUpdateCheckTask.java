@@ -40,6 +40,13 @@ public class AppUpdateCheckTask extends RunnableTask<AppUpdateMessage> {
 
 
     private AppUpdateMessage formMessage(boolean hasUpdate, GHRelease release) {
+        if (!hasUpdate) {
+            return new AppUpdateMessage(
+                hasUpdate,
+                String.format("There are currently no updates available (%s)",
+                        appVer),
+                release.getHtmlUrl());
+        }
         return new AppUpdateMessage(
                 hasUpdate,
                 String.format("A new release is available (%s -> %s)",

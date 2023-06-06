@@ -118,8 +118,11 @@ public interface Logic {
 
     /**
      * Checks if there is a newer version of the application.
+     *
+     * @param isHandleUpToDate - if the update handler should be called if the
+     *      app is up to date.
      */
-    public void checkForAppUpdates();
+    public void checkForAppUpdates(boolean isHandleUpToDate);
 
 
     /**

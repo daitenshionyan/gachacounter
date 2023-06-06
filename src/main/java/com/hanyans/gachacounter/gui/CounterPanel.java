@@ -416,6 +416,14 @@ public class CounterPanel extends UiComponent<VBox> {
     }
 
 
+    @FXML
+    private void handleCheckForUpdates(ActionEvent event) {
+        logger.debug("{HANDLE CHECK FOR UPDATES}- action fired");
+        isFilterShowingProperty.set(false);
+        logic.checkForAppUpdates(true);
+    }
+
+
     /*
      * ========================================================================
      *      UTILITY

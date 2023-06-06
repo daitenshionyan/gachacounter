@@ -225,14 +225,14 @@ public class LogicManager implements Logic {
 
 
     @Override
-    public void checkForAppUpdates() {
+    public void checkForAppUpdates(boolean isHandleUpToDate) {
         if (!canRun("CHECK FOR UPDATES", false)) {
             return;
         }
         setRunningState(true);
         AppUpdateCheckTask task = new AppUpdateCheckTask(version);
         task.setOnComplete(msg -> {
-            handleAppUpdateMessage(msg);
+            handleAppUpdateMessage(msg, isHandleUpToDate);
             setRunningState(false);
         });
         task.setOnException(this::handleAppUpdateCheckFailure);
@@ -361,8 +361,8 @@ public class LogicManager implements Logic {
     }
 
 
-    private synchronized void handleAppUpdateMessage(AppUpdateMessage msg) {
-        if (msg.hasUpdate) {
+    private synchronized void handleAppUpdateMessage(AppUpdateMessage msg, boolean isHandleUpToDate) {
+        if (msg.hasUpdate || isHandleUpToDate) {
             updateHandler.accept(msg);
         }
     }

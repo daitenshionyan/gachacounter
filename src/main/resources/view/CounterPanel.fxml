@@ -37,6 +37,11 @@
                     <MenuItem mnemonicParsing="false" onAction="#handleSave" text="Save" />
                   </items>
                 </Menu>
+                  <Menu mnemonicParsing="false" text="Help">
+                    <items>
+                      <MenuItem mnemonicParsing="false" onAction="#handleCheckForUpdates" text="Check for updates..." />
+                    </items>
+                  </Menu>
               </menus>
             </MenuBar>
             <GridPane hgap="5.0" vgap="5.0">
