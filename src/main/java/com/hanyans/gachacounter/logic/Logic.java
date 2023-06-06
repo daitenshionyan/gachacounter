@@ -4,7 +4,8 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.function.Consumer;
 
-import com.hanyans.gachacounter.core.ErrorMessage;
+import com.hanyans.gachacounter.core.AppUpdateMessage;
+import com.hanyans.gachacounter.core.PopupMessage;
 import com.hanyans.gachacounter.core.task.ConsumerTask;
 import com.hanyans.gachacounter.model.UserPreference;
 import com.hanyans.gachacounter.model.count.GachaReport;
@@ -88,11 +89,11 @@ public interface Logic {
 
 
     /**
-     * Sets the handler to handle error messages.
+     * Sets the handler to handle popup messages.
      *
-     * @param errMsgHandler - the error message handler to set to.
+     * @param handler - the error message handler to set to.
      */
-    public void setErrorMessageHandler(Consumer<ErrorMessage> errMsgHandler);
+    public void setPopupMessageHandler(Consumer<PopupMessage> handler);
 
 
     /**
@@ -113,4 +114,24 @@ public interface Logic {
      * Manually saves the current state of data.
      */
     public void manualSave();
+
+
+    /**
+     * Checks if there is a newer version of the application.
+     *
+     * @param isHandleUpToDate - if the update handler should be called if the
+     *      app is up to date.
+     */
+    public void checkForAppUpdates(boolean isHandleUpToDate);
+
+
+    public void updateData();
+
+
+    /**
+     * Sets the handler to handle application update messages.
+     *
+     * @param handler - the update message handler to set to.
+     */
+    public void setAppUpdateMessageHandler(Consumer<AppUpdateMessage> handler);
 }

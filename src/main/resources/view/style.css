@@ -435,17 +435,31 @@
 
 /*
 ===========================================================================
-      Error Window
+      Popup Window
 ===========================================================================
 */
 
-.label.error-title {
+.label.error-title,
+.label.success-title {
   -fx-font-weight: bold;
   -fx-font-size: 24;
+}
+
+.label.error-title {
   -fx-text-fill: rgb(255, 148, 148);
 }
 
-.label.error-content {
+.label.success-title {
+  -fx-text-fill: rgb(157, 255, 148);
+}
+
+.label.error-content,
+.text-area.popup-window-text-area {
   -fx-font-weight: bold;
   -fx-font-size: 14;
+}
+
+.text-area.popup-window-text-area,
+.text-area.popup-window-text-area .scroll-pane .content {
+  -fx-background-color: transparent;
 }

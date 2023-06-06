@@ -18,10 +18,11 @@ public class UserPreference {
     private Path dataFilePathHSR;
     private Path dataFilePathGenshin;
     private Level logLevel;
+    private boolean checkUpdatesOnStart;
 
 
     public UserPreference() {
-        this(null, null, null);
+        this(null, null, null, null);
     }
 
 
@@ -29,10 +30,12 @@ public class UserPreference {
     public UserPreference(
                 @JsonProperty("dataFilePathHSR") Path dataFilePathHSR,
                 @JsonProperty("dataFilePathGenshin") Path dataFilePathGenshin,
-                @JsonProperty("logLevel") Level logLevel) {
+                @JsonProperty("logLevel") Level logLevel,
+                @JsonProperty("checkUpdateOnStart") Boolean checkUpdatesOnStart) {
         this.dataFilePathHSR = dataFilePathHSR;
         this.dataFilePathGenshin = dataFilePathGenshin;
         this.logLevel = Objects.requireNonNullElse(logLevel, DEFAULT_LOG_LEVEL);
+        this.checkUpdatesOnStart = Objects.requireNonNullElse(checkUpdatesOnStart, true);
     }
 
 
@@ -77,5 +80,15 @@ public class UserPreference {
 
     public synchronized Level getLogLevel() {
         return logLevel;
+    }
+
+
+    public synchronized boolean isCheckUpdateOnStart() {
+        return checkUpdatesOnStart;
+    }
+
+
+    public synchronized void setCheckUpdateOnStart(boolean shouldCheck) {
+        checkUpdatesOnStart = shouldCheck;
     }
 }

@@ -9,8 +9,11 @@ import java.util.function.Consumer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.hanyans.gachacounter.core.ErrorMessage;
+import com.hanyans.gachacounter.core.AppUpdateMessage;
+import com.hanyans.gachacounter.core.PopupMessage;
 import com.hanyans.gachacounter.core.util.FileUtil;
+import com.hanyans.gachacounter.gui.popup.MessagePopupWindow;
+import com.hanyans.gachacounter.gui.popup.UpdatePopupWindow;
 import com.hanyans.gachacounter.gui.task.OverviewRenderTask;
 import com.hanyans.gachacounter.gui.updater.BannerCardUpdater;
 import com.hanyans.gachacounter.gui.updater.OverallCardUpdater;
@@ -131,7 +134,8 @@ public class CounterPanel extends UiComponent<VBox> {
 
     private void initializeLogic() {
         logic.setReportCompletionTask(formRenderTask());
-        logic.setErrorMessageHandler(formErrorMessageHandler());
+        logic.setPopupMessageHandler(formErrorMessageHandler());
+        logic.setAppUpdateMessageHandler(formAppUpdateMessageHandler());
         setLogicPropertyListener();
     }
 
@@ -160,8 +164,13 @@ public class CounterPanel extends UiComponent<VBox> {
     }
 
 
-    private Consumer<ErrorMessage> formErrorMessageHandler() {
-        return msg -> Platform.runLater(() -> ErrorWindow.displayAndWait(parentStage, msg));
+    private Consumer<PopupMessage> formErrorMessageHandler() {
+        return msg -> Platform.runLater(() -> MessagePopupWindow.displayAndWait(parentStage, msg));
+    }
+
+
+    private Consumer<AppUpdateMessage> formAppUpdateMessageHandler() {
+        return msg -> Platform.runLater(() -> UpdatePopupWindow.displayAndWait(parentStage, msg));
     }
 
 
@@ -404,6 +413,22 @@ public class CounterPanel extends UiComponent<VBox> {
         logger.debug("-{HANDLE SAVE}- action fired");
         isFilterShowingProperty.set(false);
         logic.manualSave();
+    }
+
+
+    @FXML
+    private void handleCheckForUpdates(ActionEvent event) {
+        logger.debug("{HANDLE CHECK FOR UPDATES}- action fired");
+        isFilterShowingProperty.set(false);
+        logic.checkForAppUpdates(true);
+    }
+
+
+    @FXML
+    private void handleUpdateData(ActionEvent event) {
+        logger.debug("{HANDLE UPDATE DATA}- action fired");
+        isFilterShowingProperty.set(false);
+        logic.updateData();
     }
 
 
