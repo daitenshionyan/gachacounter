@@ -13,13 +13,17 @@ import java.util.function.Consumer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.hanyans.gachacounter.core.ErrorMessage;
+import com.hanyans.gachacounter.core.AppUpdateMessage;
+import com.hanyans.gachacounter.core.PopupMessage;
+import com.hanyans.gachacounter.core.Version;
 import com.hanyans.gachacounter.core.task.ConsumerTask;
 import com.hanyans.gachacounter.core.task.RunnableTask;
 import com.hanyans.gachacounter.core.task.TrackableTask;
+import com.hanyans.gachacounter.logic.task.AppUpdateCheckTask;
 import com.hanyans.gachacounter.logic.task.CounterTask;
 import com.hanyans.gachacounter.logic.task.GachaCounterTask;
 import com.hanyans.gachacounter.logic.task.HistoryRetrieverTask;
+import com.hanyans.gachacounter.logic.task.UpdateDataTask;
 import com.hanyans.gachacounter.logic.task.UrlGrabberTask;
 import com.hanyans.gachacounter.model.BannerHistory;
 import com.hanyans.gachacounter.model.GameGachaData;
@@ -65,18 +69,21 @@ public class LogicManager implements Logic {
 
     private final ObjectProperty<Game> gameProperty = new SimpleObjectProperty<>();
 
+    private final Version version;
     private final Storage storage;
     private final UserPreference preference;
 
     private volatile boolean isRunning = false;
 
     private ConsumerTask<GachaReport> reportCompletionTask = ConsumerTask.blankTask();
-    private Consumer<ErrorMessage> errMsgHandler = msg -> {};
+    private Consumer<PopupMessage> errMsgHandler = msg -> {};
+    private Consumer<AppUpdateMessage> updateHandler = msg -> {};
 
     private HashMap<Long, Boolean> uidFilterMap = new HashMap<>();
 
 
-    public LogicManager(Storage storage, UserPreference preference) {
+    public LogicManager(Version version, Storage storage, UserPreference preference) {
+        this.version = version;
         this.storage = storage;
         this.preference = preference;
     }
@@ -218,6 +225,40 @@ public class LogicManager implements Logic {
     }
 
 
+    @Override
+    public void checkForAppUpdates(boolean isHandleUpToDate) {
+        if (!canRun("CHECK FOR UPDATES", false)) {
+            return;
+        }
+        setRunningState(true);
+        AppUpdateCheckTask task = new AppUpdateCheckTask(version);
+        task.setOnComplete(msg -> {
+            handleAppUpdateMessage(msg, isHandleUpToDate);
+            setRunningState(false);
+        });
+        task.setOnException(this::handleAppUpdateCheckFailure);
+        bindTaskProperty(task);
+        executor.execute(task);
+    }
+
+
+    @Override
+    public void updateData() {
+        if (!canRun("UPDATE DATA", false)) {
+            return;
+        }
+        setRunningState(true);
+        UpdateDataTask task = new UpdateDataTask();
+        task.setOnComplete(msg -> {
+            handlePopupMessage(msg);
+            setRunningState(false);
+        });
+        task.setOnException(this::handleAppUpdateCheckFailure);
+        bindTaskProperty(task);
+        executor.execute(task);
+    }
+
+
     /*
      * ========================================================================
      *      IO
@@ -286,6 +327,13 @@ public class LogicManager implements Logic {
     }
 
 
+    private void handleAppUpdateCheckFailure(Throwable ex) {
+        logger.error("Error occured while checking for updates", ex);
+        handleErrorMessage("Failed to check for updates", ex.toString());
+        setRunningState(false);
+    }
+
+
     /*
      * ========================================================================
      *      HANDLERS
@@ -305,23 +353,36 @@ public class LogicManager implements Logic {
 
 
     @Override
-    public synchronized void setErrorMessageHandler(Consumer<ErrorMessage> errMsgHandler) {
+    public synchronized void setPopupMessageHandler(Consumer<PopupMessage> errMsgHandler) {
         this.errMsgHandler = errMsgHandler;
     }
 
 
-    private synchronized void handleErrorMessage(ErrorMessage msg) {
+    private synchronized void handlePopupMessage(PopupMessage msg) {
         errMsgHandler.accept(msg);
     }
 
 
     private void handleErrorMessage(String title, String content) {
-        handleErrorMessage(new ErrorMessage(title, content));
+        handlePopupMessage(new PopupMessage(title, content, PopupMessage.MsgType.Error));
     }
 
 
     private void handleErrorMessage(Throwable ex) {
         handleErrorMessage(ex.getClass().getSimpleName(), ex.getMessage());
+    }
+
+
+    @Override
+    public synchronized void setAppUpdateMessageHandler(Consumer<AppUpdateMessage> handler) {
+        this.updateHandler = handler;
+    }
+
+
+    private synchronized void handleAppUpdateMessage(AppUpdateMessage msg, boolean isHandleUpToDate) {
+        if (msg.hasUpdate || isHandleUpToDate) {
+            updateHandler.accept(msg);
+        }
     }
 
 
