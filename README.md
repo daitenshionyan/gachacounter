@@ -9,7 +9,7 @@ An unofficial desktop tool to track and view your gacha records for Honkai Star 
 
 1. Download JAVA 17 ([Java SE 17 Archive Downloads](https://www.oracle.com/java/technologies/javase/jdk17-archive-downloads.html)).
 2. Download the latest version of the tool into an empty folder ([download](https://github.com/daitenshionyan/gachacounter/releases/latest/download/gachacounter_v0.1.0.jar)).
-3. Download the data branch ([download](https://github.com/daitenshionyan/gachacounter/archive/refs/heads/data.zip)) as a ZIP and extract the **image** and **events** folder to the folder in step 2.
+3. Launch the application by double clicking the jar file. From the menu bar at the top, navigate - `Help` > `Download data files`. This will download the required data files such as the item icon pictures.
 
 The contents of the folder should look something like this:
 
@@ -19,7 +19,7 @@ The contents of the folder should look something like this:
 
 ### Game
 
-When the game updates, repeat step 3 of installation once those folders are updated and override the images and files.
+When the game updates, repeat step 3. If files are not updating, try again at a later time.
 
 ### Application
 
