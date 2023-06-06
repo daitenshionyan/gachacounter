@@ -20,7 +20,7 @@
             </ImageView>
             <VBox maxWidth="400.0" prefHeight="150.0" prefWidth="400.0" spacing="5.0" HBox.hgrow="NEVER">
                <children>
-                  <Label fx:id="titleLabel" maxHeight="1.7976931348623157E308" maxWidth="400.0" minHeight="-Infinity" minWidth="-Infinity" prefWidth="380.0" styleClass="update-title" wrapText="true" />
+                  <Label fx:id="titleLabel" maxHeight="1.7976931348623157E308" maxWidth="400.0" minHeight="-Infinity" minWidth="-Infinity" prefWidth="380.0" styleClass="success-title" wrapText="true" />
                   <TextArea fx:id="contentArea" editable="false" styleClass="popup-window-text-area" wrapText="true" VBox.vgrow="ALWAYS" />
                </children>
                <padding>
