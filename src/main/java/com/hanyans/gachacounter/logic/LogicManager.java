@@ -12,8 +12,6 @@ import java.util.function.Consumer;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.kohsuke.github.GHRelease;
-import org.kohsuke.github.GitHub;
 
 import com.hanyans.gachacounter.core.AppUpdateMessage;
 import com.hanyans.gachacounter.core.ErrorMessage;
@@ -21,6 +19,7 @@ import com.hanyans.gachacounter.core.Version;
 import com.hanyans.gachacounter.core.task.ConsumerTask;
 import com.hanyans.gachacounter.core.task.RunnableTask;
 import com.hanyans.gachacounter.core.task.TrackableTask;
+import com.hanyans.gachacounter.logic.task.AppUpdateCheckTask;
 import com.hanyans.gachacounter.logic.task.CounterTask;
 import com.hanyans.gachacounter.logic.task.GachaCounterTask;
 import com.hanyans.gachacounter.logic.task.HistoryRetrieverTask;
@@ -225,21 +224,20 @@ public class LogicManager implements Logic {
     }
 
 
+    @Override
     public void checkForAppUpdates() {
-        try {
-            GHRelease release = GitHub.connectAnonymously().getRepository("daitenshionyan/gachacounter")
-                    .getLatestRelease();
-            Version sourceVer = Version.parse(release.getTagName());
-            if (version.isBefore(sourceVer)) {
-                logger.info("New update available (%s -> %s)", version, sourceVer);
-                handleAppUpdateMessage(release);
-            } else {
-                logger.info("Application is up to date");
-            }
-        } catch (Throwable ex) {
-            logger.warn("Failed to check for updates", ex);
-            handleErrorMessage("Failed to check for updates", ex.toString());
+        if (!canRun("CHECK FOR UPDATES", false)) {
+            return;
         }
+        setRunningState(true);
+        AppUpdateCheckTask task = new AppUpdateCheckTask(version);
+        task.setOnComplete(msg -> {
+            handleAppUpdateMessage(msg);
+            setRunningState(false);
+        });
+        task.setOnException(this::handleAppUpdateCheckFailure);
+        bindTaskProperty(task);
+        executor.execute(task);
     }
 
 
@@ -311,6 +309,13 @@ public class LogicManager implements Logic {
     }
 
 
+    private void handleAppUpdateCheckFailure(Throwable ex) {
+        logger.error("Error occured while checking for updates", ex);
+        handleErrorMessage("Failed to check for updates", ex.toString());
+        setRunningState(false);
+    }
+
+
     /*
      * ========================================================================
      *      HANDLERS
@@ -357,16 +362,9 @@ public class LogicManager implements Logic {
 
 
     private synchronized void handleAppUpdateMessage(AppUpdateMessage msg) {
-        updateHandler.accept(msg);
-    }
-
-
-    private synchronized void handleAppUpdateMessage(GHRelease release) {
-        AppUpdateMessage message = new AppUpdateMessage(
-            String.format("A new update is available (%s -> %s)",
-                    version, release.getTagName()),
-            release.getHtmlUrl());
-        handleAppUpdateMessage(message);
+        if (msg.hasUpdate) {
+            updateHandler.accept(msg);
+        }
     }
 
 
