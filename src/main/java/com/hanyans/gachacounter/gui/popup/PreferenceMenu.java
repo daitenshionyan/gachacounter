@@ -105,12 +105,24 @@ public class PreferenceMenu extends UiComponent<VBox> {
     private void handleOk(ActionEvent event) {
         displayStage.hide();
         PrefFormValidationTask task = new PrefFormValidationTask(
-            preference, checkUpdatesOnStartCB, logLevelCmbBox);
-        logic.updatePreference(task, this::handleTaskComplete, ex -> {});
+                preference,
+                pityStep5NormInput,
+                pityStep5WeapInput,
+                pityStep4Input,
+                freqStepFactInput,
+                freqMaxCountInput,
+                checkUpdatesOnStartCB,
+                logLevelCmbBox);
+        logic.updatePreference(task, this::handleTaskComplete, this::handleException);
     }
 
 
     private void handleTaskComplete(UserPreference pref) {
         Platform.runLater(() -> displayStage.close());
+    }
+
+
+    private void handleException(Throwable ex) {
+        Platform.runLater(() -> displayStage.show());
     }
 }
