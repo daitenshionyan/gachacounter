@@ -147,7 +147,8 @@ public class CounterPanel extends UiComponent<VBox> {
                 new BannerCardUpdater(charPityLabel4, charPityLabel5, charTotalLabel),
                 new BannerCardUpdater(weapPityLabel4, weapPityLabel5, weapTotalLabel),
                 new OverallCardUpdater(overallTotalLabel, itemListBox),
-                new StatisticsUpdater(stats5NormChart, stats5WeapChart, stats4Chart));
+                new StatisticsUpdater(stats5NormChart, stats5WeapChart, stats4Chart),
+                preference.getChartPreference());
     }
 
 
