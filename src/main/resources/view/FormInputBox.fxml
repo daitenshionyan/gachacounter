@@ -5,18 +5,17 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-
-<HBox fx:id="containerBox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" spacing="5.0" xmlns="http://javafx.com/javafx/null" xmlns:fx="http://javafx.com/fxml/1">
+<HBox fx:id="containerBox" spacing="5.0" xmlns="http://javafx.com/javafx/null" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <VBox fx:id="nameBox" alignment="CENTER_LEFT" HBox.hgrow="ALWAYS">
          <children>
-            <Label fx:id="nameLabel" styleClass="form-value-name-label" text="Label" />
+            <Label fx:id="nameLabel" styleClass="form-value-name-label" />
          </children>
       </VBox>
-      <VBox fx:id="valueBox">
+      <VBox fx:id="valueBox" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="150.0" HBox.hgrow="NEVER">
          <children>
             <TextField fx:id="textField" />
-            <Label fx:id="errorMsgLabel" styleClass="form-error-msg-label" text="Label" />
+            <Label fx:id="errorMsgLabel" minHeight="-Infinity" minWidth="-Infinity" prefWidth="150.0" styleClass="form-error-msg-label" wrapText="true" />
          </children>
       </VBox>
    </children>

@@ -8,16 +8,21 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-
 <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="600.0" spacing="5.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/null" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <VBox>
+      <VBox styleClass="summary-card-box">
          <children>
             <Label styleClass="form-h2" text="Chart Preference" />
-            <VBox fx:id="chartPrefEntryBox" />
+            <VBox fx:id="chartPrefEntryBox" spacing="5.0">
+               <padding>
+                  <Insets left="10.0" />
+               </padding></VBox>
          </children>
+         <padding>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </padding>
       </VBox>
-      <VBox>
+      <VBox styleClass="summary-card-box">
          <children>
             <Label styleClass="form-h2" text="System Preference" />
             <VBox spacing="5.0">
@@ -26,7 +31,7 @@
                      <children>
                         <VBox alignment="CENTER_LEFT" HBox.hgrow="ALWAYS">
                            <children>
-                              <Label styleClass="form-value-name" text="Check for updates on launch" wrapText="true" />
+                              <Label styleClass="form-value-name-label" text="Check for updates on launch" wrapText="true" />
                            </children>
                         </VBox>
                         <VBox alignment="CENTER" prefWidth="150.0">
@@ -43,7 +48,7 @@
                      <children>
                         <VBox alignment="CENTER_LEFT" HBox.hgrow="ALWAYS">
                            <children>
-                              <Label styleClass="form-value-name" text="Log level" wrapText="true" />
+                              <Label styleClass="form-value-name-label" text="Log level" wrapText="true" />
                            </children>
                         </VBox>
                         <VBox alignment="CENTER" prefWidth="150.0">
@@ -54,13 +59,19 @@
                      </children>
                   </HBox>
                </children>
+               <padding>
+                  <Insets left="10.0" />
+               </padding>
             </VBox>
          </children>
+         <padding>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </padding>
       </VBox>
       <HBox alignment="CENTER_RIGHT" spacing="5.0">
          <children>
             <Button mnemonicParsing="false" onAction="#handleCancel" prefWidth="60.0" text="Cancel" />
-            <Button mnemonicParsing="false" onAction="#handleOk" prefWidth="60.0" text="OK" />
+            <Button mnemonicParsing="false" onAction="#handleOk" prefWidth="60.0" styleClass="button-action-color" text="OK" />
          </children>
          <padding>
             <Insets top="10.0" />

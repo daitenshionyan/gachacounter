@@ -8,6 +8,7 @@ import com.hanyans.gachacounter.MainApp;
 import com.hanyans.gachacounter.gui.UiComponent;
 import com.hanyans.gachacounter.gui.task.PrefFormValidationTask;
 import com.hanyans.gachacounter.logic.Logic;
+import com.hanyans.gachacounter.model.preference.ChartPreference;
 import com.hanyans.gachacounter.model.preference.UserPreference;
 
 import javafx.application.Platform;
@@ -25,6 +26,17 @@ import javafx.stage.Stage;
 public class PreferenceMenu extends UiComponent<VBox> {
     private static final String FXML_FILE = "PreferenceMenuPanel.fxml";
 
+    private final FormInputBox pityStep5NormInput =
+            new FormInputBox("5 \u2605 Pity Step (Normal)");
+    private final FormInputBox pityStep5WeapInput =
+            new FormInputBox("5 \u2605 Pity Step (Weapon)");
+    private final FormInputBox pityStep4Input =
+            new FormInputBox("4 \u2605 Pity Step");
+    private final FormInputBox freqStepFactInput =
+            new FormInputBox("Frequency Step Factor");
+    private final FormInputBox freqMaxCountInput =
+            new FormInputBox("Frequency Marking Max Count");
+
     private final Stage displayStage;
     private final Logic logic;
     private final UserPreference preference;
@@ -41,7 +53,22 @@ public class PreferenceMenu extends UiComponent<VBox> {
         this.logic = logic;
         this.preference = preference;
 
+        initializeChartPrefs(preference.getChartPreference());
         initializeSystemPrefs(preference);
+    }
+
+
+    private void initializeChartPrefs(ChartPreference pref) {
+        pityStep5NormInput.setText(String.valueOf(pref.getPityStep5Norm()));
+        chartPrefEntryBox.getChildren().add(pityStep5NormInput.getRoot());
+        pityStep5WeapInput.setText(String.valueOf(pref.getPityStep5Weap()));
+        chartPrefEntryBox.getChildren().add(pityStep5WeapInput.getRoot());
+        pityStep4Input.setText(String.valueOf(pref.getPityStep4()));
+        chartPrefEntryBox.getChildren().add(pityStep4Input.getRoot());
+        freqStepFactInput.setText(String.valueOf(pref.getFreqMarkingStepFactor()));
+        chartPrefEntryBox.getChildren().add(freqStepFactInput.getRoot());
+        freqMaxCountInput.setText(String.valueOf(pref.getFreqMarkingMaxCount()));
+        chartPrefEntryBox.getChildren().add(freqMaxCountInput.getRoot());
     }
 
 
