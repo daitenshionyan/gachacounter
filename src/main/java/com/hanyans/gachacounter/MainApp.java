@@ -11,7 +11,7 @@ import com.hanyans.gachacounter.core.Version;
 import com.hanyans.gachacounter.core.util.FileUtil;
 import com.hanyans.gachacounter.gui.CounterPanel;
 import com.hanyans.gachacounter.logic.LogicManager;
-import com.hanyans.gachacounter.model.UserPreference;
+import com.hanyans.gachacounter.model.preference.UserPreference;
 import com.hanyans.gachacounter.storage.LoadReport;
 import com.hanyans.gachacounter.storage.StorageManager;
 

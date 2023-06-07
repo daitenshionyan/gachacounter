@@ -1,4 +1,4 @@
-package com.hanyans.gachacounter.model;
+package com.hanyans.gachacounter.model.preference;
 
 import java.nio.file.Path;
 import java.util.Objects;
