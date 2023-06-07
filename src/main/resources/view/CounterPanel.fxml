@@ -35,6 +35,7 @@
                 <Menu mnemonicParsing="false" text="File">
                   <items>
                     <MenuItem mnemonicParsing="false" onAction="#handleSave" text="Save" />
+                        <MenuItem mnemonicParsing="false" onAction="#handlePreferenceEdit" text="Preference" />
                   </items>
                 </Menu>
                   <Menu mnemonicParsing="false" text="Help">

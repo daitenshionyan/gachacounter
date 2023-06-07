@@ -13,6 +13,7 @@ import com.hanyans.gachacounter.core.AppUpdateMessage;
 import com.hanyans.gachacounter.core.PopupMessage;
 import com.hanyans.gachacounter.core.util.FileUtil;
 import com.hanyans.gachacounter.gui.popup.MessagePopupWindow;
+import com.hanyans.gachacounter.gui.popup.PreferenceMenu;
 import com.hanyans.gachacounter.gui.popup.UpdatePopupWindow;
 import com.hanyans.gachacounter.gui.task.OverviewRenderTask;
 import com.hanyans.gachacounter.gui.updater.BannerCardUpdater;
@@ -419,7 +420,7 @@ public class CounterPanel extends UiComponent<VBox> {
 
     @FXML
     private void handleCheckForUpdates(ActionEvent event) {
-        logger.debug("{HANDLE CHECK FOR UPDATES}- action fired");
+        logger.debug("-{HANDLE CHECK FOR UPDATES}- action fired");
         isFilterShowingProperty.set(false);
         logic.checkForAppUpdates(true);
     }
@@ -427,9 +428,17 @@ public class CounterPanel extends UiComponent<VBox> {
 
     @FXML
     private void handleUpdateData(ActionEvent event) {
-        logger.debug("{HANDLE UPDATE DATA}- action fired");
+        logger.debug("-{HANDLE UPDATE DATA}- action fired");
         isFilterShowingProperty.set(false);
         logic.updateData();
+    }
+
+
+    @FXML
+    private void handlePreferenceEdit(ActionEvent event) {
+        logger.debug("-{HANDLE PREFERENCE EDIT}- action fired");
+        isFilterShowingProperty.set(false);
+        PreferenceMenu.displayAndWait(parentStage, preference);
     }
 
 

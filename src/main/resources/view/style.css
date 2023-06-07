@@ -463,3 +463,26 @@
 .text-area.popup-window-text-area .scroll-pane .content {
   -fx-background-color: transparent;
 }
+
+/*
+===========================================================================
+      Preference Menu
+===========================================================================
+*/
+
+.label.form-h1 {
+  -fx-font-weight: bold;
+  -fx-font-size: 24;
+  -fx-text-fill: rgb(224, 152, 19);
+}
+
+.label.form-h2 {
+  -fx-font-weight: bold;
+  -fx-font-size: 20;
+  -fx-text-fill: rgb(224, 152, 19);
+}
+
+.label.form-value-name {
+  -fx-font-weight: bold;
+  -fx-font-size: 14;
+}
