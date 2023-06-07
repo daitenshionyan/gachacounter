@@ -20,9 +20,11 @@ public class UserPreference {
     private Level logLevel;
     private boolean checkUpdatesOnStart;
 
+    private ChartPreference chartPrefs;
+
 
     public UserPreference() {
-        this(null, null, null, null);
+        this(null, null, null, null, null);
     }
 
 
@@ -31,11 +33,13 @@ public class UserPreference {
                 @JsonProperty("dataFilePathHSR") Path dataFilePathHSR,
                 @JsonProperty("dataFilePathGenshin") Path dataFilePathGenshin,
                 @JsonProperty("logLevel") Level logLevel,
-                @JsonProperty("checkUpdateOnStart") Boolean checkUpdatesOnStart) {
+                @JsonProperty("checkUpdateOnStart") Boolean checkUpdatesOnStart,
+                @JsonProperty("chartPrefs") ChartPreference chartPrefs) {
         this.dataFilePathHSR = dataFilePathHSR;
         this.dataFilePathGenshin = dataFilePathGenshin;
         this.logLevel = Objects.requireNonNullElse(logLevel, DEFAULT_LOG_LEVEL);
         this.checkUpdatesOnStart = Objects.requireNonNullElse(checkUpdatesOnStart, true);
+        this.chartPrefs = Objects.requireNonNullElse(chartPrefs, new ChartPreference());
     }
 
 
@@ -90,5 +94,10 @@ public class UserPreference {
 
     public synchronized void setCheckUpdateOnStart(boolean shouldCheck) {
         checkUpdatesOnStart = shouldCheck;
+    }
+
+
+    public synchronized ChartPreference getChartPreference() {
+        return chartPrefs;
     }
 }
