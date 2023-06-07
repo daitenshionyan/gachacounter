@@ -48,9 +48,12 @@ public class UserPreference {
      *
      * @param other - the preference data to copy over.
      */
-    public synchronized void resetTo(UserPreference other) {
-        this.dataFilePathHSR = other.dataFilePathHSR;
-        this.dataFilePathGenshin = other.dataFilePathGenshin;
+    public void resetTo(UserPreference other) {
+        setDataFilePathHSR(other.getDataFilePathHsr());
+        setDataFilePathGenshin(other.getDataFilePathGenshin());
+        setLogLevel(other.getLogLevel());
+        setCheckUpdateOnStart(other.isCheckUpdateOnStart());
+        chartPrefs.resetTo(other.getChartPreference());
     }
 
 
@@ -99,5 +102,12 @@ public class UserPreference {
 
     public synchronized ChartPreference getChartPreference() {
         return chartPrefs;
+    }
+
+
+    public UserPreference getCopy() {
+        UserPreference preference = new UserPreference();
+        preference.resetTo(this);
+        return preference;
     }
 }

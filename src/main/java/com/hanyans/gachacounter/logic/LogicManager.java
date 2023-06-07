@@ -13,6 +13,7 @@ import java.util.function.Consumer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.hanyans.gachacounter.MainApp;
 import com.hanyans.gachacounter.core.AppUpdateMessage;
 import com.hanyans.gachacounter.core.PopupMessage;
 import com.hanyans.gachacounter.core.Version;
@@ -254,6 +255,25 @@ public class LogicManager implements Logic {
             setRunningState(false);
         });
         task.setOnException(this::handleAppUpdateCheckFailure);
+        bindTaskProperty(task);
+        executor.execute(task);
+    }
+
+
+    @Override
+    public void updatePreference(
+            RunnableTask<UserPreference> task,
+            Consumer<UserPreference> onComplete,
+            Consumer<Throwable> onException) {
+        if (!canRun("UPDATE PREFERENCE", false)) {
+            return;
+        }
+        setRunningState(true);
+        task.setOnComplete(onComplete.andThen(pref -> {
+            updatePreference(pref);
+            setRunningState(false);
+        }));
+        task.setOnException(onException.andThen(ex -> setRunningState(false)));
         bindTaskProperty(task);
         executor.execute(task);
     }
@@ -509,6 +529,13 @@ public class LogicManager implements Logic {
     private void bindTaskProperty(TrackableTask task) {
         messageProperty.bind(task.messageProperty());
         progressProperty.bind(task.progressProperty());
+    }
+
+
+    private void updatePreference(UserPreference pref) {
+        this.preference.resetTo(pref);
+        MainApp.setLogLevel(preference.getLogLevel());
+        saveState();
     }
 
 

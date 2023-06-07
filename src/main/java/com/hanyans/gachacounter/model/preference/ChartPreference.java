@@ -53,6 +53,15 @@ public class ChartPreference {
     }
 
 
+    public void resetTo(ChartPreference other) {
+        setPityStep5Norm(other.getPityStep5Norm());
+        setPityStep5Weap(other.getPityStep5Weap());
+        setPityStep4(other.pityStep4);
+        setFreqMarkingStepFactor(other.getFreqMarkingStepFactor());
+        setFreqMarkingMaxCount(other.getFreqMarkingMaxCount());
+    }
+
+
     public synchronized void setPityStep5Norm(int step) throws IllegalArgumentException {
         this.pityStep5Norm = validateStep(step);
     }
