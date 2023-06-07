@@ -9,6 +9,7 @@ import java.util.concurrent.CountDownLatch;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.hanyans.gachacounter.core.Constants;
 import com.hanyans.gachacounter.core.FrequencyMap;
 import com.hanyans.gachacounter.core.task.ConsumerTask;
 import com.hanyans.gachacounter.gui.GachaItemCountBox;
@@ -31,10 +32,6 @@ import javafx.scene.layout.Pane;
 
 public class OverviewRenderTask extends ConsumerTask<GachaReport> {
     private final Logger logger = LogManager.getFormatterLogger(OverviewRenderTask.class);
-
-    private static final int MAX_PITY_5_NORM = 90;
-    private static final int MAX_PITY_5_WEAP = 80;
-    private static final int MAX_PITY_4 = 10;
 
     private final Pane bannerBox;
     private final BannerCardUpdater stndUpdater;
@@ -149,11 +146,11 @@ public class OverviewRenderTask extends ConsumerTask<GachaReport> {
     private StatisticsUpdater.Arguments formStatsArgs(GachaReport report) {
         long startTime = System.currentTimeMillis();
         StatisticsUpdater.PlotData data5Norm = formPlotData(
-                report.freqMap5Norm, chartPrefs.getPityStep5Norm(), MAX_PITY_5_NORM);
+                report.freqMap5Norm, chartPrefs.getPityStep5Norm(), Constants.MAX_PITY_5_NORM);
         StatisticsUpdater.PlotData data5Weap = formPlotData(
-                report.freqMap5Weap, chartPrefs.getPityStep5Weap(), MAX_PITY_5_WEAP);
+                report.freqMap5Weap, chartPrefs.getPityStep5Weap(), Constants.MAX_PITY_5_WEAP);
         StatisticsUpdater.PlotData data4 = formPlotData(
-                report.freqMap4, chartPrefs.getPityStep4(), MAX_PITY_4);
+                report.freqMap4, chartPrefs.getPityStep4(), Constants.MAX_PITY_4);
         long duration = System.currentTimeMillis() - startTime;
         logger.debug("Completed graph data rendering in %d ms", duration);
         return new StatisticsUpdater.Arguments(data5Norm, data5Weap, data4);
@@ -177,7 +174,10 @@ public class OverviewRenderTask extends ConsumerTask<GachaReport> {
                 maxFreq,
                 chartPrefs.getFreqMarkingStepFactor(),
                 chartPrefs.getFreqMarkingMaxCount());
-        int upperBound = (maxFreq / freqStep + 1) * freqStep;
+        int upperBound = freqStep;
+        if (chartPrefs.getFreqMarkingMaxCount() > 1) {
+            upperBound *= (maxFreq / freqStep + 1);
+        }
         return new StatisticsUpdater.PlotData(seriesList, freqStep, upperBound);
     }
 
@@ -189,11 +189,11 @@ public class OverviewRenderTask extends ConsumerTask<GachaReport> {
         ObservableList<XYChart.Data<String, Number>> datas = FXCollections.observableArrayList();
         // iterate through all pity even if frequency of it is 0 to populate data
         // so that there will not be gaps when the graph is displayed.
-        for (int pity = pityStep; pity <= maxPity; pity += pityStep) {
+        for (int pity = pityStep; pity - maxPity < pityStep; pity += pityStep) {
             datas.add(formData(
                     uid,
-                    pity,
-                    pityStep,
+                    pity < maxPity ? pity : maxPity,
+                    pity < maxPity ? pityStep : maxPity - (pity - pityStep),
                     freqMap.get(pity),
                     combFreqMap.get(pity)));
         }
@@ -232,10 +232,14 @@ public class OverviewRenderTask extends ConsumerTask<GachaReport> {
      *      zero marking.
      */
     private int getFreqStep(int maxFreq, int stepFactor, int markingCount) {
-        int freqStep = (int) Math.ceil((double) maxFreq / (markingCount - 1));
+        int freqStep = maxFreq;
+        if (markingCount > 1) {
+            // minus 1 so that there will be padding between maxFreq and graph upper bound
+            freqStep = (int) Math.ceil((double) maxFreq / (markingCount - 1));
+        }
         if (freqStep < stepFactor) {
             return Math.max(freqStep, 1);
         }
-        return freqStep + (freqStep % stepFactor);
+        return freqStep + stepFactor - (freqStep % stepFactor);
     }
 }

@@ -2,6 +2,7 @@ package com.hanyans.gachacounter.model.preference;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.hanyans.gachacounter.core.Constants;
 
 
 /**
@@ -45,9 +46,9 @@ public class ChartPreference {
             @JsonProperty("pityStep4") int pityStep4,
             @JsonProperty("freqMarkingStepFactor") int freqMarkingStepFactor,
             @JsonProperty("freqMarkingMaxCount") int freqMarkingMaxCount) {
-        this.pityStep5Norm = validateStep(pityStep5Norm);
-        this.pityStep5Weap = validateStep(pityStep5Weap);
-        this.pityStep4 = validateStep(pityStep4);
+        this.pityStep5Norm = validateStep(pityStep5Norm, Constants.MAX_PITY_5_NORM);
+        this.pityStep5Weap = validateStep(pityStep5Weap, Constants.MAX_PITY_5_WEAP);
+        this.pityStep4 = validateStep(pityStep4, Constants.MAX_PITY_4);
         this.freqMarkingStepFactor = validateFactor(freqMarkingStepFactor);
         this.freqMarkingMaxCount = validateCount(freqMarkingMaxCount);
     }
@@ -63,7 +64,7 @@ public class ChartPreference {
 
 
     public synchronized void setPityStep5Norm(int step) throws IllegalArgumentException {
-        this.pityStep5Norm = validateStep(step);
+        this.pityStep5Norm = validateStep(step, Constants.MAX_PITY_5_NORM);
     }
 
 
@@ -73,7 +74,7 @@ public class ChartPreference {
 
 
     public synchronized void setPityStep5Weap(int step) throws IllegalArgumentException {
-        this.pityStep5Weap = validateStep(step);
+        this.pityStep5Weap = validateStep(step, Constants.MAX_PITY_5_WEAP);
     }
 
 
@@ -83,7 +84,7 @@ public class ChartPreference {
 
 
     public synchronized void setPityStep4(int step) throws IllegalArgumentException {
-        this.pityStep4 = validateStep(step);
+        this.pityStep4 = validateStep(step, Constants.MAX_PITY_4);
     }
 
 
@@ -112,10 +113,10 @@ public class ChartPreference {
     }
 
 
-    private int validateStep(int step) throws IllegalArgumentException {
-        if (step <= 0) {
+    private int validateStep(int step, int max) throws IllegalArgumentException {
+        if (step <= 0 || step > max) {
             throw new IllegalArgumentException(
-                    String.format("Zero or negative step (%d)", step));
+                    String.format("Step (%d) not within 0 < x <= %d", step, max));
         }
         return step;
     }
