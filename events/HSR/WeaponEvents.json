@@ -2,10 +2,29 @@
   "events": [ {
     "begTime": "2023-05-17T18:00:00",
     "endTime": "2023-06-06T14:59:00",
-    "rateUps": [ "Before Dawn", "Planetary Rendezvous", "Only Silence Remains", "Day One of My New Life" ]
+    "rateUps": [
+      "Before Dawn",
+      "Planetary Rendezvous",
+      "Only Silence Remains",
+      "Day One of My New Life"
+    ]
   }, {
     "begTime": "2023-04-26T00:00:00",
     "endTime": "2023-05-17T17:59:00",
-    "rateUps": [ "In the Night", "The Moles Welcome You", "Good Night and Sleep Well", "Post-Op Conversation" ]
+    "rateUps": [
+      "In the Night",
+      "The Moles Welcome You",
+      "Good Night and Sleep Well",
+      "Post-Op Conversation"
+    ]
+  }, {
+    "begTime": "2023-06-07T06:00:00",
+    "endTime": "2023-06-28T11:59:00",
+    "rateUps": [
+      "Incessant Rain",
+      "Subscribe for More!",
+      "Memories of the Past",
+      "Make the World Clamor"
+    ]
   } ]
 }
