@@ -153,12 +153,8 @@ public class LogicManager implements Logic {
         }
         setRunningState(true);
         updateUidFilterMap(new HashSet<>(uids));
-        HashSet<Long> uidFilters = new HashSet<>(getUidFilterMap().entrySet().stream()
-                .filter(entry -> !entry.getValue())
-                .map(entry -> entry.getKey())
-                .toList());
         generateGachaReport(
-                uidFilters,
+                getUidFilterSet(),
                 report -> {
                     StringBuilder builder = new StringBuilder();
                     for (long uid : uids) {
@@ -270,8 +266,16 @@ public class LogicManager implements Logic {
         }
         setRunningState(true);
         task.setOnComplete(onComplete.andThen(pref -> {
-            updatePreference(pref);
-            setRunningState(false);
+            preference.resetTo(pref);
+            MainApp.setLogLevel(preference.getLogLevel());
+            saveState();
+            if (getGame() == null) {
+                setRunningState(false);
+                return;
+            }
+            generateGachaReport(
+                    getUidFilterSet(),
+                    report -> setRunningState(false));
         }));
         task.setOnException(onException.andThen(ex -> setRunningState(false)));
         bindTaskProperty(task);
@@ -473,6 +477,14 @@ public class LogicManager implements Logic {
     }
 
 
+    public HashSet<Long> getUidFilterSet() {
+        return new HashSet<>(getUidFilterMap().entrySet().stream()
+                .filter(entry -> !entry.getValue())
+                .map(entry -> entry.getKey())
+                .toList());
+    }
+
+
     /*
      * ========================================================================
      *      PROPERTIES
@@ -529,13 +541,6 @@ public class LogicManager implements Logic {
     private void bindTaskProperty(TrackableTask task) {
         messageProperty.bind(task.messageProperty());
         progressProperty.bind(task.progressProperty());
-    }
-
-
-    private void updatePreference(UserPreference pref) {
-        this.preference.resetTo(pref);
-        MainApp.setLogLevel(preference.getLogLevel());
-        saveState();
     }
 
 
