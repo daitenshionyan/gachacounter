@@ -47,11 +47,11 @@ public class PreferenceMenuWindow extends UiComponent<VBox> {
     @FXML private ComboBox<Level> logLevelCmbBox;
 
 
-    private PreferenceMenuWindow(Stage displayStage, Logic logic, UserPreference preference) {
+    private PreferenceMenuWindow(Stage displayStage, Logic logic) {
         super(FXML_FILE);
         this.displayStage = displayStage;
         this.logic = logic;
-        this.preference = preference;
+        this.preference = logic.getUserPrefs();
 
         initializeChartPrefs(preference.getChartPreference());
         initializeSystemPrefs(preference);
@@ -82,9 +82,9 @@ public class PreferenceMenuWindow extends UiComponent<VBox> {
     }
 
 
-    public static void displayAndWait(Stage parentStage, Logic logic, UserPreference preference) {
+    public static void displayAndWait(Stage parentStage, Logic logic) {
         Stage hostStage = new Stage();
-        hostStage.setScene(new Scene(new PreferenceMenuWindow(hostStage, logic, preference)
+        hostStage.setScene(new Scene(new PreferenceMenuWindow(hostStage, logic)
                 .getRoot()));
         hostStage.setResizable(false);
         hostStage.initModality(Modality.WINDOW_MODAL);

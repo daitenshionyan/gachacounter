@@ -438,7 +438,7 @@ public class CounterPanel extends UiComponent<VBox> {
     private void handlePreferenceEdit(ActionEvent event) {
         logger.debug("-{HANDLE PREFERENCE EDIT}- action fired");
         isFilterShowingProperty.set(false);
-        PreferenceMenuWindow.displayAndWait(parentStage, logic, preference);
+        PreferenceMenuWindow.displayAndWait(parentStage, logic);
     }
 
 
