@@ -7,8 +7,9 @@ import java.util.function.Consumer;
 import com.hanyans.gachacounter.core.AppUpdateMessage;
 import com.hanyans.gachacounter.core.PopupMessage;
 import com.hanyans.gachacounter.core.task.ConsumerTask;
-import com.hanyans.gachacounter.model.UserPreference;
+import com.hanyans.gachacounter.core.task.RunnableTask;
 import com.hanyans.gachacounter.model.count.GachaReport;
+import com.hanyans.gachacounter.model.preference.UserPreference;
 import com.hanyans.gachacounter.wrapper.Game;
 
 import javafx.beans.property.ReadOnlyBooleanProperty;
@@ -134,4 +135,10 @@ public interface Logic {
      * @param handler - the update message handler to set to.
      */
     public void setAppUpdateMessageHandler(Consumer<AppUpdateMessage> handler);
+
+
+    public void updatePreference(
+            RunnableTask<UserPreference> task,
+            Consumer<UserPreference> onComplete,
+            Consumer<Throwable> onException);
 }

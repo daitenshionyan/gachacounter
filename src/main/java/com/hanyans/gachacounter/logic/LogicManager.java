@@ -13,6 +13,7 @@ import java.util.function.Consumer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.hanyans.gachacounter.MainApp;
 import com.hanyans.gachacounter.core.AppUpdateMessage;
 import com.hanyans.gachacounter.core.PopupMessage;
 import com.hanyans.gachacounter.core.Version;
@@ -27,9 +28,9 @@ import com.hanyans.gachacounter.logic.task.UpdateDataTask;
 import com.hanyans.gachacounter.logic.task.UrlGrabberTask;
 import com.hanyans.gachacounter.model.BannerHistory;
 import com.hanyans.gachacounter.model.GameGachaData;
-import com.hanyans.gachacounter.model.UserPreference;
 import com.hanyans.gachacounter.model.count.BannerReport;
 import com.hanyans.gachacounter.model.count.GachaReport;
+import com.hanyans.gachacounter.model.preference.UserPreference;
 import com.hanyans.gachacounter.model.rateup.BannerEventHistory;
 import com.hanyans.gachacounter.storage.LoadReport;
 import com.hanyans.gachacounter.storage.Storage;
@@ -152,12 +153,8 @@ public class LogicManager implements Logic {
         }
         setRunningState(true);
         updateUidFilterMap(new HashSet<>(uids));
-        HashSet<Long> uidFilters = new HashSet<>(getUidFilterMap().entrySet().stream()
-                .filter(entry -> !entry.getValue())
-                .map(entry -> entry.getKey())
-                .toList());
         generateGachaReport(
-                uidFilters,
+                getUidFilterSet(),
                 report -> {
                     StringBuilder builder = new StringBuilder();
                     for (long uid : uids) {
@@ -254,6 +251,33 @@ public class LogicManager implements Logic {
             setRunningState(false);
         });
         task.setOnException(this::handleAppUpdateCheckFailure);
+        bindTaskProperty(task);
+        executor.execute(task);
+    }
+
+
+    @Override
+    public void updatePreference(
+            RunnableTask<UserPreference> task,
+            Consumer<UserPreference> onComplete,
+            Consumer<Throwable> onException) {
+        if (!canRun("UPDATE PREFERENCE", false)) {
+            return;
+        }
+        setRunningState(true);
+        task.setOnComplete(onComplete.andThen(pref -> {
+            preference.resetTo(pref);
+            MainApp.setLogLevel(preference.getLogLevel());
+            saveState();
+            if (getGame() == null) {
+                setRunningState(false);
+                return;
+            }
+            generateGachaReport(
+                    getUidFilterSet(),
+                    report -> setRunningState(false));
+        }));
+        task.setOnException(onException.andThen(ex -> setRunningState(false)));
         bindTaskProperty(task);
         executor.execute(task);
     }
@@ -450,6 +474,14 @@ public class LogicManager implements Logic {
     @Override
     public synchronized HashMap<Long, Boolean> getUidFilterMap() {
         return new HashMap<>(uidFilterMap);
+    }
+
+
+    public HashSet<Long> getUidFilterSet() {
+        return new HashSet<>(getUidFilterMap().entrySet().stream()
+                .filter(entry -> !entry.getValue())
+                .map(entry -> entry.getKey())
+                .toList());
     }
 
 

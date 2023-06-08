@@ -1,4 +1,4 @@
-package com.hanyans.gachacounter.model;
+package com.hanyans.gachacounter.model.preference;
 
 import java.nio.file.Path;
 import java.util.Objects;
@@ -20,9 +20,11 @@ public class UserPreference {
     private Level logLevel;
     private boolean checkUpdatesOnStart;
 
+    private ChartPreference chartPrefs;
+
 
     public UserPreference() {
-        this(null, null, null, null);
+        this(null, null, null, null, null);
     }
 
 
@@ -31,11 +33,13 @@ public class UserPreference {
                 @JsonProperty("dataFilePathHSR") Path dataFilePathHSR,
                 @JsonProperty("dataFilePathGenshin") Path dataFilePathGenshin,
                 @JsonProperty("logLevel") Level logLevel,
-                @JsonProperty("checkUpdateOnStart") Boolean checkUpdatesOnStart) {
+                @JsonProperty("checkUpdateOnStart") Boolean checkUpdatesOnStart,
+                @JsonProperty("chartPrefs") ChartPreference chartPrefs) {
         this.dataFilePathHSR = dataFilePathHSR;
         this.dataFilePathGenshin = dataFilePathGenshin;
         this.logLevel = Objects.requireNonNullElse(logLevel, DEFAULT_LOG_LEVEL);
         this.checkUpdatesOnStart = Objects.requireNonNullElse(checkUpdatesOnStart, true);
+        this.chartPrefs = Objects.requireNonNullElse(chartPrefs, new ChartPreference());
     }
 
 
@@ -44,9 +48,12 @@ public class UserPreference {
      *
      * @param other - the preference data to copy over.
      */
-    public synchronized void resetTo(UserPreference other) {
-        this.dataFilePathHSR = other.dataFilePathHSR;
-        this.dataFilePathGenshin = other.dataFilePathGenshin;
+    public void resetTo(UserPreference other) {
+        setDataFilePathHSR(other.getDataFilePathHsr());
+        setDataFilePathGenshin(other.getDataFilePathGenshin());
+        setLogLevel(other.getLogLevel());
+        setCheckUpdateOnStart(other.isCheckUpdateOnStart());
+        chartPrefs.resetTo(other.getChartPreference());
     }
 
 
@@ -90,5 +97,17 @@ public class UserPreference {
 
     public synchronized void setCheckUpdateOnStart(boolean shouldCheck) {
         checkUpdatesOnStart = shouldCheck;
+    }
+
+
+    public synchronized ChartPreference getChartPreference() {
+        return chartPrefs;
+    }
+
+
+    public UserPreference getCopy() {
+        UserPreference preference = new UserPreference();
+        preference.resetTo(this);
+        return preference;
     }
 }

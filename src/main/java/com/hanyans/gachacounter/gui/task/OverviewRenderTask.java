@@ -9,6 +9,7 @@ import java.util.concurrent.CountDownLatch;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.hanyans.gachacounter.core.Constants;
 import com.hanyans.gachacounter.core.FrequencyMap;
 import com.hanyans.gachacounter.core.task.ConsumerTask;
 import com.hanyans.gachacounter.gui.GachaItemCountBox;
@@ -19,6 +20,7 @@ import com.hanyans.gachacounter.model.GachaItem;
 import com.hanyans.gachacounter.model.count.AccPityFreqMap;
 import com.hanyans.gachacounter.model.count.GachaReport;
 import com.hanyans.gachacounter.model.count.ProcessedGachaEntry;
+import com.hanyans.gachacounter.model.preference.ChartPreference;
 
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -31,23 +33,13 @@ import javafx.scene.layout.Pane;
 public class OverviewRenderTask extends ConsumerTask<GachaReport> {
     private final Logger logger = LogManager.getFormatterLogger(OverviewRenderTask.class);
 
-    private static final int PITY_STEP_5_NROM = 5;
-    private static final int PITY_STEP_5_WEAP = 5;
-    private static final int PITY_STEP_4 = 1;
-
-    private static final int MAX_PITY_5_NORM = 90;
-    private static final int MAX_PITY_5_WEAP = 80;
-    private static final int MAX_PITY_4 = 10;
-
-    private static final int MAJOR_MARKING_STEP_FACTOR = 5;
-    private static final int MAJOR_MARKING_MAX_COUNT = 10;
-
     private final Pane bannerBox;
     private final BannerCardUpdater stndUpdater;
     private final BannerCardUpdater charUpdater;
     private final BannerCardUpdater weapUpdater;
     private final OverallCardUpdater overallUpdater;
     private final StatisticsUpdater statisticsUpdater;
+    private final ChartPreference chartPrefs;
 
 
     public OverviewRenderTask(
@@ -56,13 +48,15 @@ public class OverviewRenderTask extends ConsumerTask<GachaReport> {
                 BannerCardUpdater charUpdater,
                 BannerCardUpdater weapUpdater,
                 OverallCardUpdater overallCardUpdater,
-                StatisticsUpdater statisticsUpdater) {
+                StatisticsUpdater statisticsUpdater,
+                ChartPreference chartPrefs) {
         this.bannerBox = bannerBox;
         this.stndUpdater = stndUpdater;
         this.charUpdater = charUpdater;
         this.weapUpdater = weapUpdater;
         this.overallUpdater = overallCardUpdater;
         this.statisticsUpdater = statisticsUpdater;
+        this.chartPrefs = chartPrefs;
     }
 
 
@@ -152,11 +146,11 @@ public class OverviewRenderTask extends ConsumerTask<GachaReport> {
     private StatisticsUpdater.Arguments formStatsArgs(GachaReport report) {
         long startTime = System.currentTimeMillis();
         StatisticsUpdater.PlotData data5Norm = formPlotData(
-                report.freqMap5Norm, PITY_STEP_5_NROM, MAX_PITY_5_NORM);
+                report.freqMap5Norm, chartPrefs.getPityStep5Norm(), Constants.MAX_PITY_5_NORM);
         StatisticsUpdater.PlotData data5Weap = formPlotData(
-                report.freqMap5Weap, PITY_STEP_5_WEAP, MAX_PITY_5_WEAP);
+                report.freqMap5Weap, chartPrefs.getPityStep5Weap(), Constants.MAX_PITY_5_WEAP);
         StatisticsUpdater.PlotData data4 = formPlotData(
-                report.freqMap4, PITY_STEP_4, MAX_PITY_4);
+                report.freqMap4, chartPrefs.getPityStep4(), Constants.MAX_PITY_4);
         long duration = System.currentTimeMillis() - startTime;
         logger.debug("Completed graph data rendering in %d ms", duration);
         return new StatisticsUpdater.Arguments(data5Norm, data5Weap, data4);
@@ -176,8 +170,14 @@ public class OverviewRenderTask extends ConsumerTask<GachaReport> {
                     pityStep, maxPity));
         }
         int maxFreq = combFreqMap.largestFreq();
-        int freqStep = getFreqStep(maxFreq, MAJOR_MARKING_STEP_FACTOR, MAJOR_MARKING_MAX_COUNT);
-        int upperBound = (maxFreq / freqStep + 1) * freqStep;
+        int freqStep = getFreqStep(
+                maxFreq,
+                chartPrefs.getFreqMarkingStepFactor(),
+                chartPrefs.getFreqMarkingMaxCount());
+        int upperBound = freqStep;
+        if (chartPrefs.getFreqMarkingMaxCount() > 1) {
+            upperBound *= (maxFreq / freqStep + 1);
+        }
         return new StatisticsUpdater.PlotData(seriesList, freqStep, upperBound);
     }
 
@@ -189,11 +189,11 @@ public class OverviewRenderTask extends ConsumerTask<GachaReport> {
         ObservableList<XYChart.Data<String, Number>> datas = FXCollections.observableArrayList();
         // iterate through all pity even if frequency of it is 0 to populate data
         // so that there will not be gaps when the graph is displayed.
-        for (int pity = pityStep; pity <= maxPity; pity += pityStep) {
+        for (int pity = pityStep; pity - maxPity < pityStep; pity += pityStep) {
             datas.add(formData(
                     uid,
-                    pity,
-                    pityStep,
+                    pity < maxPity ? pity : maxPity,
+                    pity < maxPity ? pityStep : maxPity - (pity - pityStep),
                     freqMap.get(pity),
                     combFreqMap.get(pity)));
         }
@@ -232,10 +232,14 @@ public class OverviewRenderTask extends ConsumerTask<GachaReport> {
      *      zero marking.
      */
     private int getFreqStep(int maxFreq, int stepFactor, int markingCount) {
-        int freqStep = (int) Math.ceil((double) maxFreq / (markingCount - 1));
+        int freqStep = maxFreq;
+        if (markingCount > 1) {
+            // minus 1 so that there will be padding between maxFreq and graph upper bound
+            freqStep = (int) Math.ceil((double) maxFreq / (markingCount - 1));
+        }
         if (freqStep < stepFactor) {
             return Math.max(freqStep, 1);
         }
-        return freqStep + (freqStep % stepFactor);
+        return freqStep + stepFactor - (freqStep % stepFactor);
     }
 }
