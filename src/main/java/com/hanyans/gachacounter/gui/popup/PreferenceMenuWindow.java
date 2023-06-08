@@ -23,7 +23,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 
-public class PreferenceMenu extends UiComponent<VBox> {
+public class PreferenceMenuWindow extends UiComponent<VBox> {
     private static final String FXML_FILE = "PreferenceMenuPanel.fxml";
 
     private final FormInputBox pityStep5NormInput =
@@ -47,7 +47,7 @@ public class PreferenceMenu extends UiComponent<VBox> {
     @FXML private ComboBox<Level> logLevelCmbBox;
 
 
-    public PreferenceMenu(Stage displayStage, Logic logic, UserPreference preference) {
+    private PreferenceMenuWindow(Stage displayStage, Logic logic, UserPreference preference) {
         super(FXML_FILE);
         this.displayStage = displayStage;
         this.logic = logic;
@@ -84,7 +84,7 @@ public class PreferenceMenu extends UiComponent<VBox> {
 
     public static void displayAndWait(Stage parentStage, Logic logic, UserPreference preference) {
         Stage hostStage = new Stage();
-        hostStage.setScene(new Scene(new PreferenceMenu(hostStage, logic, preference)
+        hostStage.setScene(new Scene(new PreferenceMenuWindow(hostStage, logic, preference)
                 .getRoot()));
         hostStage.setResizable(false);
         hostStage.initModality(Modality.WINDOW_MODAL);
