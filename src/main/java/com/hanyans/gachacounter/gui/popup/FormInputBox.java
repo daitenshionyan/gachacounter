@@ -68,6 +68,20 @@ public class FormInputBox extends UiComponent<Pane> {
     }
 
 
+    /**
+     * Process the textual contents of this {@code FormInputBox} as an integer
+     * using the given {@link ProcessFunction}.
+     *
+     * <p>If the textual contents cannot be parsed into an integer, or an
+     * exception is thrown by the given {@code ProcessFunction}, this
+     * {@code FormInputBox} is set to an error state.
+     *
+     * @param func - the {@code ProcessFunction} to process the parsed integer
+     *      of the textual contents.
+     * @return an {@code Optional} of the exception thrown while processing the
+     *      input. If no exceptions were thrown (successful operation),
+     *      {@code Optional.empty} is returned.
+     */
     public Optional<Throwable> processAsInteger(ProcessFunction<Integer> func) {
         disableError();
         try {
@@ -93,8 +107,21 @@ public class FormInputBox extends UiComponent<Pane> {
 
 
 
+    /**
+     * A functional interface that accepts and consumed the given input.
+     * Similar to a {@code Consumer} except that an exception may be thrown in
+     * the process.
+     *
+     * @param <T> the type of value being accepted.
+     */
     @FunctionalInterface
     public static interface ProcessFunction<T> {
+        /**
+         * Accepts and performs a process of the given value.
+         *
+         * @param value - the value to process.
+         * @throws Throwable if an error occurs during the process.
+         */
         public void accept(T value) throws Throwable;
     }
 }
