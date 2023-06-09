@@ -392,7 +392,7 @@ public class CounterPanel extends UiComponent<VBox> {
 
     @FXML
     private void handleCancelFilter(ActionEvent event) {
-        logger.debug("-{AHNDLE CANCEL FILTER}- action fired");
+        logger.debug("-{HANDLE CANCEL FILTER}- action fired");
         isFilterShowingProperty.set(false);
     }
 
