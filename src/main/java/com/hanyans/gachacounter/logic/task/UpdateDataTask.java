@@ -18,6 +18,7 @@ import com.hanyans.gachacounter.core.task.RunnableTask;
 import com.hanyans.gachacounter.core.util.FileUtil;
 import com.hanyans.gachacounter.storage.StorageManager;
 
+
 public class UpdateDataTask extends RunnableTask<PopupMessage> {
     private static final String DATA_ZIP_URL = "https://github.com/daitenshionyan/gachacounter/archive/refs/heads/data.zip";
 
@@ -68,7 +69,7 @@ public class UpdateDataTask extends RunnableTask<PopupMessage> {
         File file = path.toFile();
         path.getRoot();
         if (file.exists() && !path.startsWith(StorageManager.EVENT_DIR_PATH)) {
-            logger.trace("Zip entry already present, ignoring -- %s", entry.getName());
+            logger.trace("Zip entry already present, ignoring -- \"%s\"", entry.getName());
             return false;
         }
         FileUtil.createFile(path).toFile();

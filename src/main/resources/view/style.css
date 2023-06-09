@@ -433,6 +433,11 @@
   -fx-stroke: derive(-fx-background, 40%);
 }
 
+.chart-bar.line-separated-bar {
+  -fx-background-color: derive(-fx-bar-fill, 80%), -fx-bar-fill;
+  -fx-background-insets: 0, 2 2 0 2;
+}
+
 /*
 ===========================================================================
       Popup Window
@@ -462,4 +467,37 @@
 .text-area.popup-window-text-area,
 .text-area.popup-window-text-area .scroll-pane .content {
   -fx-background-color: transparent;
+}
+
+/*
+===========================================================================
+      Preference Menu
+===========================================================================
+*/
+
+.label.form-h1 {
+  -fx-font-weight: bold;
+  -fx-font-size: 24;
+  -fx-text-fill: rgb(224, 152, 19);
+}
+
+.label.form-h2 {
+  -fx-font-weight: bold;
+  -fx-font-size: 20;
+  -fx-text-fill: rgb(224, 152, 19);
+}
+
+.label.form-value-name-label {
+  -fx-font-weight: bold;
+  -fx-font-size: 14;
+}
+
+.label.form-error-msg-label {
+  -fx-font-size: 10;
+  -fx-text-fill: rgb(241, 73, 73);
+}
+
+.text-field.form-error-text-field {
+  -fx-background-color: rgba(241, 73, 73, 0.3);
+  -fx-border-color: rgb(241, 73, 73);
 }
