@@ -433,6 +433,11 @@
   -fx-stroke: derive(-fx-background, 40%);
 }
 
+.chart-bar.line-separated-bar {
+  -fx-background-color: derive(-fx-bar-fill, 80%), -fx-bar-fill;
+  -fx-background-insets: 0, 2 2 0 2;
+}
+
 /*
 ===========================================================================
       Popup Window

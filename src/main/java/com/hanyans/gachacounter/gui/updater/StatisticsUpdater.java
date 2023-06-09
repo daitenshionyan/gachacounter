@@ -11,6 +11,9 @@ import javafx.util.Duration;
 
 
 public class StatisticsUpdater {
+    private static final String LINE_SEPARATED_BAR_STYLECLASS = "line-separated-bar";
+    private static final int NUM_SERIES_COLORS = 8;
+
     private final StackedBarChart<String, Number> stats5NormGraph;
     private final StackedBarChart<String, Number> stats5WeapGraph;
     private final StackedBarChart<String, Number> stats4Graph;
@@ -35,8 +38,7 @@ public class StatisticsUpdater {
 
     private void updateGraph(StackedBarChart<String, Number> graph, PlotData plotData) {
         // set data
-        graph.getData().clear();
-        graph.getData().addAll(plotData.series);
+        graph.getData().setAll(plotData.series);
 
         // set axis range
         NumberAxis yAxis = (NumberAxis) graph.getYAxis();
@@ -46,6 +48,8 @@ public class StatisticsUpdater {
         yAxis.setUpperBound(plotData.max);
 
         // add tooltip
+        boolean isExcess = plotData.series.size() > NUM_SERIES_COLORS;
+        graph.setLegendVisible(!isExcess);
         plotData.series.stream()
                 .forEach(series ->
                     series.getData().forEach(data -> {
@@ -57,12 +61,26 @@ public class StatisticsUpdater {
                         if (node == null) {
                             return;
                         }
-                        Tooltip tooltip = new Tooltip();
-                        tooltip.setText(exVal.toString());
-                        tooltip.setShowDelay(Duration.millis(50));
-                        Tooltip.install(node, tooltip);
+                        setTooltip(node, exVal);
+                        updateStyle(node, isExcess);
                     })
                 );
+    }
+
+
+    private void setTooltip(Node node, Object exVal) {
+        Tooltip tooltip = new Tooltip();
+        tooltip.setText(exVal.toString());
+        tooltip.setShowDelay(Duration.millis(50));
+        Tooltip.install(node, tooltip);
+    }
+
+
+    private void updateStyle(Node node, boolean isExcess) {
+        node.getStyleClass().add(LINE_SEPARATED_BAR_STYLECLASS);
+        if (isExcess) {
+            node.setStyle("-fx-bar-fill: CHART_COLOR_1");
+        }
     }
 
 
