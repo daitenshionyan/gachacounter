@@ -6,6 +6,7 @@ import java.util.Objects;
 import org.apache.logging.log4j.Level;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 
@@ -15,10 +16,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class UserPreference {
     private static final Level DEFAULT_LOG_LEVEL = Level.INFO;
 
-    private Path dataFilePathHSR;
-    private Path dataFilePathGenshin;
-    private Level logLevel;
-    private boolean checkUpdatesOnStart;
+    @JsonIgnore private Path dataFilePathHsr;
+    @JsonIgnore private final Object dataFilePathHSRLock = new Object();
+    @JsonIgnore private Path dataFilePathGenshin;
+    @JsonIgnore private final Object dataFilePathGenshinLock = new Object();
+    @JsonIgnore private Level logLevel;
+    @JsonIgnore private final Object logLevelLock = new Object();
+    @JsonIgnore private boolean checkUpdatesOnStart;
+    @JsonIgnore private final Object checkUpdateOnStartLock = new Object();
+
 
     private ChartPreference chartPrefs;
 
@@ -35,7 +41,7 @@ public class UserPreference {
                 @JsonProperty("logLevel") Level logLevel,
                 @JsonProperty("checkUpdateOnStart") Boolean checkUpdatesOnStart,
                 @JsonProperty("chartPrefs") ChartPreference chartPrefs) {
-        this.dataFilePathHSR = dataFilePathHSR;
+        this.dataFilePathHsr = dataFilePathHSR;
         this.dataFilePathGenshin = dataFilePathGenshin;
         this.logLevel = Objects.requireNonNullElse(logLevel, DEFAULT_LOG_LEVEL);
         this.checkUpdatesOnStart = Objects.requireNonNullElse(checkUpdatesOnStart, true);
@@ -49,7 +55,7 @@ public class UserPreference {
      * @param other - the preference data to copy over.
      */
     public void resetTo(UserPreference other) {
-        setDataFilePathHSR(other.getDataFilePathHsr());
+        setDataFilePathHsr(other.getDataFilePathHsr());
         setDataFilePathGenshin(other.getDataFilePathGenshin());
         setLogLevel(other.getLogLevel());
         setCheckUpdateOnStart(other.isCheckUpdateOnStart());
@@ -57,50 +63,71 @@ public class UserPreference {
     }
 
 
-    public synchronized void setDataFilePathHSR(Path dataFilePath) {
-        this.dataFilePathHSR = dataFilePath;
+    public void setDataFilePathHsr(Path path) {
+        synchronized (dataFilePathHSRLock) {
+            this.dataFilePathHsr = path;
+        }
     }
 
 
     /**
      * Returns the set data file path. Can be {@code null} if not set.
      */
-    public synchronized Path getDataFilePathHsr() {
-        return dataFilePathHSR;
+    @JsonProperty("dataFilePathHSR")
+    public Path getDataFilePathHsr() {
+        synchronized (dataFilePathHSRLock) {
+            return dataFilePathHsr;
+        }
     }
 
 
-    public synchronized void setDataFilePathGenshin(Path dataFilePath) {
-        this.dataFilePathGenshin = dataFilePath;
+    public void setDataFilePathGenshin(Path path) {
+        synchronized (dataFilePathGenshinLock) {
+            this.dataFilePathGenshin = path;
+        }
     }
 
 
-    public synchronized Path getDataFilePathGenshin() {
-        return dataFilePathGenshin;
+    @JsonProperty("dataFilePathGenshin")
+    public Path getDataFilePathGenshin() {
+        synchronized (dataFilePathGenshinLock) {
+            return dataFilePathGenshin;
+        }
     }
 
 
-    public synchronized void setLogLevel(Level logLevel) {
-        this.logLevel = Objects.requireNonNullElse(logLevel, DEFAULT_LOG_LEVEL);
+    public void setLogLevel(Level logLevel) {
+        synchronized (logLevelLock) {
+            this.logLevel = Objects.requireNonNullElse(logLevel, DEFAULT_LOG_LEVEL);
+        }
     }
 
 
-    public synchronized Level getLogLevel() {
-        return logLevel;
+    @JsonProperty("logLevel")
+    public Level getLogLevel() {
+        synchronized (logLevelLock) {
+            return logLevel;
+        }
     }
 
 
-    public synchronized boolean isCheckUpdateOnStart() {
-        return checkUpdatesOnStart;
+    public void setCheckUpdateOnStart(boolean shouldCheck) {
+        synchronized (checkUpdateOnStartLock) {
+            checkUpdatesOnStart = shouldCheck;
+        }
     }
 
 
-    public synchronized void setCheckUpdateOnStart(boolean shouldCheck) {
-        checkUpdatesOnStart = shouldCheck;
+    @JsonProperty("checkUpdateOnStart")
+    public boolean isCheckUpdateOnStart() {
+        synchronized (checkUpdateOnStartLock) {
+            return checkUpdatesOnStart;
+        }
     }
 
 
-    public synchronized ChartPreference getChartPreference() {
+    @JsonProperty("chartPrefs")
+    public ChartPreference getChartPreference() {
         return chartPrefs;
     }
 

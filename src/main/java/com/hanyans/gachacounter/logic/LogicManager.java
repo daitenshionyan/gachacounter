@@ -431,7 +431,7 @@ public class LogicManager implements Logic {
     private void updateDataPathPref(Path path) {
         switch (getGame()) {
             case HSR:
-                preference.setDataFilePathHSR(path);
+                preference.setDataFilePathHsr(path);
                 break;
             case Genshin:
                 preference.setDataFilePathGenshin(path);
