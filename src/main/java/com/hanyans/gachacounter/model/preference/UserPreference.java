@@ -71,7 +71,8 @@ public class UserPreference {
 
 
     /**
-     * Returns the set data file path. Can be {@code null} if not set.
+     * Returns the set web cache data path for HSR. If path is not yet set,
+     * {@code null} is returned.
      */
     @JsonProperty("dataFilePathHSR")
     public Path getDataFilePathHsr() {
@@ -88,6 +89,10 @@ public class UserPreference {
     }
 
 
+    /**
+     * Returns the set web cache data path for Genshin. If path is not yet set,
+     * {@code null} is returned.
+     */
     @JsonProperty("dataFilePathGenshin")
     public Path getDataFilePathGenshin() {
         synchronized (dataFilePathGenshinLock) {
@@ -96,6 +101,10 @@ public class UserPreference {
     }
 
 
+    /**
+     * Sets the log level as specified. If {@code null} is given, {@code INFO}
+     * is assumed.
+     */
     public void setLogLevel(Level logLevel) {
         synchronized (logLevelLock) {
             this.logLevel = Objects.requireNonNullElse(logLevel, DEFAULT_LOG_LEVEL);
