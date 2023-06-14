@@ -1,6 +1,7 @@
 package com.hanyans.gachacounter.model.preference;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.hanyans.gachacounter.core.Constants;
 
@@ -16,12 +17,17 @@ public class ChartPreference {
     public static final int FREQ_MARKING_STEP_FACTOR = 5;
     public static final int FREQ_MARKING_MAX_COUNT = 10;
 
-    private int pityStep5Norm;
-    private int pityStep5Weap;
-    private int pityStep4;
+    @JsonIgnore private int pityStep5Norm;
+    @JsonIgnore private final Object pityStep5NormLock = new Object();
+    @JsonIgnore private int pityStep5Weap;
+    @JsonIgnore private final Object pityStep5WeapLock = new Object();
+    @JsonIgnore private int pityStep4;
+    @JsonIgnore private final Object pityStep4Lock = new Object();
 
-    private int freqMarkingStepFactor;
-    private int freqMarkingMaxCount;
+    @JsonIgnore private int freqMarkingStepFactor;
+    @JsonIgnore private final Object freqMarkingStepFactorLock = new Object();
+    @JsonIgnore private int freqMarkingMaxCount;
+    @JsonIgnore private final Object freqMarkingMaxCountLock = new Object();
 
 
     /**
@@ -63,53 +69,78 @@ public class ChartPreference {
     }
 
 
-    public synchronized void setPityStep5Norm(int step) throws IllegalArgumentException {
-        this.pityStep5Norm = validateStep(step, Constants.MAX_PITY_5_NORM);
+    public void setPityStep5Norm(int step) throws IllegalArgumentException {
+        synchronized (pityStep5NormLock) {
+            pityStep5Norm = validateStep(step, Constants.MAX_PITY_5_NORM);
+        }
     }
 
 
-    public synchronized int getPityStep5Norm() {
-        return pityStep5Norm;
+    @JsonProperty("pityStep5Norm")
+    public int getPityStep5Norm() {
+        synchronized (pityStep5NormLock) {
+            return pityStep5Norm;
+        }
     }
 
 
-    public synchronized void setPityStep5Weap(int step) throws IllegalArgumentException {
-        this.pityStep5Weap = validateStep(step, Constants.MAX_PITY_5_WEAP);
+    public void setPityStep5Weap(int step) throws IllegalArgumentException {
+        synchronized (pityStep5WeapLock) {
+            pityStep5Weap = validateStep(step, Constants.MAX_PITY_5_WEAP);
+        }
     }
 
 
-    public synchronized int getPityStep5Weap() {
-        return pityStep5Weap;
+    @JsonProperty("pityStep5Weap")
+    public int getPityStep5Weap() {
+        synchronized (pityStep5WeapLock) {
+            return pityStep5Weap;
+        }
     }
 
 
-    public synchronized void setPityStep4(int step) throws IllegalArgumentException {
-        this.pityStep4 = validateStep(step, Constants.MAX_PITY_4);
+    public void setPityStep4(int step) throws IllegalArgumentException {
+        synchronized (pityStep4Lock) {
+            this.pityStep4 = validateStep(step, Constants.MAX_PITY_4);
+        }
     }
 
 
+    @JsonProperty("pityStep4")
     public int getPityStep4() {
-        return pityStep4;
+        synchronized (pityStep4Lock) {
+            return pityStep4;
+        }
     }
 
 
-    public synchronized void setFreqMarkingStepFactor(int factor) throws IllegalArgumentException {
-        this.freqMarkingStepFactor = validateFactor(factor);
+    public void setFreqMarkingStepFactor(int factor) throws IllegalArgumentException {
+        synchronized (freqMarkingStepFactorLock) {
+            this.freqMarkingStepFactor = validateFactor(factor);
+        }
     }
 
 
+    @JsonProperty("freqMarkingStepFactor")
     public int getFreqMarkingStepFactor() {
-        return freqMarkingStepFactor;
+        synchronized (freqMarkingStepFactorLock) {
+            return freqMarkingStepFactor;
+        }
     }
 
 
-    public synchronized void setFreqMarkingMaxCount(int count) throws IllegalArgumentException {
-        this.freqMarkingMaxCount = validateCount(count);
+    public void setFreqMarkingMaxCount(int count) throws IllegalArgumentException {
+        synchronized (freqMarkingMaxCountLock) {
+            this.freqMarkingMaxCount = validateCount(count);
+        }
     }
 
 
-    public synchronized int getFreqMarkingMaxCount() {
-        return freqMarkingMaxCount;
+    @JsonProperty("freqMarkingMaxCount")
+    public int getFreqMarkingMaxCount() {
+        synchronized (freqMarkingMaxCountLock) {
+            return freqMarkingMaxCount;
+        }
     }
 
 
