@@ -8,6 +8,7 @@ import org.apache.logging.log4j.Level;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.hanyans.gachacounter.core.LockedValue;
 
 
 /**
@@ -16,17 +17,12 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class UserPreference {
     private static final Level DEFAULT_LOG_LEVEL = Level.INFO;
 
-    @JsonIgnore private Path dataFilePathHsr;
-    @JsonIgnore private final Object dataFilePathHSRLock = new Object();
-    @JsonIgnore private Path dataFilePathGenshin;
-    @JsonIgnore private final Object dataFilePathGenshinLock = new Object();
-    @JsonIgnore private Level logLevel;
-    @JsonIgnore private final Object logLevelLock = new Object();
-    @JsonIgnore private boolean checkUpdatesOnStart;
-    @JsonIgnore private final Object checkUpdateOnStartLock = new Object();
+    @JsonIgnore private LockedValue<Path> dataFilePathHsr;
+    @JsonIgnore private LockedValue<Path> dataFilePathGenshin;
+    @JsonIgnore private LockedValue<Level> logLevel;
+    @JsonIgnore private LockedValue<Boolean> checkUpdatesOnStart;
 
-
-    private ChartPreference chartPrefs;
+    @JsonIgnore private ChartPreference chartPrefs;
 
 
     public UserPreference() {
@@ -41,10 +37,10 @@ public class UserPreference {
                 @JsonProperty("logLevel") Level logLevel,
                 @JsonProperty("checkUpdateOnStart") Boolean checkUpdatesOnStart,
                 @JsonProperty("chartPrefs") ChartPreference chartPrefs) {
-        this.dataFilePathHsr = dataFilePathHSR;
-        this.dataFilePathGenshin = dataFilePathGenshin;
-        this.logLevel = Objects.requireNonNullElse(logLevel, DEFAULT_LOG_LEVEL);
-        this.checkUpdatesOnStart = Objects.requireNonNullElse(checkUpdatesOnStart, true);
+        this.dataFilePathHsr = new LockedValue<>(dataFilePathHSR);
+        this.dataFilePathGenshin = new LockedValue<>(dataFilePathGenshin);
+        this.logLevel = new LockedValue<>(Objects.requireNonNullElse(logLevel, DEFAULT_LOG_LEVEL));
+        this.checkUpdatesOnStart = new LockedValue<>(Objects.requireNonNullElse(checkUpdatesOnStart, true));
         this.chartPrefs = Objects.requireNonNullElse(chartPrefs, new ChartPreference());
     }
 
@@ -64,9 +60,7 @@ public class UserPreference {
 
 
     public void setDataFilePathHsr(Path path) {
-        synchronized (dataFilePathHSRLock) {
-            this.dataFilePathHsr = path;
-        }
+        dataFilePathHsr.set(path);
     }
 
 
@@ -76,16 +70,12 @@ public class UserPreference {
      */
     @JsonProperty("dataFilePathHSR")
     public Path getDataFilePathHsr() {
-        synchronized (dataFilePathHSRLock) {
-            return dataFilePathHsr;
-        }
+        return dataFilePathHsr.get();
     }
 
 
     public void setDataFilePathGenshin(Path path) {
-        synchronized (dataFilePathGenshinLock) {
-            this.dataFilePathGenshin = path;
-        }
+        dataFilePathGenshin.set(path);
     }
 
 
@@ -95,9 +85,7 @@ public class UserPreference {
      */
     @JsonProperty("dataFilePathGenshin")
     public Path getDataFilePathGenshin() {
-        synchronized (dataFilePathGenshinLock) {
-            return dataFilePathGenshin;
-        }
+        return dataFilePathGenshin.get();
     }
 
 
@@ -106,32 +94,24 @@ public class UserPreference {
      * is assumed.
      */
     public void setLogLevel(Level logLevel) {
-        synchronized (logLevelLock) {
-            this.logLevel = Objects.requireNonNullElse(logLevel, DEFAULT_LOG_LEVEL);
-        }
+        this.logLevel.set(Objects.requireNonNullElse(logLevel, DEFAULT_LOG_LEVEL));
     }
 
 
     @JsonProperty("logLevel")
     public Level getLogLevel() {
-        synchronized (logLevelLock) {
-            return logLevel;
-        }
+        return logLevel.get();
     }
 
 
     public void setCheckUpdateOnStart(boolean shouldCheck) {
-        synchronized (checkUpdateOnStartLock) {
-            checkUpdatesOnStart = shouldCheck;
-        }
+        checkUpdatesOnStart.set(shouldCheck);
     }
 
 
     @JsonProperty("checkUpdateOnStart")
     public boolean isCheckUpdateOnStart() {
-        synchronized (checkUpdateOnStartLock) {
-            return checkUpdatesOnStart;
-        }
+        return checkUpdatesOnStart.get();
     }
 
 
