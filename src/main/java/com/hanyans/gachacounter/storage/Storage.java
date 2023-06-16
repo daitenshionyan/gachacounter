@@ -22,6 +22,15 @@ public interface Storage {
 
 
     /**
+     * Saves the state of the given {@code GameGachaData}.
+     *
+     * @param data - {@code GameGachaData} to save.
+     * @return a list of exceptions that occured while saving.
+     */
+    public Collection<Throwable> saveGachaData(GameGachaData data);
+
+
+    /**
      * Saves the state of the given {@code BannerHistory}.
      *
      * @param game - the game of the given history.

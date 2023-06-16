@@ -115,6 +115,24 @@ public class StorageManager implements Storage {
     }
 
 
+    /**
+     * {@inheritDoc}
+     *
+     * <p>If given data is {@code null}, nothing will happen.
+     */
+    @Override
+    public ArrayList<Throwable> saveGachaData(GameGachaData data) {
+        ArrayList<Throwable> exList = new ArrayList<>();
+        if (data == null) {
+            return exList;
+        }
+        exList.addAll(saveBannerHistory(data.game, data.stndHist));
+        exList.addAll(saveBannerHistory(data.game, data.charHist));
+        exList.addAll(saveBannerHistory(data.game, data.weapHist));
+        return exList;
+    }
+
+
     @Override
     public ArrayList<Throwable> saveBannerHistory(Game game, BannerHistory history) {
         Path histPath = getGamePath(game, USER_DATA_DIR_PATH);

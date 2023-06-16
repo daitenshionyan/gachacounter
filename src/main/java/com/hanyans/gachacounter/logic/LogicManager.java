@@ -26,15 +26,12 @@ import com.hanyans.gachacounter.logic.task.GachaCounterTask;
 import com.hanyans.gachacounter.logic.task.HistoryRetrieverTask;
 import com.hanyans.gachacounter.logic.task.UpdateDataTask;
 import com.hanyans.gachacounter.logic.task.UrlGrabberTask;
-import com.hanyans.gachacounter.model.BannerHistory;
 import com.hanyans.gachacounter.model.GameGachaData;
 import com.hanyans.gachacounter.model.count.BannerReport;
 import com.hanyans.gachacounter.model.count.GachaReport;
 import com.hanyans.gachacounter.model.preference.UserPreference;
-import com.hanyans.gachacounter.model.rateup.BannerEventHistory;
 import com.hanyans.gachacounter.storage.LoadReport;
 import com.hanyans.gachacounter.storage.Storage;
-import com.hanyans.gachacounter.wrapper.GachaType;
 import com.hanyans.gachacounter.wrapper.Game;
 import com.hanyans.gachacounter.wrapper.exception.ResponseException;
 
@@ -58,23 +55,17 @@ public class LogicManager implements Logic {
     private final ThreadPoolExecutor executor = new ThreadPoolExecutor(
             1, 1, 5000, TimeUnit.MILLISECONDS, new LinkedBlockingDeque<>());
 
-    private final BannerHistory stndHist = new BannerHistory(GachaType.STANDARD);
-    private final BannerHistory charHist = new BannerHistory(GachaType.CHARACTER);
-    private final BannerHistory weapHist = new BannerHistory(GachaType.WEAPON);
-    private final BannerEventHistory charEvents = new BannerEventHistory();
-    private final BannerEventHistory weapEvents = new BannerEventHistory();
-
     private final ObjectProperty<String> messageProperty = new SimpleObjectProperty<>();
     private final DoubleProperty progressProperty = new SimpleDoubleProperty(1.0);
     private final BooleanProperty runningProperty = new SimpleBooleanProperty(false);
-
-    private final ObjectProperty<Game> gameProperty = new SimpleObjectProperty<>();
 
     private final Version version;
     private final Storage storage;
     private final UserPreference preference;
 
     private volatile boolean isRunning = false;
+
+    private GameGachaData gameGachaData = null;
 
     private ConsumerTask<GachaReport> reportCompletionTask = ConsumerTask.blankTask();
     private Consumer<PopupMessage> errMsgHandler = msg -> {};
@@ -112,7 +103,8 @@ public class LogicManager implements Logic {
         task.setOnComplete(urlString -> {
             onComplete.accept(urlString);
             updateDataPathPref(Path.of(pathString));
-            handleIoError(saveState(), LOADING_ERROR_TITLE);
+            ArrayList<Throwable> errList = saveState();
+            handleIoError(errList, LOADING_ERROR_TITLE);
             setRunningState(false);
         });
         bindTaskProperty(task);
@@ -128,14 +120,13 @@ public class LogicManager implements Logic {
         setRunningState(true);
 
         // check if should change game property
-        Game oldGame = gameProperty.get();
+        Game oldGame = getGame();
         if (game == null || game.equals(oldGame)) {
             setRunningState(false);
             return;
         }
 
         // set game property and load new game data
-        gameProperty.set(game);
         Collection<Throwable> exList = loadHistory(game);
         generateGachaReport(report -> {
             handleIoError(exList, LOADING_ERROR_TITLE);
@@ -190,9 +181,9 @@ public class LogicManager implements Logic {
         HistoryRetrieverTask task = new HistoryRetrieverTask(
                 playerUrl,
                 getGame(),
-                stndHist,
-                charHist,
-                weapHist);
+                gameGachaData.stndHist,
+                gameGachaData.charHist,
+                gameGachaData.weapHist);
         task.setOnComplete(num -> {
             ArrayList<Throwable> exList = saveState();
             generateGachaReport(report -> {
@@ -292,11 +283,7 @@ public class LogicManager implements Logic {
 
     private Collection<Throwable> loadHistory(Game game) {
         LoadReport<GameGachaData> report = storage.loadGachaData(game);
-        stndHist.reset(report.data.stndHist);
-        charHist.reset(report.data.charHist);
-        weapHist.reset(report.data.weapHist);
-        charEvents.reset(report.data.charEvents);
-        weapEvents.reset(report.data.weapEvents);
+        gameGachaData = report.data;
         return report.exList;
     }
 
@@ -304,11 +291,7 @@ public class LogicManager implements Logic {
     private ArrayList<Throwable> saveState() {
         ArrayList<Throwable> exList = new ArrayList<>();
         exList.addAll(storage.savePreference(preference));
-        if (getGame() != null) {
-            exList.addAll(storage.saveBannerHistory(getGame(), stndHist));
-            exList.addAll(storage.saveBannerHistory(getGame(), charHist));
-            exList.addAll(storage.saveBannerHistory(getGame(), weapHist));
-        }
+        exList.addAll(storage.saveGachaData(gameGachaData));
         return exList;
     }
 
@@ -448,7 +431,7 @@ public class LogicManager implements Logic {
 
     @Override
     public synchronized Game getGame() {
-        return gameProperty.get();
+        return gameGachaData != null ? gameGachaData.game : null;
     }
 
 
@@ -551,13 +534,13 @@ public class LogicManager implements Logic {
 
     private void generateGachaReport(HashSet<Long> uidFilters, Consumer<GachaReport> finaliser) {
         // initialize individual counter tasks
-        RunnableTask<BannerReport> weapCounter = new CounterTask(weapHist)
-                .setRateUpMap(weapEvents)
+        RunnableTask<BannerReport> weapCounter = new CounterTask(gameGachaData.weapHist)
+                .setRateUpMap(gameGachaData.weapEvents)
                 .setUidFilters(uidFilters);
-        RunnableTask<BannerReport> charCounter = new CounterTask(charHist)
-                .setRateUpMap(charEvents)
+        RunnableTask<BannerReport> charCounter = new CounterTask(gameGachaData.charHist)
+                .setRateUpMap(gameGachaData.charEvents)
                 .setUidFilters(uidFilters);
-        RunnableTask<BannerReport> stndCounter = new CounterTask(stndHist)
+        RunnableTask<BannerReport> stndCounter = new CounterTask(gameGachaData.stndHist)
                 .setUidFilters(uidFilters);
 
         // initialize grouping task
