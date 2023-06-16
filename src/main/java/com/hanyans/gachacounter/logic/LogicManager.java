@@ -15,6 +15,7 @@ import org.apache.logging.log4j.Logger;
 
 import com.hanyans.gachacounter.MainApp;
 import com.hanyans.gachacounter.core.AppUpdateMessage;
+import com.hanyans.gachacounter.core.LockedVolatileValue;
 import com.hanyans.gachacounter.core.PopupMessage;
 import com.hanyans.gachacounter.core.Version;
 import com.hanyans.gachacounter.core.task.ConsumerTask;
@@ -52,6 +53,8 @@ public class LogicManager implements Logic {
 
     private final Logger logger = LogManager.getFormatterLogger(LogicManager.class);
 
+    private final LockedVolatileValue<Boolean> isRunning = new LockedVolatileValue<Boolean>(false);
+
     private final ThreadPoolExecutor executor = new ThreadPoolExecutor(
             1, 1, 5000, TimeUnit.MILLISECONDS, new LinkedBlockingDeque<>());
 
@@ -62,8 +65,6 @@ public class LogicManager implements Logic {
     private final Version version;
     private final Storage storage;
     private final UserPreference preference;
-
-    private volatile boolean isRunning = false;
 
     private GameGachaData gameGachaData = null;
 
@@ -400,14 +401,14 @@ public class LogicManager implements Logic {
      */
 
 
-    private synchronized void setRunningState(boolean state) {
-        isRunning = state;
+    private void setRunningState(boolean state) {
+        isRunning.set(state);
         runningProperty.set(state);
     }
 
 
-    public synchronized boolean isRunning() {
-        return isRunning;
+    public boolean isRunning() {
+        return isRunning.get();
     }
 
 
