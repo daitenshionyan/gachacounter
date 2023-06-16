@@ -15,6 +15,7 @@ import org.apache.logging.log4j.Logger;
 
 import com.hanyans.gachacounter.MainApp;
 import com.hanyans.gachacounter.core.AppUpdateMessage;
+import com.hanyans.gachacounter.core.LockedValue;
 import com.hanyans.gachacounter.core.LockedVolatileValue;
 import com.hanyans.gachacounter.core.PopupMessage;
 import com.hanyans.gachacounter.core.Version;
@@ -58,6 +59,13 @@ public class LogicManager implements Logic {
     private final ThreadPoolExecutor executor = new ThreadPoolExecutor(
             1, 1, 5000, TimeUnit.MILLISECONDS, new LinkedBlockingDeque<>());
 
+    private final LockedValue<ConsumerTask<GachaReport>> reportCompletionTask =
+            new LockedValue<>(ConsumerTask.blankTask());
+    private final LockedValue<Consumer<PopupMessage>> errMsgHandler =
+            new LockedValue<>(msg -> {});
+    private final LockedValue<Consumer<AppUpdateMessage>> updateHandler =
+            new LockedValue<>(msg -> {});
+
     private final ObjectProperty<String> messageProperty = new SimpleObjectProperty<>();
     private final DoubleProperty progressProperty = new SimpleDoubleProperty(1.0);
     private final BooleanProperty runningProperty = new SimpleBooleanProperty(false);
@@ -67,10 +75,6 @@ public class LogicManager implements Logic {
     private final UserPreference preference;
 
     private GameGachaData gameGachaData = null;
-
-    private ConsumerTask<GachaReport> reportCompletionTask = ConsumerTask.blankTask();
-    private Consumer<PopupMessage> errMsgHandler = msg -> {};
-    private Consumer<AppUpdateMessage> updateHandler = msg -> {};
 
     private HashMap<Long, Boolean> uidFilterMap = new HashMap<>();
 
@@ -350,24 +354,19 @@ public class LogicManager implements Logic {
 
 
     @Override
-    public synchronized void setReportCompletionTask(ConsumerTask<GachaReport> task) {
-        this.reportCompletionTask = task;
-    }
-
-
-    private synchronized ConsumerTask<GachaReport> getReportCompletionTask() {
-        return reportCompletionTask;
+    public void setReportCompletionTask(ConsumerTask<GachaReport> task) {
+        reportCompletionTask.set(task);
     }
 
 
     @Override
-    public synchronized void setPopupMessageHandler(Consumer<PopupMessage> errMsgHandler) {
-        this.errMsgHandler = errMsgHandler;
+    public void setPopupMessageHandler(Consumer<PopupMessage> handler) {
+        errMsgHandler.set(handler);
     }
 
 
-    private synchronized void handlePopupMessage(PopupMessage msg) {
-        errMsgHandler.accept(msg);
+    private void handlePopupMessage(PopupMessage msg) {
+        errMsgHandler.get().accept(msg);
     }
 
 
@@ -382,14 +381,14 @@ public class LogicManager implements Logic {
 
 
     @Override
-    public synchronized void setAppUpdateMessageHandler(Consumer<AppUpdateMessage> handler) {
-        this.updateHandler = handler;
+    public void setAppUpdateMessageHandler(Consumer<AppUpdateMessage> handler) {
+        updateHandler.set(handler);
     }
 
 
     private synchronized void handleAppUpdateMessage(AppUpdateMessage msg, boolean isHandleUpToDate) {
         if (msg.hasUpdate || isHandleUpToDate) {
-            updateHandler.accept(msg);
+            updateHandler.get().accept(msg);
         }
     }
 
@@ -548,8 +547,9 @@ public class LogicManager implements Logic {
         GachaCounterTask task = new GachaCounterTask(
                 getGame(), stndCounter, charCounter, weapCounter);
         task.setOnException(this::handleGachaReportFailure);
-        getReportCompletionTask().setOnException(this::handleGachaReportFailure);
-        task.setOnComplete(getReportCompletionTask()
+        reportCompletionTask.performWrite(t ->
+                t.setOnException(this::handleGachaReportFailure));
+        task.setOnComplete(reportCompletionTask.get()
                 .bindProperties(messageProperty, progressProperty)
                 .andThen(finaliser));
         bindTaskProperty(task);

@@ -2,6 +2,8 @@ package com.hanyans.gachacounter.core;
 
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
+import java.util.function.Consumer;
+import java.util.function.Function;
 
 
 /**
@@ -56,6 +58,26 @@ public class LockedValue<T> {
         try {
             lock.readLock().lock();
             return value;
+        } finally {
+            lock.readLock().unlock();
+        }
+    }
+
+
+    public void performWrite(Consumer<T> action) {
+        try {
+            lock.writeLock().lock();
+            action.accept(value);
+        } finally {
+            lock.writeLock().unlock();
+        }
+    }
+
+
+    public <R> R performRead(Function<T, R> readFunc) {
+        try {
+            lock.readLock().lock();
+            return readFunc.apply(value);
         } finally {
             lock.readLock().unlock();
         }
