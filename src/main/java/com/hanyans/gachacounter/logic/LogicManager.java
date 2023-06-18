@@ -23,13 +23,9 @@ import com.hanyans.gachacounter.core.task.ConsumerTask;
 import com.hanyans.gachacounter.core.task.RunnableTask;
 import com.hanyans.gachacounter.core.task.TrackableTask;
 import com.hanyans.gachacounter.logic.task.AppUpdateCheckTask;
-import com.hanyans.gachacounter.logic.task.CounterTask;
-import com.hanyans.gachacounter.logic.task.GachaCounterTask;
-import com.hanyans.gachacounter.logic.task.HistoryRetrieverTask;
 import com.hanyans.gachacounter.logic.task.UpdateDataTask;
 import com.hanyans.gachacounter.logic.task.UrlGrabberTask;
 import com.hanyans.gachacounter.model.GameGachaData;
-import com.hanyans.gachacounter.model.count.BannerReport;
 import com.hanyans.gachacounter.model.count.GachaReport;
 import com.hanyans.gachacounter.model.preference.UserPreference;
 import com.hanyans.gachacounter.storage.LoadReport;
@@ -70,13 +66,11 @@ public class LogicManager implements Logic {
     private final DoubleProperty progressProperty = new SimpleDoubleProperty(1.0);
     private final BooleanProperty runningProperty = new SimpleBooleanProperty(false);
 
+    private final DataManager dataManager = new DataManager();
+
     private final Version version;
     private final Storage storage;
     private final UserPreference preference;
-
-    private GameGachaData gameGachaData = null;
-
-    private HashMap<Long, Boolean> uidFilterMap = new HashMap<>();
 
 
     public LogicManager(Version version, Storage storage, UserPreference preference) {
@@ -118,7 +112,7 @@ public class LogicManager implements Logic {
 
 
     @Override
-    public synchronized void setGame(Game game) {
+    public void setGame(Game game) {
         if (!canRun("SET GAME", false)) {
             return;
         }
@@ -131,14 +125,20 @@ public class LogicManager implements Logic {
             return;
         }
 
-        // set game property and load new game data
-        Collection<Throwable> exList = loadHistory(game);
-        generateGachaReport(report -> {
-            handleIoError(exList, LOADING_ERROR_TITLE);
-            setUidFilterMap(report.uids);
-            logger.info("Game set from <%s> to <%s>", oldGame, game);
-            setRunningState(false);
-        });
+        // form load and then render task
+        Runnable task = () -> {
+            LoadReport<GameGachaData> loadReport = storage.loadGachaData(game);
+            Consumer<GachaReport> comHandler = reportCompletionTask.get()
+                    .bindProperties(messageProperty, progressProperty)
+                    .andThen(report -> {
+                        handleIoError(loadReport.exList, LOADING_ERROR_TITLE);
+                        logger.info("Game set from <%s> to <%s>", oldGame, game);
+                        setRunningState(false);
+                    });
+            dataManager.formResetTask(loadReport.data, comHandler, this::handleErrorMessage)
+                    .run();
+        };
+        executor.execute(task);
     }
 
 
@@ -182,27 +182,16 @@ public class LogicManager implements Logic {
         }
 
         setRunningState(true);
-        final long startTime = System.currentTimeMillis();
-        HistoryRetrieverTask task = new HistoryRetrieverTask(
-                playerUrl,
-                getGame(),
-                gameGachaData.stndHist,
-                gameGachaData.charHist,
-                gameGachaData.weapHist);
-        task.setOnComplete(num -> {
+        Consumer<GachaReport> comHandler = report -> {
             ArrayList<Throwable> exList = saveState();
-            generateGachaReport(report -> {
-                setUidFilterMap(report.uids);
-                handleIoError(exList, SAVING_ERROR_TITLE);
-                long duration = System.currentTimeMillis() - startTime;
-                logger.info("Completed -{UPDATE GACHA HISTORY}- in %d ms",
-                        duration);
-                setRunningState(false);
-            });
-        });
-        task.setOnException(this::handleHistoryFailure);
-        messageProperty.bind(task.messageProperty());
-        progressProperty.bind(task.progressProperty());
+            reportCompletionTask.get()
+                    .bindProperties(messageProperty, progressProperty)
+                    .accept(report);
+            handleIoError(exList, SAVING_ERROR_TITLE);
+            setRunningState(false);
+        };
+        RunnableTask<Void> task = dataManager.formRetrieverTask(playerUrl, comHandler, this::handleHistoryFailure);
+        bindTaskProperty(task);
         executor.execute(task);
     }
 
@@ -286,17 +275,10 @@ public class LogicManager implements Logic {
      */
 
 
-    private Collection<Throwable> loadHistory(Game game) {
-        LoadReport<GameGachaData> report = storage.loadGachaData(game);
-        gameGachaData = report.data;
-        return report.exList;
-    }
-
-
     private ArrayList<Throwable> saveState() {
         ArrayList<Throwable> exList = new ArrayList<>();
         exList.addAll(storage.savePreference(preference));
-        exList.addAll(storage.saveGachaData(gameGachaData));
+        exList.addAll(dataManager.readGachaData(storage::saveGachaData));
         return exList;
     }
 
@@ -355,6 +337,7 @@ public class LogicManager implements Logic {
 
     @Override
     public void setReportCompletionTask(ConsumerTask<GachaReport> task) {
+        task.setOnException(this::handleGachaReportFailure);
         reportCompletionTask.set(task);
     }
 
@@ -386,7 +369,7 @@ public class LogicManager implements Logic {
     }
 
 
-    private synchronized void handleAppUpdateMessage(AppUpdateMessage msg, boolean isHandleUpToDate) {
+    private void handleAppUpdateMessage(AppUpdateMessage msg, boolean isHandleUpToDate) {
         if (msg.hasUpdate || isHandleUpToDate) {
             updateHandler.get().accept(msg);
         }
@@ -430,37 +413,26 @@ public class LogicManager implements Logic {
 
 
     @Override
-    public synchronized Game getGame() {
-        return gameGachaData != null ? gameGachaData.game : null;
+    public Game getGame() {
+        return dataManager.getGame();
     }
 
 
-    private synchronized void updateUidFilterMap(HashSet<Long> uids) {
-        for (long uid : uidFilterMap.keySet()) {
-            if (uids.contains(uid)) {
-                uidFilterMap.put(uid, true);
-                continue;
-            }
-            uidFilterMap.put(uid, false);
-        }
-    }
-
-
-    private synchronized void setUidFilterMap(Collection<Long> uids) {
-        uidFilterMap.clear();
-        for (long uid : uids) {
-            uidFilterMap.put(uid, true);
-        }
+    private void updateUidFilterMap(HashSet<Long> uids) {
+        dataManager.updateUidFilterMap(uids);
     }
 
 
     @Override
-    public synchronized HashMap<Long, Boolean> getUidFilterMap() {
-        return new HashMap<>(uidFilterMap);
+    public HashMap<Long, Boolean> getUidFilterMap() {
+        return dataManager.getUidFilterMap();
     }
 
 
-    public HashSet<Long> getUidFilterSet() {
+    /**
+     * Returns a set of UIDs that should be filtered out.
+     */
+    private HashSet<Long> getUidFilterSet() {
         return new HashSet<>(getUidFilterMap().entrySet().stream()
                 .filter(entry -> !entry.getValue())
                 .map(entry -> entry.getKey())
@@ -533,28 +505,10 @@ public class LogicManager implements Logic {
 
 
     private void generateGachaReport(HashSet<Long> uidFilters, Consumer<GachaReport> finaliser) {
-        // initialize individual counter tasks
-        RunnableTask<BannerReport> weapCounter = new CounterTask(gameGachaData.weapHist)
-                .setRateUpMap(gameGachaData.weapEvents)
-                .setUidFilters(uidFilters);
-        RunnableTask<BannerReport> charCounter = new CounterTask(gameGachaData.charHist)
-                .setRateUpMap(gameGachaData.charEvents)
-                .setUidFilters(uidFilters);
-        RunnableTask<BannerReport> stndCounter = new CounterTask(gameGachaData.stndHist)
-                .setUidFilters(uidFilters);
-
-        // initialize grouping task
-        GachaCounterTask task = new GachaCounterTask(
-                getGame(), stndCounter, charCounter, weapCounter);
-        task.setOnException(this::handleGachaReportFailure);
-        reportCompletionTask.performWrite(t ->
-                t.setOnException(this::handleGachaReportFailure));
-        task.setOnComplete(reportCompletionTask.get()
+        Consumer<GachaReport> comHandler = reportCompletionTask.get()
                 .bindProperties(messageProperty, progressProperty)
-                .andThen(finaliser));
-        bindTaskProperty(task);
-
-        executor.execute(task);
+                .andThen(finaliser);
+        executor.execute(dataManager.formGachaReportTask(uidFilters, comHandler, this::handleGachaReportFailure));
     }
 
 

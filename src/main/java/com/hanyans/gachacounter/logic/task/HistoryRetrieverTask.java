@@ -16,6 +16,7 @@ import com.hanyans.gachacounter.core.task.RunnableTask;
 import com.hanyans.gachacounter.core.util.JsonUtil;
 import com.hanyans.gachacounter.model.BannerHistory;
 import com.hanyans.gachacounter.model.GachaEntry;
+import com.hanyans.gachacounter.model.GameGachaData;
 import com.hanyans.gachacounter.wrapper.GachaType;
 import com.hanyans.gachacounter.wrapper.Game;
 import com.hanyans.gachacounter.wrapper.HistoryRetriever;
@@ -48,15 +49,12 @@ public class HistoryRetrieverTask extends RunnableTask<Integer> {
 
     public HistoryRetrieverTask(
                 String playerUrl,
-                Game game,
-                BannerHistory stndHist,
-                BannerHistory charHist,
-                BannerHistory weapHist) {
+                GameGachaData data) {
         this.playerUrl = playerUrl;
-        this.game = game;
-        this.stndHist = stndHist;
-        this.charHist = charHist;
-        this.weapHist = weapHist;
+        this.game = data.game;
+        this.stndHist = data.stndHist;
+        this.charHist = data.charHist;
+        this.weapHist = data.weapHist;
     }
 
 
