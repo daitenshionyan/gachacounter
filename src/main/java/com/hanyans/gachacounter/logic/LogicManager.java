@@ -150,7 +150,6 @@ public class LogicManager implements Logic {
         setRunningState(true);
         updateUidFilterMap(new HashSet<>(uids));
         generateGachaReport(
-                getUidFilterSet(),
                 report -> {
                     StringBuilder builder = new StringBuilder();
                     for (long uid : uids) {
@@ -258,9 +257,7 @@ public class LogicManager implements Logic {
                 setRunningState(false);
                 return;
             }
-            generateGachaReport(
-                    getUidFilterSet(),
-                    report -> setRunningState(false));
+            generateGachaReport(report -> setRunningState(false));
         }));
         task.setOnException(onException.andThen(ex -> setRunningState(false)));
         bindTaskProperty(task);
@@ -419,24 +416,13 @@ public class LogicManager implements Logic {
 
 
     private void updateUidFilterMap(HashSet<Long> uids) {
-        dataManager.updateUidFilterMap(uids);
+        dataManager.setUidFilter(uids);
     }
 
 
     @Override
     public HashMap<Long, Boolean> getUidFilterMap() {
         return dataManager.getUidFilterMap();
-    }
-
-
-    /**
-     * Returns a set of UIDs that should be filtered out.
-     */
-    private HashSet<Long> getUidFilterSet() {
-        return new HashSet<>(getUidFilterMap().entrySet().stream()
-                .filter(entry -> !entry.getValue())
-                .map(entry -> entry.getKey())
-                .toList());
     }
 
 
@@ -499,16 +485,11 @@ public class LogicManager implements Logic {
     }
 
 
-    public void generateGachaReport(Consumer<GachaReport> finaliser) {
-        generateGachaReport(null, finaliser);
-    }
-
-
-    private void generateGachaReport(HashSet<Long> uidFilters, Consumer<GachaReport> finaliser) {
+    private void generateGachaReport(Consumer<GachaReport> finaliser) {
         Consumer<GachaReport> comHandler = reportCompletionTask.get()
                 .bindProperties(messageProperty, progressProperty)
                 .andThen(finaliser);
-        executor.execute(dataManager.formGachaReportTask(uidFilters, comHandler, this::handleGachaReportFailure));
+        executor.execute(dataManager.formGachaReportTask(comHandler, this::handleGachaReportFailure));
     }
 
 

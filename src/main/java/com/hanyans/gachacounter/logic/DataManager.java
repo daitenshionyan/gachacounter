@@ -2,6 +2,7 @@ package com.hanyans.gachacounter.logic;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.function.Consumer;
@@ -27,6 +28,9 @@ public class DataManager {
     private GameGachaData gameGachaData = null;
 
 
+    /**
+     * Returns the currently set game. {@code null} if the game is not yet set.
+     */
     public Game getGame() {
         try {
             lock.readLock().lock();
@@ -37,6 +41,19 @@ public class DataManager {
     }
 
 
+    /**
+     * Performs the given read function on the current state of
+     * {@code GameGachaData}. The given function will also have to handle the
+     * case where {@code GameGachaData} is {@code null} (game not yet set).
+     *
+     * <p>The given function should not perform any write operation on the
+     * {@code GameGachaData} although it is not restricted.
+     *
+     * @param <R> the return type of the read function.
+     * @param readFunc - the read function to apply on the current state of
+     *      {@code GameGachaData}.
+     * @return the output of the function.
+     */
     public <R> R readGachaData(Function<GameGachaData, R> readFunc) {
         try {
             lock.readLock().lock();
@@ -47,7 +64,14 @@ public class DataManager {
     }
 
 
-    public void updateUidFilterMap(HashSet<Long> uids) {
+    /**
+     * Sets the UID filter to show only the UIDs in the given set.
+     *
+     * @param uids - the UIDs to show.
+     * @throws NullPointerException if {@code uids} is {@code null}.
+     */
+    public void setUidFilter(HashSet<Long> uids) {
+        Objects.requireNonNull(uids);
         try {
             lock.writeLock().lock();
             for (long uid : uidFilterMap.keySet()) {
@@ -59,6 +83,11 @@ public class DataManager {
     }
 
 
+    /**
+     * Returns a map view of the current state of the UID filter map. Changes
+     * to the returned map or the encapsulated map of this {@code DataManager}
+     * will not affect the other.
+     */
     public HashMap<Long, Boolean> getUidFilterMap() {
         try {
             lock.readLock().lock();
@@ -69,7 +98,20 @@ public class DataManager {
     }
 
 
-    public RunnableTask<Void> formResetTask(GameGachaData gameGachaData,
+    /**
+     * Forms a {@code RunnableTask} that resets the state of this
+     * {@code DataManager} with reference to the given {@code GameGachaData}.
+     *
+     * <p>Given {@code GameGachaData} is copied by reference.
+     *
+     * @param gameGachaData - the new {@code GameGachaData} to reset to.
+     * @param comHandler - a {@code Consumer} that accepts a
+     *      {@code GachaReport} the reset procedure is completed.
+     * @param exHandler a {@code Consumer} that accepts a {@code Throwable}
+     *      whenever an exception while performing the task.
+     */
+    public RunnableTask<Void> formResetTask(
+                GameGachaData gameGachaData,
                 Consumer<GachaReport> comHandler,
                 Consumer<Throwable> exHandler) {
         return new RunnableTask<>() {
@@ -114,7 +156,18 @@ public class DataManager {
     }
 
 
-    public RunnableTask<Void> formRetrieverTask(String playerUrl,
+    /**
+     * Forms a {@code RunnableTask} that retrieves the player's gacha log
+     * through the given player URL.
+     *
+     * @param playerUrl - URL to retrieve gacha log.
+     * @param comHandler - a {@code Consumer} that accepts a
+     *      {@code GachaReport} the reset procedure is completed.
+     * @param exHandler a {@code Consumer} that accepts a {@code Throwable}
+     *      whenever an exception while performing the task.
+     */
+    public RunnableTask<Void> formRetrieverTask(
+                String playerUrl,
                 Consumer<GachaReport> comHandler,
                 Consumer<Throwable> exHandler) {
         return new RunnableTask<>() {
@@ -150,8 +203,17 @@ public class DataManager {
     }
 
 
+    /**
+     * Forms a {@code RunnableTask} that generates a {@code GachaReport}. The
+     * UIDs are filtered out based on the state of the UID filter map of when
+     * the returned task is executed.
+     *
+     * @param comHandler - a {@code Consumer} that accepts a
+     *      {@code GachaReport} the reset procedure is completed.
+     * @param exHandler a {@code Consumer} that accepts a {@code Throwable}
+     *      whenever an exception while performing task.
+     */
     public RunnableTask<Void> formGachaReportTask(
-                HashSet<Long> uidFilters,
                 Consumer<GachaReport> comHandler,
                 Consumer<Throwable> exHandler) {
         return new RunnableTask<>() {
@@ -160,7 +222,7 @@ public class DataManager {
                 try {
                     lock.readLock().lock();
 
-                    GachaCounterTask task = new GachaCounterTask(gameGachaData, uidFilters);
+                    GachaCounterTask task = new GachaCounterTask(gameGachaData, getUidFilters());
                     task.setOnComplete(comHandler);
                     bindMessageProperty(task.messageProperty());
                     bindProgressProeprty(task.progressProperty());
@@ -175,5 +237,21 @@ public class DataManager {
                 return null;
             }
         };
+    }
+
+
+    /**
+     * Returns a set of UIDs that should be filtered out.
+     */
+    private HashSet<Long> getUidFilters() {
+        try {
+            lock.readLock().lock();
+            return new HashSet<>(uidFilterMap.entrySet().stream()
+                    .filter(entry -> !entry.getValue())
+                    .map(entry -> entry.getKey())
+                    .toList());
+        } finally {
+            lock.readLock().unlock();
+        }
     }
 }
