@@ -1,4 +1,4 @@
-package com.hanyans.gachacounter.wrapper;
+package com.hanyans.gachacounter.mhy;
 
 public enum ItemType {
     CHARACTER, WEAPON;

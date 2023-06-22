@@ -20,8 +20,8 @@ import com.hanyans.gachacounter.gui.updater.BannerCardUpdater;
 import com.hanyans.gachacounter.gui.updater.OverallCardUpdater;
 import com.hanyans.gachacounter.gui.updater.StatisticsUpdater;
 import com.hanyans.gachacounter.logic.Logic;
+import com.hanyans.gachacounter.mhy.Game;
 import com.hanyans.gachacounter.model.preference.UserPreference;
-import com.hanyans.gachacounter.wrapper.Game;
 
 import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;

@@ -5,9 +5,9 @@ import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.hanyans.gachacounter.wrapper.GachaType;
-import com.hanyans.gachacounter.wrapper.ItemType;
-import com.hanyans.gachacounter.wrapper.response.GachaEntryResponse;
+import com.hanyans.gachacounter.mhy.GachaType;
+import com.hanyans.gachacounter.mhy.ItemType;
+import com.hanyans.gachacounter.mhy.response.GachaEntryResponse;
 
 
 /**

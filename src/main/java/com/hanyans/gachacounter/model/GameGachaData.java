@@ -2,8 +2,8 @@ package com.hanyans.gachacounter.model;
 
 import java.util.Objects;
 
+import com.hanyans.gachacounter.mhy.Game;
 import com.hanyans.gachacounter.model.rateup.BannerEventHistory;
-import com.hanyans.gachacounter.wrapper.Game;
 
 
 /**

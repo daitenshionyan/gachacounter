@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 
 import com.hanyans.gachacounter.core.FrequencyMap;
-import com.hanyans.gachacounter.wrapper.GachaType;
+import com.hanyans.gachacounter.mhy.GachaType;
 
 /**
  * A data class containing pull data from a banner.

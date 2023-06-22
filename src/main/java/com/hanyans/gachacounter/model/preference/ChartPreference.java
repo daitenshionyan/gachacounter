@@ -1,8 +1,10 @@
 package com.hanyans.gachacounter.model.preference;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.hanyans.gachacounter.core.Constants;
+import com.hanyans.gachacounter.core.LockedValue;
 
 
 /**
@@ -16,12 +18,12 @@ public class ChartPreference {
     public static final int FREQ_MARKING_STEP_FACTOR = 5;
     public static final int FREQ_MARKING_MAX_COUNT = 10;
 
-    private int pityStep5Norm;
-    private int pityStep5Weap;
-    private int pityStep4;
+    @JsonIgnore private LockedValue<Integer> pityStep5Norm;
+    @JsonIgnore private LockedValue<Integer> pityStep5Weap;
+    @JsonIgnore private LockedValue<Integer> pityStep4;
 
-    private int freqMarkingStepFactor;
-    private int freqMarkingMaxCount;
+    @JsonIgnore private LockedValue<Integer> freqMarkingStepFactor;
+    @JsonIgnore private LockedValue<Integer> freqMarkingMaxCount;
 
 
     /**
@@ -46,71 +48,83 @@ public class ChartPreference {
             @JsonProperty("pityStep4") int pityStep4,
             @JsonProperty("freqMarkingStepFactor") int freqMarkingStepFactor,
             @JsonProperty("freqMarkingMaxCount") int freqMarkingMaxCount) {
-        this.pityStep5Norm = validateStep(pityStep5Norm, Constants.MAX_PITY_5_NORM);
-        this.pityStep5Weap = validateStep(pityStep5Weap, Constants.MAX_PITY_5_WEAP);
-        this.pityStep4 = validateStep(pityStep4, Constants.MAX_PITY_4);
-        this.freqMarkingStepFactor = validateFactor(freqMarkingStepFactor);
-        this.freqMarkingMaxCount = validateCount(freqMarkingMaxCount);
+        this.pityStep5Norm = new LockedValue<>(validateStep(pityStep5Norm, Constants.MAX_PITY_5_NORM));
+        this.pityStep5Weap = new LockedValue<>(validateStep(pityStep5Weap, Constants.MAX_PITY_5_WEAP));
+        this.pityStep4 = new LockedValue<>(validateStep(pityStep4, Constants.MAX_PITY_4));
+        this.freqMarkingStepFactor = new LockedValue<>(validateFactor(freqMarkingStepFactor));
+        this.freqMarkingMaxCount = new LockedValue<>(validateCount(freqMarkingMaxCount));
     }
 
 
     public void resetTo(ChartPreference other) {
         setPityStep5Norm(other.getPityStep5Norm());
         setPityStep5Weap(other.getPityStep5Weap());
-        setPityStep4(other.pityStep4);
+        setPityStep4(other.getPityStep4());
         setFreqMarkingStepFactor(other.getFreqMarkingStepFactor());
         setFreqMarkingMaxCount(other.getFreqMarkingMaxCount());
     }
 
 
-    public synchronized void setPityStep5Norm(int step) throws IllegalArgumentException {
-        this.pityStep5Norm = validateStep(step, Constants.MAX_PITY_5_NORM);
+    public void setPityStep5Norm(int step) throws IllegalArgumentException {
+        pityStep5Norm.set(validateStep(step, Constants.MAX_PITY_5_NORM));
     }
 
 
-    public synchronized int getPityStep5Norm() {
-        return pityStep5Norm;
+    @JsonProperty("pityStep5Norm")
+    public int getPityStep5Norm() {
+        return pityStep5Norm.get();
     }
 
 
-    public synchronized void setPityStep5Weap(int step) throws IllegalArgumentException {
-        this.pityStep5Weap = validateStep(step, Constants.MAX_PITY_5_WEAP);
+    public void setPityStep5Weap(int step) throws IllegalArgumentException {
+        pityStep5Weap.set(validateStep(step, Constants.MAX_PITY_5_WEAP));
     }
 
 
-    public synchronized int getPityStep5Weap() {
-        return pityStep5Weap;
+    @JsonProperty("pityStep5Weap")
+    public int getPityStep5Weap() {
+        return pityStep5Weap.get();
     }
 
 
-    public synchronized void setPityStep4(int step) throws IllegalArgumentException {
-        this.pityStep4 = validateStep(step, Constants.MAX_PITY_4);
+    public void setPityStep4(int step) throws IllegalArgumentException {
+        pityStep4.set(validateStep(step, Constants.MAX_PITY_4));
     }
 
 
+    @JsonProperty("pityStep4")
     public int getPityStep4() {
-        return pityStep4;
+        return pityStep4.get();
     }
 
 
-    public synchronized void setFreqMarkingStepFactor(int factor) throws IllegalArgumentException {
-        this.freqMarkingStepFactor = validateFactor(factor);
+    public void setFreqMarkingStepFactor(int factor) throws IllegalArgumentException {
+        freqMarkingStepFactor.set(validateFactor(factor));
     }
 
 
+    @JsonProperty("freqMarkingStepFactor")
     public int getFreqMarkingStepFactor() {
-        return freqMarkingStepFactor;
+        return freqMarkingStepFactor.get();
     }
 
 
-    public synchronized void setFreqMarkingMaxCount(int count) throws IllegalArgumentException {
-        this.freqMarkingMaxCount = validateCount(count);
+    public void setFreqMarkingMaxCount(int count) throws IllegalArgumentException {
+        freqMarkingMaxCount.set(validateCount(count));
     }
 
 
-    public synchronized int getFreqMarkingMaxCount() {
-        return freqMarkingMaxCount;
+    @JsonProperty("freqMarkingMaxCount")
+    public int getFreqMarkingMaxCount() {
+        return freqMarkingMaxCount.get();
     }
+
+
+    /*
+     * ========================================================================
+     *      UTILITY
+     * ========================================================================
+     */
 
 
     private int validateStep(int step, int max) throws IllegalArgumentException {

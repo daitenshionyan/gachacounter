@@ -2,7 +2,7 @@ package com.hanyans.gachacounter.model;
 
 import java.util.Objects;
 
-import com.hanyans.gachacounter.wrapper.ItemType;
+import com.hanyans.gachacounter.mhy.ItemType;
 
 /**
  * Represents an item obtained from gacha. Unlike {@link GachaEntry},

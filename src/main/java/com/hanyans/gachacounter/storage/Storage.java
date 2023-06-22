@@ -2,10 +2,10 @@ package com.hanyans.gachacounter.storage;
 
 import java.util.Collection;
 
+import com.hanyans.gachacounter.mhy.Game;
 import com.hanyans.gachacounter.model.BannerHistory;
 import com.hanyans.gachacounter.model.GameGachaData;
 import com.hanyans.gachacounter.model.preference.UserPreference;
-import com.hanyans.gachacounter.wrapper.Game;
 
 
 /**
@@ -19,6 +19,15 @@ public interface Storage {
      * @return a {@code LoadReport} of the loaded data.
      */
     public LoadReport<GameGachaData> loadGachaData(Game game);
+
+
+    /**
+     * Saves the state of the given {@code GameGachaData}.
+     *
+     * @param data - {@code GameGachaData} to save.
+     * @return a list of exceptions that occured while saving.
+     */
+    public Collection<Throwable> saveGachaData(GameGachaData data);
 
 
     /**

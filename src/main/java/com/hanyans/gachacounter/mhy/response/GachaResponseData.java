@@ -1,4 +1,4 @@
-package com.hanyans.gachacounter.wrapper.response;
+package com.hanyans.gachacounter.mhy.response;
 
 import java.util.List;
 

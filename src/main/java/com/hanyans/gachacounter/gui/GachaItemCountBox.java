@@ -13,10 +13,10 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.hanyans.gachacounter.core.util.FileUtil;
+import com.hanyans.gachacounter.mhy.GachaType;
+import com.hanyans.gachacounter.mhy.Game;
 import com.hanyans.gachacounter.model.GachaItem;
 import com.hanyans.gachacounter.model.count.ProcessedGachaEntry;
-import com.hanyans.gachacounter.wrapper.GachaType;
-import com.hanyans.gachacounter.wrapper.Game;
 
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleObjectProperty;

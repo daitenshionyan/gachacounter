@@ -3,7 +3,7 @@ package com.hanyans.gachacounter.model.count;
 import java.util.Collection;
 import java.util.HashSet;
 
-import com.hanyans.gachacounter.wrapper.Game;
+import com.hanyans.gachacounter.mhy.Game;
 
 /**
  * Data class containing gacha data from all banners.

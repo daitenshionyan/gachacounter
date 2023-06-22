@@ -11,12 +11,12 @@ import org.apache.logging.log4j.Logger;
 import com.fasterxml.jackson.databind.DatabindException;
 import com.hanyans.gachacounter.core.util.FileUtil;
 import com.hanyans.gachacounter.core.util.JsonUtil;
+import com.hanyans.gachacounter.mhy.GachaType;
+import com.hanyans.gachacounter.mhy.Game;
 import com.hanyans.gachacounter.model.BannerHistory;
 import com.hanyans.gachacounter.model.GameGachaData;
 import com.hanyans.gachacounter.model.preference.UserPreference;
 import com.hanyans.gachacounter.model.rateup.BannerEventHistory;
-import com.hanyans.gachacounter.wrapper.GachaType;
-import com.hanyans.gachacounter.wrapper.Game;
 
 
 /**
@@ -112,6 +112,24 @@ public class StorageManager implements Storage {
         logger.info("Successfully loaded %d <%s EVENT>",
                 events.size(), gachaType);
         return events;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     *
+     * <p>If given data is {@code null}, nothing will happen.
+     */
+    @Override
+    public ArrayList<Throwable> saveGachaData(GameGachaData data) {
+        ArrayList<Throwable> exList = new ArrayList<>();
+        if (data == null) {
+            return exList;
+        }
+        exList.addAll(saveBannerHistory(data.game, data.stndHist));
+        exList.addAll(saveBannerHistory(data.game, data.charHist));
+        exList.addAll(saveBannerHistory(data.game, data.weapHist));
+        return exList;
     }
 
 

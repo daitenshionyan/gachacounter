@@ -1,4 +1,4 @@
-package com.hanyans.gachacounter.wrapper;
+package com.hanyans.gachacounter.mhy;
 
 import java.util.HashSet;
 import java.util.List;

@@ -7,7 +7,7 @@ import java.util.function.Predicate;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.hanyans.gachacounter.wrapper.GachaType;
+import com.hanyans.gachacounter.mhy.GachaType;
 
 
 /**

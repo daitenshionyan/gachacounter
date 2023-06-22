@@ -6,7 +6,9 @@ import java.util.Objects;
 import org.apache.logging.log4j.Level;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.hanyans.gachacounter.core.LockedValue;
 
 
 /**
@@ -15,12 +17,12 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class UserPreference {
     private static final Level DEFAULT_LOG_LEVEL = Level.INFO;
 
-    private Path dataFilePathHSR;
-    private Path dataFilePathGenshin;
-    private Level logLevel;
-    private boolean checkUpdatesOnStart;
+    @JsonIgnore private LockedValue<Path> dataFilePathHsr;
+    @JsonIgnore private LockedValue<Path> dataFilePathGenshin;
+    @JsonIgnore private LockedValue<Level> logLevel;
+    @JsonIgnore private LockedValue<Boolean> checkUpdatesOnStart;
 
-    private ChartPreference chartPrefs;
+    @JsonIgnore private ChartPreference chartPrefs;
 
 
     public UserPreference() {
@@ -35,10 +37,10 @@ public class UserPreference {
                 @JsonProperty("logLevel") Level logLevel,
                 @JsonProperty("checkUpdateOnStart") Boolean checkUpdatesOnStart,
                 @JsonProperty("chartPrefs") ChartPreference chartPrefs) {
-        this.dataFilePathHSR = dataFilePathHSR;
-        this.dataFilePathGenshin = dataFilePathGenshin;
-        this.logLevel = Objects.requireNonNullElse(logLevel, DEFAULT_LOG_LEVEL);
-        this.checkUpdatesOnStart = Objects.requireNonNullElse(checkUpdatesOnStart, true);
+        this.dataFilePathHsr = new LockedValue<>(dataFilePathHSR);
+        this.dataFilePathGenshin = new LockedValue<>(dataFilePathGenshin);
+        this.logLevel = new LockedValue<>(Objects.requireNonNullElse(logLevel, DEFAULT_LOG_LEVEL));
+        this.checkUpdatesOnStart = new LockedValue<>(Objects.requireNonNullElse(checkUpdatesOnStart, true));
         this.chartPrefs = Objects.requireNonNullElse(chartPrefs, new ChartPreference());
     }
 
@@ -49,7 +51,7 @@ public class UserPreference {
      * @param other - the preference data to copy over.
      */
     public void resetTo(UserPreference other) {
-        setDataFilePathHSR(other.getDataFilePathHsr());
+        setDataFilePathHsr(other.getDataFilePathHsr());
         setDataFilePathGenshin(other.getDataFilePathGenshin());
         setLogLevel(other.getLogLevel());
         setCheckUpdateOnStart(other.isCheckUpdateOnStart());
@@ -57,50 +59,64 @@ public class UserPreference {
     }
 
 
-    public synchronized void setDataFilePathHSR(Path dataFilePath) {
-        this.dataFilePathHSR = dataFilePath;
+    public void setDataFilePathHsr(Path path) {
+        dataFilePathHsr.set(path);
     }
 
 
     /**
-     * Returns the set data file path. Can be {@code null} if not set.
+     * Returns the set web cache data path for HSR. If path is not yet set,
+     * {@code null} is returned.
      */
-    public synchronized Path getDataFilePathHsr() {
-        return dataFilePathHSR;
+    @JsonProperty("dataFilePathHSR")
+    public Path getDataFilePathHsr() {
+        return dataFilePathHsr.get();
     }
 
 
-    public synchronized void setDataFilePathGenshin(Path dataFilePath) {
-        this.dataFilePathGenshin = dataFilePath;
+    public void setDataFilePathGenshin(Path path) {
+        dataFilePathGenshin.set(path);
     }
 
 
-    public synchronized Path getDataFilePathGenshin() {
-        return dataFilePathGenshin;
+    /**
+     * Returns the set web cache data path for Genshin. If path is not yet set,
+     * {@code null} is returned.
+     */
+    @JsonProperty("dataFilePathGenshin")
+    public Path getDataFilePathGenshin() {
+        return dataFilePathGenshin.get();
     }
 
 
-    public synchronized void setLogLevel(Level logLevel) {
-        this.logLevel = Objects.requireNonNullElse(logLevel, DEFAULT_LOG_LEVEL);
+    /**
+     * Sets the log level as specified. If {@code null} is given, {@code INFO}
+     * is assumed.
+     */
+    public void setLogLevel(Level logLevel) {
+        this.logLevel.set(Objects.requireNonNullElse(logLevel, DEFAULT_LOG_LEVEL));
     }
 
 
-    public synchronized Level getLogLevel() {
-        return logLevel;
+    @JsonProperty("logLevel")
+    public Level getLogLevel() {
+        return logLevel.get();
     }
 
 
-    public synchronized boolean isCheckUpdateOnStart() {
-        return checkUpdatesOnStart;
+    public void setCheckUpdateOnStart(boolean shouldCheck) {
+        checkUpdatesOnStart.set(shouldCheck);
     }
 
 
-    public synchronized void setCheckUpdateOnStart(boolean shouldCheck) {
-        checkUpdatesOnStart = shouldCheck;
+    @JsonProperty("checkUpdateOnStart")
+    public boolean isCheckUpdateOnStart() {
+        return checkUpdatesOnStart.get();
     }
 
 
-    public synchronized ChartPreference getChartPreference() {
+    @JsonProperty("chartPrefs")
+    public ChartPreference getChartPreference() {
         return chartPrefs;
     }
 
