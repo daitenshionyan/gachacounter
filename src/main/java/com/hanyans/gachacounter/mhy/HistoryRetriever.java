@@ -1,4 +1,4 @@
-package com.hanyans.gachacounter.wrapper;
+package com.hanyans.gachacounter.mhy;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;

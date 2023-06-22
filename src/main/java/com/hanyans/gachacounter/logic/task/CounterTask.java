@@ -12,6 +12,7 @@ import org.apache.logging.log4j.Logger;
 
 import com.hanyans.gachacounter.core.FrequencyMap;
 import com.hanyans.gachacounter.core.task.RunnableTask;
+import com.hanyans.gachacounter.mhy.GachaType;
 import com.hanyans.gachacounter.model.BannerHistory;
 import com.hanyans.gachacounter.model.GachaEntry;
 import com.hanyans.gachacounter.model.count.AccPityFreqMap;
@@ -19,7 +20,6 @@ import com.hanyans.gachacounter.model.count.BannerReport;
 import com.hanyans.gachacounter.model.count.GachaItemMap;
 import com.hanyans.gachacounter.model.count.ProcessedGachaEntry;
 import com.hanyans.gachacounter.model.rateup.BannerEventHistory;
-import com.hanyans.gachacounter.wrapper.GachaType;
 
 
 /**

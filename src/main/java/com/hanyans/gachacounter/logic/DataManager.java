@@ -11,9 +11,9 @@ import java.util.function.Function;
 import com.hanyans.gachacounter.core.task.RunnableTask;
 import com.hanyans.gachacounter.logic.task.GachaCounterTask;
 import com.hanyans.gachacounter.logic.task.HistoryRetrieverTask;
+import com.hanyans.gachacounter.mhy.Game;
 import com.hanyans.gachacounter.model.GameGachaData;
 import com.hanyans.gachacounter.model.count.GachaReport;
-import com.hanyans.gachacounter.wrapper.Game;
 
 
 /**

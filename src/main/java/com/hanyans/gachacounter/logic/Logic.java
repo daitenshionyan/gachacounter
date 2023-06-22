@@ -8,9 +8,9 @@ import com.hanyans.gachacounter.core.AppUpdateMessage;
 import com.hanyans.gachacounter.core.PopupMessage;
 import com.hanyans.gachacounter.core.task.ConsumerTask;
 import com.hanyans.gachacounter.core.task.RunnableTask;
+import com.hanyans.gachacounter.mhy.Game;
 import com.hanyans.gachacounter.model.count.GachaReport;
 import com.hanyans.gachacounter.model.preference.UserPreference;
-import com.hanyans.gachacounter.wrapper.Game;
 
 import javafx.beans.property.ReadOnlyBooleanProperty;
 import javafx.beans.property.ReadOnlyDoubleProperty;

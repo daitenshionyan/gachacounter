@@ -2,10 +2,10 @@ package com.hanyans.gachacounter.storage;
 
 import java.util.Collection;
 
+import com.hanyans.gachacounter.mhy.Game;
 import com.hanyans.gachacounter.model.BannerHistory;
 import com.hanyans.gachacounter.model.GameGachaData;
 import com.hanyans.gachacounter.model.preference.UserPreference;
-import com.hanyans.gachacounter.wrapper.Game;
 
 
 /**

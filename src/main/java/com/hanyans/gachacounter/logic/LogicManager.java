@@ -25,13 +25,13 @@ import com.hanyans.gachacounter.core.task.TrackableTask;
 import com.hanyans.gachacounter.logic.task.AppUpdateCheckTask;
 import com.hanyans.gachacounter.logic.task.UpdateDataTask;
 import com.hanyans.gachacounter.logic.task.UrlGrabberTask;
+import com.hanyans.gachacounter.mhy.Game;
+import com.hanyans.gachacounter.mhy.exception.ResponseException;
 import com.hanyans.gachacounter.model.GameGachaData;
 import com.hanyans.gachacounter.model.count.GachaReport;
 import com.hanyans.gachacounter.model.preference.UserPreference;
 import com.hanyans.gachacounter.storage.LoadReport;
 import com.hanyans.gachacounter.storage.Storage;
-import com.hanyans.gachacounter.wrapper.Game;
-import com.hanyans.gachacounter.wrapper.exception.ResponseException;
 
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.DoubleProperty;

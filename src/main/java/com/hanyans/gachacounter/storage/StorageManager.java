@@ -11,12 +11,12 @@ import org.apache.logging.log4j.Logger;
 import com.fasterxml.jackson.databind.DatabindException;
 import com.hanyans.gachacounter.core.util.FileUtil;
 import com.hanyans.gachacounter.core.util.JsonUtil;
+import com.hanyans.gachacounter.mhy.GachaType;
+import com.hanyans.gachacounter.mhy.Game;
 import com.hanyans.gachacounter.model.BannerHistory;
 import com.hanyans.gachacounter.model.GameGachaData;
 import com.hanyans.gachacounter.model.preference.UserPreference;
 import com.hanyans.gachacounter.model.rateup.BannerEventHistory;
-import com.hanyans.gachacounter.wrapper.GachaType;
-import com.hanyans.gachacounter.wrapper.Game;
 
 
 /**

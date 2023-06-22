@@ -7,10 +7,10 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.hanyans.gachacounter.core.task.RunnableTask;
+import com.hanyans.gachacounter.mhy.Game;
 import com.hanyans.gachacounter.model.GameGachaData;
 import com.hanyans.gachacounter.model.count.BannerReport;
 import com.hanyans.gachacounter.model.count.GachaReport;
-import com.hanyans.gachacounter.wrapper.Game;
 
 
 /**
