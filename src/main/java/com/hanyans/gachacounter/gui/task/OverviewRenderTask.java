@@ -123,7 +123,7 @@ public class OverviewRenderTask extends ConsumerTask<GachaReport> {
         for (int i = 0; i < items.size(); i++) {
             GachaItem item = items.get(i);
             HashSet<ProcessedGachaEntry> entrySet = report.overallCount.get(item);
-            boxes.add(new GachaItemCountBox(report.game, item, entrySet).getRoot());
+            boxes.add(new GachaItemCountBox(report.game, item, entrySet, report.uidNameMap).getRoot());
             setProgress(i + 1, items.size());
             setMessage(String.format("%.2f%%\n%s",
                     progressProperty().get() * 100D,

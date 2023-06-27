@@ -2,6 +2,7 @@ package com.hanyans.gachacounter.model.count;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Map;
 
 import com.hanyans.gachacounter.mhy.Game;
 
@@ -13,6 +14,8 @@ public class GachaReport {
     public final Game game;
     /** Set of UIDs present in the report. */
     public final HashSet<Long> uids;
+    /** UID name map. */
+    public final Map<Long, String> uidNameMap;
     /** Standard banner {@code BannerReport} */
     public final BannerReport stndReport;
     /** Character banner {@code BannerReport} */
@@ -41,11 +44,13 @@ public class GachaReport {
      */
     public GachaReport(
                 Game game,
+                Map<Long, String> uidNameMap,
                 BannerReport stndReport,
                 BannerReport charReport,
                 BannerReport weapReport) {
         this.game = game;
         this.uids = mergeUidList(stndReport.uids, charReport.uids, weapReport.uids);
+        this.uidNameMap = uidNameMap;
         this.stndReport = stndReport;
         this.charReport = charReport;
         this.weapReport = weapReport;

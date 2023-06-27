@@ -1,6 +1,7 @@
 package com.hanyans.gachacounter.logic.task;
 
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Objects;
 
 import org.apache.logging.log4j.LogManager;
@@ -21,6 +22,7 @@ public class GachaCounterTask extends RunnableTask<GachaReport> {
 
     private final Game game;
 
+    private final Map<Long, String> uidNameMap;
     private final RunnableTask<BannerReport> stndCounter;
     private final RunnableTask<BannerReport> charCounter;
     private final RunnableTask<BannerReport> weapCounter;
@@ -36,6 +38,7 @@ public class GachaCounterTask extends RunnableTask<GachaReport> {
                 HashSet<Long> uidFilters) {
         Objects.requireNonNull(gameGachaData);
         this.game = gameGachaData.game;
+        this.uidNameMap = gameGachaData.nameMap.getNameMap();
         this.stndCounter = new CounterTask(gameGachaData.stndHist)
                 .setUidFilters(uidFilters);
         this.charCounter = new CounterTask(gameGachaData.charHist)
@@ -68,6 +71,6 @@ public class GachaCounterTask extends RunnableTask<GachaReport> {
 
         logger.info("Completed gacha counting task in %d ms",
                 getRunTime());
-        return new GachaReport(game, stndCount, charCount, weapCount);
+        return new GachaReport(game, uidNameMap, stndCount, charCount, weapCount);
     }
 }
