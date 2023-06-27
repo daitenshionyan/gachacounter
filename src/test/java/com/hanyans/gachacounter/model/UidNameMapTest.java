@@ -9,7 +9,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
 import com.hanyans.gachacounter.core.util.JsonUtil;
-import com.hanyans.gachacounter.mhy.Game;
 
 public class UidNameMapTest {
     @TempDir private Path savePath;
@@ -17,13 +16,12 @@ public class UidNameMapTest {
 
     @Test
     public void jsonSaveTest() throws Throwable {
-        UidNameMap expectedMap = new UidNameMap(Game.Genshin, getInitialMap());
+        UidNameMap expectedMap = new UidNameMap(getInitialMap());
         Path saveFile = savePath.resolve("NameMap.json");
 
         JsonUtil.serializeToFile(saveFile, expectedMap);
         UidNameMap actualMap = JsonUtil.deserialize(saveFile, UidNameMap.class);
 
-        assertEquals(expectedMap.getGame(), actualMap.getGame());
         assertEquals(expectedMap.getNameMap(), actualMap.getNameMap());
     }
 

@@ -5,6 +5,7 @@ import java.util.Collection;
 import com.hanyans.gachacounter.mhy.Game;
 import com.hanyans.gachacounter.model.BannerHistory;
 import com.hanyans.gachacounter.model.GameGachaData;
+import com.hanyans.gachacounter.model.UidNameMap;
 import com.hanyans.gachacounter.model.preference.UserPreference;
 
 
@@ -28,6 +29,16 @@ public interface Storage {
      * @return a list of exceptions that occured while saving.
      */
     public Collection<Throwable> saveGachaData(GameGachaData data);
+
+
+    /**
+     * Saves the state of the given {@code UidNameMap}.
+     *
+     * @param game - game of the given name map.
+     * @param nameMap - name map to save.
+     * @return a list of exceptions that occured while saving.
+     */
+    public Collection<Throwable> saveNameMap(Game game, UidNameMap nameMap);
 
 
     /**
