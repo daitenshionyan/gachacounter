@@ -5,17 +5,14 @@ import java.util.Map;
 import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.hanyans.gachacounter.core.LockedValue;
 
 
 /**
- * A synchronized map mapping UIDs to a name.
+ * An encapsulation of a map mapping UIDs to a name.
  */
 public class UidNameMap {
-    @JsonIgnore private final LockedValue<HashMap<Long, String>> lockedNameMap =
-            new LockedValue<>(new HashMap<>());
+    private final HashMap<Long, String> nameMap = new HashMap<>();
 
 
     /**
@@ -37,12 +34,13 @@ public class UidNameMap {
 
 
     /**
-     * Returns the name map. Returned map is copied, hences changes to the
-     * returned or encapsulated map will not change the other.
+     * Returns the name that is mapped to the given UID. If there exist no
+     * mappings, the String representation of the UID is returned.
+     *
+     * @param uid - UID whose mapped name to return.
      */
-    @JsonProperty("nameMap")
-    public HashMap<Long, String> getNameMap() {
-        return new HashMap<>(lockedNameMap.get());
+    public String get(long uid) {
+        return nameMap.getOrDefault(uid, String.valueOf(uid));
     }
 
 
@@ -53,7 +51,7 @@ public class UidNameMap {
      * @param name - the name mapping of the UID.
      */
     public void put(long uid, String name) {
-        lockedNameMap.performWrite(map -> map.put(uid, name));
+        nameMap.put(uid, name);
     }
 
 
@@ -64,8 +62,8 @@ public class UidNameMap {
      *
      * @throws NullPointerException if {@code nameMap} is {@code null}.
      */
-    public void putAll(Map<Long, String> nameMap) {
-        lockedNameMap.performWrite(map -> map.putAll(nameMap));
+    public void putAll(Map<Long, String> map) {
+        nameMap.putAll(map);
     }
 
 
@@ -73,7 +71,7 @@ public class UidNameMap {
      * Clears the name map.
      */
     public void clearMap() {
-        lockedNameMap.performWrite(map -> map.clear());
+        nameMap.clear();
     }
 
 
@@ -85,6 +83,22 @@ public class UidNameMap {
      */
     public void reset(UidNameMap ref) {
         clearMap();
-        putAll(ref.getNameMap());
+        putAll(ref.nameMap);
+    }
+
+
+    @Override
+    public boolean equals(Object other) {
+        if (other == null || !(other instanceof UidNameMap)) {
+            return false;
+        }
+        UidNameMap casted = (UidNameMap) other;
+        return nameMap.equals(casted.nameMap);
+    }
+
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(nameMap);
     }
 }

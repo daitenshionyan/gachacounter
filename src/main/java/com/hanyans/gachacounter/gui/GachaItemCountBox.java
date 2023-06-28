@@ -8,7 +8,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Objects;
 
 import org.apache.logging.log4j.LogManager;
@@ -18,6 +17,7 @@ import com.hanyans.gachacounter.core.util.FileUtil;
 import com.hanyans.gachacounter.mhy.GachaType;
 import com.hanyans.gachacounter.mhy.Game;
 import com.hanyans.gachacounter.model.GachaItem;
+import com.hanyans.gachacounter.model.UidNameMap;
 import com.hanyans.gachacounter.model.count.ProcessedGachaEntry;
 
 import javafx.beans.binding.Bindings;
@@ -54,7 +54,7 @@ public class GachaItemCountBox extends UiComponent<VBox> {
     private final Logger logger = LogManager.getFormatterLogger(GachaItemCountBox.class);
 
     private final Collection<ProcessedGachaEntry> entries;
-    private final Map<Long, String> uidNameMap;
+    private final UidNameMap uidNameMap;
 
     @FXML private ImageView displayImage;
 
@@ -73,7 +73,7 @@ public class GachaItemCountBox extends UiComponent<VBox> {
                 Game game,
                 GachaItem item,
                 HashSet<ProcessedGachaEntry> entries,
-                Map<Long, String> uidNameMap) {
+                UidNameMap uidNameMap) {
         super(FXML_FILE);
         this.entries = entries.stream().sorted(Comparator.reverseOrder()).toList();
         this.uidNameMap = Objects.requireNonNull(uidNameMap);
@@ -169,10 +169,9 @@ public class GachaItemCountBox extends UiComponent<VBox> {
                 .multiply(Bindings.size(tableView.getItems()).add(1.01)));
 
         TableColumn<ProcessedGachaEntry, String> uidColumn = new TableColumn<>("UID");
+        // careful: uidNameMap is not synchronized.
         uidColumn.setCellValueFactory(param ->
-                new SimpleObjectProperty<>(uidNameMap.getOrDefault(
-                        param.getValue().uid,
-                        String.valueOf(param.getValue().uid))));
+                new SimpleObjectProperty<>(uidNameMap.get(param.getValue().uid)));
         tableView.getColumns().add(uidColumn);
 
         TableColumn<ProcessedGachaEntry, LocalDateTime> timeColumn = new TableColumn<>("Time");

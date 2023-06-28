@@ -22,7 +22,7 @@ public class UidNameMapTest {
         JsonUtil.serializeToFile(saveFile, expectedMap);
         UidNameMap actualMap = JsonUtil.deserialize(saveFile, UidNameMap.class);
 
-        assertEquals(expectedMap.getNameMap(), actualMap.getNameMap());
+        assertEquals(expectedMap, actualMap);
     }
 
 

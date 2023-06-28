@@ -2,9 +2,9 @@ package com.hanyans.gachacounter.model.count;
 
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.Map;
 
 import com.hanyans.gachacounter.mhy.Game;
+import com.hanyans.gachacounter.model.UidNameMap;
 
 /**
  * Data class containing gacha data from all banners.
@@ -15,7 +15,7 @@ public class GachaReport {
     /** Set of UIDs present in the report. */
     public final HashSet<Long> uids;
     /** UID name map. */
-    public final Map<Long, String> uidNameMap;
+    public final UidNameMap uidNameMap;
     /** Standard banner {@code BannerReport} */
     public final BannerReport stndReport;
     /** Character banner {@code BannerReport} */
@@ -44,7 +44,7 @@ public class GachaReport {
      */
     public GachaReport(
                 Game game,
-                Map<Long, String> uidNameMap,
+                UidNameMap uidNameMap,
                 BannerReport stndReport,
                 BannerReport charReport,
                 BannerReport weapReport) {
