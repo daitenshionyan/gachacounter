@@ -575,5 +575,17 @@
       "Sacrificial Greatsword",
       "Favonius Codex"
     ]
+  }, {
+    "begTime": "2023-07-05T06:00:00",
+    "endTime": "2023-07-25T17:59:00",
+    "rateUps": [
+      "Song of Broken Pines",
+      "Lost Prayer to the Sacred Winds",
+      "The Alley Flash",
+      "Alley Hunter",
+      "Rainslasher",
+      "Favonius Lance",
+      "Eye of Perception"
+    ]
   } ]
 }
