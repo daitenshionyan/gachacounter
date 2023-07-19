@@ -17,6 +17,7 @@ import com.hanyans.gachacounter.gui.updater.BannerCardUpdater;
 import com.hanyans.gachacounter.gui.updater.OverallCardUpdater;
 import com.hanyans.gachacounter.gui.updater.StatisticsUpdater;
 import com.hanyans.gachacounter.model.GachaItem;
+import com.hanyans.gachacounter.model.UidNameMap;
 import com.hanyans.gachacounter.model.count.AccPityFreqMap;
 import com.hanyans.gachacounter.model.count.GachaReport;
 import com.hanyans.gachacounter.model.count.ProcessedGachaEntry;
@@ -158,7 +159,7 @@ public class OverviewRenderTask extends ConsumerTask<GachaReport> {
 
 
     private StatisticsUpdater.PlotData formPlotData(
-                Map<Long, String> nameMap,
+                UidNameMap nameMap,
                 AccPityFreqMap accFreqMap,
                 int pityStep, int maxPity) {
         if (pityStep > 1) {
@@ -186,7 +187,7 @@ public class OverviewRenderTask extends ConsumerTask<GachaReport> {
 
 
     private XYChart.Series<String, Number> formSeries(
-                long uid, Map<Long, String> nameMap,
+                long uid, UidNameMap nameMap,
                 FrequencyMap<Integer> freqMap, FrequencyMap<Integer> combFreqMap,
                 int pityStep, int maxPity) {
         ObservableList<XYChart.Data<String, Number>> datas = FXCollections.observableArrayList();
@@ -194,14 +195,14 @@ public class OverviewRenderTask extends ConsumerTask<GachaReport> {
         // so that there will not be gaps when the graph is displayed.
         for (int pity = pityStep; pity - maxPity < pityStep; pity += pityStep) {
             datas.add(formData(
-                    nameMap.getOrDefault(uid, String.format("UID %d", uid)),
+                    nameMap.get(uid),
                     pity < maxPity ? pity : maxPity,
                     pity < maxPity ? pityStep : maxPity - (pity - pityStep),
                     freqMap.get(pity),
                     combFreqMap.get(pity)));
         }
         return new XYChart.Series<>(
-                nameMap.getOrDefault(uid, String.valueOf(uid)),
+                nameMap.get(uid),
                 datas);
     }
 
