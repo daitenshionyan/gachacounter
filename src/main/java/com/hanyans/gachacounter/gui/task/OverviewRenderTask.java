@@ -146,18 +146,21 @@ public class OverviewRenderTask extends ConsumerTask<GachaReport> {
     private StatisticsUpdater.Arguments formStatsArgs(GachaReport report) {
         long startTime = System.currentTimeMillis();
         StatisticsUpdater.PlotData data5Norm = formPlotData(
-                report.freqMap5Norm, chartPrefs.getPityStep5Norm(), Constants.MAX_PITY_5_NORM);
+                report.uidNameMap, report.freqMap5Norm, chartPrefs.getPityStep5Norm(), Constants.MAX_PITY_5_NORM);
         StatisticsUpdater.PlotData data5Weap = formPlotData(
-                report.freqMap5Weap, chartPrefs.getPityStep5Weap(), Constants.MAX_PITY_5_WEAP);
+                report.uidNameMap, report.freqMap5Weap, chartPrefs.getPityStep5Weap(), Constants.MAX_PITY_5_WEAP);
         StatisticsUpdater.PlotData data4 = formPlotData(
-                report.freqMap4, chartPrefs.getPityStep4(), Constants.MAX_PITY_4);
+                report.uidNameMap, report.freqMap4, chartPrefs.getPityStep4(), Constants.MAX_PITY_4);
         long duration = System.currentTimeMillis() - startTime;
         logger.debug("Completed graph data rendering in %d ms", duration);
         return new StatisticsUpdater.Arguments(data5Norm, data5Weap, data4);
     }
 
 
-    private StatisticsUpdater.PlotData formPlotData(AccPityFreqMap accFreqMap, int pityStep, int maxPity) {
+    private StatisticsUpdater.PlotData formPlotData(
+                Map<Long, String> nameMap,
+                AccPityFreqMap accFreqMap,
+                int pityStep, int maxPity) {
         if (pityStep > 1) {
             accFreqMap = accFreqMap.condense(pityStep);
         }
@@ -165,7 +168,7 @@ public class OverviewRenderTask extends ConsumerTask<GachaReport> {
         FrequencyMap<Integer> combFreqMap = accFreqMap.combineAll();
         for (Map.Entry<Long, FrequencyMap<Integer>> entry : accFreqMap.entrySet()) {
             seriesList.add(formSeries(
-                    entry.getKey(),
+                    entry.getKey(), nameMap,
                     entry.getValue(), combFreqMap,
                     pityStep, maxPity));
         }
@@ -183,7 +186,7 @@ public class OverviewRenderTask extends ConsumerTask<GachaReport> {
 
 
     private XYChart.Series<String, Number> formSeries(
-                long uid,
+                long uid, Map<Long, String> nameMap,
                 FrequencyMap<Integer> freqMap, FrequencyMap<Integer> combFreqMap,
                 int pityStep, int maxPity) {
         ObservableList<XYChart.Data<String, Number>> datas = FXCollections.observableArrayList();
@@ -191,31 +194,33 @@ public class OverviewRenderTask extends ConsumerTask<GachaReport> {
         // so that there will not be gaps when the graph is displayed.
         for (int pity = pityStep; pity - maxPity < pityStep; pity += pityStep) {
             datas.add(formData(
-                    uid,
+                    nameMap.getOrDefault(uid, String.format("UID %d", uid)),
                     pity < maxPity ? pity : maxPity,
                     pity < maxPity ? pityStep : maxPity - (pity - pityStep),
                     freqMap.get(pity),
                     combFreqMap.get(pity)));
         }
-        return new XYChart.Series<>(String.valueOf(uid), datas);
+        return new XYChart.Series<>(
+                nameMap.getOrDefault(uid, String.valueOf(uid)),
+                datas);
     }
 
 
     private XYChart.Data<String, Number> formData(
-                long uid,
+                String name,
                 int pity, int pityStep,
                 int freq, int tot) {
         XYChart.Data<String, Number> data = new XYChart.Data<>(String.valueOf(pity), freq);
         if (pityStep > 1) {
-            data.setExtraValue(String.format("UID %d\nPity %d ~ %d\nFreq: %d of %d",
-                    uid,
+            data.setExtraValue(String.format("%s\nPity %d ~ %d\nFreq: %d of %d",
+                    name,
                     pity - pityStep + 1,
                     pity,
                     freq,
                     tot));
         } else {
-            data.setExtraValue(String.format("UID %d\nPity %d\nFreq: %d of %d",
-                    uid, pity, freq, tot));
+            data.setExtraValue(String.format("%s\nPity %d\nFreq: %d of %d",
+                    name, pity, freq, tot));
         }
         return data;
     }
