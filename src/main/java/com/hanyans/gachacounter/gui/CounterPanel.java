@@ -21,6 +21,7 @@ import com.hanyans.gachacounter.gui.updater.OverallCardUpdater;
 import com.hanyans.gachacounter.gui.updater.StatisticsUpdater;
 import com.hanyans.gachacounter.logic.Logic;
 import com.hanyans.gachacounter.mhy.Game;
+import com.hanyans.gachacounter.model.UidNameMap;
 import com.hanyans.gachacounter.model.preference.UserPreference;
 
 import javafx.application.Platform;
@@ -381,11 +382,12 @@ public class CounterPanel extends UiComponent<VBox> {
     private void handleAddFilter(ActionEvent event) {
         logger.debug("-{HANDLE ADD FILTER}- action fired");
         accFilterCheckList.clearCheckList();
+        UidNameMap nameMap = logic.getUidNameMap();
         logic.getUidFilterMap().entrySet()
                 .stream()
                 .sorted((e1, e2) -> e1.getKey().compareTo(e2.getKey()))
                 .forEachOrdered(entry -> accFilterCheckList.addCheckListItem(
-                        entry.getKey(), entry.getValue()));
+                        entry.getKey(), nameMap.get(entry.getKey()), entry.getValue()));
         isFilterShowingProperty.set(true);
     }
 

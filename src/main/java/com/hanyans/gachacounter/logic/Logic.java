@@ -9,6 +9,7 @@ import com.hanyans.gachacounter.core.PopupMessage;
 import com.hanyans.gachacounter.core.task.ConsumerTask;
 import com.hanyans.gachacounter.core.task.RunnableTask;
 import com.hanyans.gachacounter.mhy.Game;
+import com.hanyans.gachacounter.model.UidNameMap;
 import com.hanyans.gachacounter.model.count.GachaReport;
 import com.hanyans.gachacounter.model.preference.UserPreference;
 
@@ -109,6 +110,9 @@ public interface Logic {
      * Returns the current UID filter map.
      */
     public HashMap<Long, Boolean> getUidFilterMap();
+
+
+    public UidNameMap getUidNameMap();
 
 
     /**

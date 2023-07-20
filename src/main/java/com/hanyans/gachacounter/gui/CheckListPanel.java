@@ -31,6 +31,13 @@ public class CheckListPanel<T> extends VBox {
     }
 
 
+    public void addCheckListItem(T item, String strRep, boolean isSelected) {
+        CheckListItemBox box = new CheckListItemBox(strRep, isSelected);
+        checkBoxMap.put(item, box);
+        getChildren().add(box.getRoot());
+    }
+
+
     public HashMap<T, Boolean> getCheckListMap() {
         HashMap<T, Boolean> result = new HashMap<>();
         for (T item : checkBoxMap.keySet()) {

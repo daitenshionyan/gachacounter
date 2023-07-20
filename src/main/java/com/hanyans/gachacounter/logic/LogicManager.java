@@ -28,6 +28,7 @@ import com.hanyans.gachacounter.logic.task.UrlGrabberTask;
 import com.hanyans.gachacounter.mhy.Game;
 import com.hanyans.gachacounter.mhy.exception.ResponseException;
 import com.hanyans.gachacounter.model.GameGachaData;
+import com.hanyans.gachacounter.model.UidNameMap;
 import com.hanyans.gachacounter.model.count.GachaReport;
 import com.hanyans.gachacounter.model.preference.UserPreference;
 import com.hanyans.gachacounter.storage.LoadReport;
@@ -423,6 +424,12 @@ public class LogicManager implements Logic {
     @Override
     public HashMap<Long, Boolean> getUidFilterMap() {
         return dataManager.getUidFilterMap();
+    }
+
+
+    @Override
+    public UidNameMap getUidNameMap() {
+        return dataManager.getUidNameMap();
     }
 
 

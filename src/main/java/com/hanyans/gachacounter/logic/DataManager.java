@@ -13,6 +13,7 @@ import com.hanyans.gachacounter.logic.task.GachaCounterTask;
 import com.hanyans.gachacounter.logic.task.HistoryRetrieverTask;
 import com.hanyans.gachacounter.mhy.Game;
 import com.hanyans.gachacounter.model.GameGachaData;
+import com.hanyans.gachacounter.model.UidNameMap;
 import com.hanyans.gachacounter.model.count.GachaReport;
 
 
@@ -92,6 +93,19 @@ public class DataManager {
         try {
             lock.readLock().lock();
             return new HashMap<>(uidFilterMap);
+        } finally {
+            lock.readLock().unlock();
+        }
+    }
+
+
+    /**
+     * Returns the current state of the UID name map.
+     */
+    public UidNameMap getUidNameMap() {
+        try {
+            lock.readLock().lock();
+            return gameGachaData.nameMap;
         } finally {
             lock.readLock().unlock();
         }
