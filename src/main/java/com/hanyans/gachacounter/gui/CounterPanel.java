@@ -444,6 +444,12 @@ public class CounterPanel extends UiComponent<VBox> {
     }
 
 
+    @FXML
+    private void handleUidNameEdit(ActionEvent event) {
+        logger.debug("-{HANDLE UID NAME EDIT}- action fired");
+    }
+
+
     /*
      * ========================================================================
      *      UTILITY
