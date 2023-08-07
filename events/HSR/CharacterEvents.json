@@ -44,5 +44,14 @@
       "Natasha",
       "Sushang"
     ]
+  }, {
+    "begTime": "2023-08-09T12:00:00",
+    "endTime": "2023-08-29T14:59:00",
+    "rateUps": [
+      "Kafka",
+      "Luka",
+      "Sampo",
+      "Serval"
+    ]
   } ]
 }
