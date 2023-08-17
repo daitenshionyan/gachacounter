@@ -599,5 +599,17 @@
       "Dragon's Bane",
       "Favonius Warbow"
     ]
+  }, {
+    "begTime": "2023-08-16T06:00:00",
+    "endTime": "2023-09-05T17:59:00",
+    "rateUps": [
+      "The First Great Magic",
+      "Aqua Simulacra",
+      "Sacrificial Sword",
+      "Favonius Greatsword",
+      "Favonius Lance",
+      "Sacrificial Fragments",
+      "Sacrificial Bow"
+    ]
   } ]
 }
