@@ -157,7 +157,7 @@ public class HistoryRetrieverTask extends RunnableTask<Integer> {
 
         // get response
         GachaResponseResult result;
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream()))) {
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream(), "UTF-8"))) {
             result = JsonUtil.deserialize(reader, GachaResponseResult.class);
         }
 
