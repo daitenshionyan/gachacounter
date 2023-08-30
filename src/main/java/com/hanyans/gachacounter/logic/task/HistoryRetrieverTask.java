@@ -91,6 +91,9 @@ public class HistoryRetrieverTask extends RunnableTask<Integer> {
             totalAdded += numAdded;
             logger.info("Added %d of %d entries retrieved to <%s> (Total added = %d)",
                     numAdded, entries.size(), gachaType.name(), totalAdded);
+            for (GachaEntry entry : entries) {
+                logger.trace("Added <%s>", entry.name);
+            }
             setMessage(String.format("[%s] Added %s entries",
                     gachaType.toString(), totalAdded));
             if (numAdded < PAGE_SIZE) {
