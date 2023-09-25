@@ -22,7 +22,7 @@ import javafx.stage.Stage;
 
 
 public class MainApp extends Application {
-    public static final Version VERSION = new Version(0, 3, 0);
+    public static final Version VERSION = new Version(0, 3, 2);
 
     private static final String ICON_FILE = "/view/img/icon.png";
 

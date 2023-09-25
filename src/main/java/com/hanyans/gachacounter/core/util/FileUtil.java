@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Objects;
@@ -68,11 +69,11 @@ public class FileUtil {
      *
      * @param path - the path to the file whose {@code BufferedReader}
      *      to return.
-     * @throws FileNotFoundException if the file cannot be found.
+     * @throws IOException if an IO error occurs.
      */
-    public static BufferedReader getFileReader(Path path) throws FileNotFoundException {
+    public static BufferedReader getFileReader(Path path) throws IOException {
         Objects.requireNonNull(path);
-        return new BufferedReader(new FileReader(path.toFile()), BUFFER_SIZE);
+        return new BufferedReader(new FileReader(path.toFile(), Charset.forName("UTF-8")), BUFFER_SIZE);
     }
 
 
@@ -101,7 +102,7 @@ public class FileUtil {
      */
     public static BufferedWriter getFileWriter(Path path) throws IOException {
         Objects.requireNonNull(path);
-        return new BufferedWriter(new FileWriter(path.toFile()), BUFFER_SIZE);
+        return new BufferedWriter(new FileWriter(path.toFile(), Charset.forName("UTF-8")), BUFFER_SIZE);
     }
 
 
