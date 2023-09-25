@@ -115,6 +115,11 @@ public interface Logic {
     public UidNameMap getUidNameMap();
 
 
+    public void updateUidNameMap(RunnableTask<UidNameMap> task,
+            Consumer<UidNameMap> onComplete,
+            Consumer<Throwable> onException);
+
+
     /**
      * Manually saves the current state of data.
      */

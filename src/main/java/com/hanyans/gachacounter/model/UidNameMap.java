@@ -21,6 +21,11 @@ public class UidNameMap {
     public UidNameMap() {}
 
 
+    public UidNameMap(UidNameMap other) {
+        this.nameMap.putAll(other.nameMap);
+    }
+
+
     /**
      * Constructs a {@code UidNameMap}.
      *

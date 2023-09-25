@@ -105,7 +105,18 @@ public class DataManager {
     public UidNameMap getUidNameMap() {
         try {
             lock.readLock().lock();
-            return gameGachaData.nameMap;
+            return (gameGachaData == null) ?
+                    new UidNameMap() : new UidNameMap(gameGachaData.nameMap);
+        } finally {
+            lock.readLock().unlock();
+        }
+    }
+
+
+    public void setUidNameMap(UidNameMap nameMap) {
+        try {
+            lock.readLock().lock();
+            gameGachaData.nameMap.reset(nameMap);
         } finally {
             lock.readLock().unlock();
         }

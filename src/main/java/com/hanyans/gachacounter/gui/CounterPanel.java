@@ -13,6 +13,7 @@ import com.hanyans.gachacounter.core.AppUpdateMessage;
 import com.hanyans.gachacounter.core.PopupMessage;
 import com.hanyans.gachacounter.core.util.FileUtil;
 import com.hanyans.gachacounter.gui.popup.MessagePopupWindow;
+import com.hanyans.gachacounter.gui.popup.NameMappingMenuWindow;
 import com.hanyans.gachacounter.gui.popup.PreferenceMenuWindow;
 import com.hanyans.gachacounter.gui.popup.UpdatePopupWindow;
 import com.hanyans.gachacounter.gui.task.OverviewRenderTask;
@@ -447,6 +448,8 @@ public class CounterPanel extends UiComponent<VBox> {
     @FXML
     private void handleUidNameEdit(ActionEvent event) {
         logger.debug("-{HANDLE UID NAME EDIT}- action fired");
+        isFilterShowingProperty.set(false);
+        NameMappingMenuWindow.displayAndWait(parentStage, logic);
     }
 
 

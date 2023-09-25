@@ -266,6 +266,25 @@ public class LogicManager implements Logic {
     }
 
 
+    @Override
+    public void updateUidNameMap(RunnableTask<UidNameMap> task,
+            Consumer<UidNameMap> onComplete,
+            Consumer<Throwable> onException) {
+        if (!canRun("UPDATE NAME MAP", true)) {
+            return;
+        }
+        setRunningState(true);
+        task.setOnComplete(onComplete.andThen(nameMap -> {
+            dataManager.setUidNameMap(nameMap);
+            saveState();
+            generateGachaReport(report -> setRunningState(false));
+        }));
+        task.setOnException(onException.andThen(ex -> setRunningState(false)));
+        bindTaskProperty(task);
+        executor.execute(task);
+    }
+
+
     /*
      * ========================================================================
      *      IO
