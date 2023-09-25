@@ -1,4 +1,4 @@
-package com.hanyans.gachacounter.wrapper.exception;
+package com.hanyans.gachacounter.mhy.exception;
 
 public class ResponseException extends Exception {
     public ResponseException() {}

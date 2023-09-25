@@ -8,9 +8,10 @@ import com.hanyans.gachacounter.core.AppUpdateMessage;
 import com.hanyans.gachacounter.core.PopupMessage;
 import com.hanyans.gachacounter.core.task.ConsumerTask;
 import com.hanyans.gachacounter.core.task.RunnableTask;
+import com.hanyans.gachacounter.mhy.Game;
+import com.hanyans.gachacounter.model.UidNameMap;
 import com.hanyans.gachacounter.model.count.GachaReport;
 import com.hanyans.gachacounter.model.preference.UserPreference;
-import com.hanyans.gachacounter.wrapper.Game;
 
 import javafx.beans.property.ReadOnlyBooleanProperty;
 import javafx.beans.property.ReadOnlyDoubleProperty;
@@ -109,6 +110,14 @@ public interface Logic {
      * Returns the current UID filter map.
      */
     public HashMap<Long, Boolean> getUidFilterMap();
+
+
+    public UidNameMap getUidNameMap();
+
+
+    public void updateUidNameMap(RunnableTask<UidNameMap> task,
+            Consumer<UidNameMap> onComplete,
+            Consumer<Throwable> onException);
 
 
     /**

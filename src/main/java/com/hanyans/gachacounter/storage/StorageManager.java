@@ -11,12 +11,13 @@ import org.apache.logging.log4j.Logger;
 import com.fasterxml.jackson.databind.DatabindException;
 import com.hanyans.gachacounter.core.util.FileUtil;
 import com.hanyans.gachacounter.core.util.JsonUtil;
+import com.hanyans.gachacounter.mhy.GachaType;
+import com.hanyans.gachacounter.mhy.Game;
 import com.hanyans.gachacounter.model.BannerHistory;
 import com.hanyans.gachacounter.model.GameGachaData;
+import com.hanyans.gachacounter.model.UidNameMap;
 import com.hanyans.gachacounter.model.preference.UserPreference;
 import com.hanyans.gachacounter.model.rateup.BannerEventHistory;
-import com.hanyans.gachacounter.wrapper.GachaType;
-import com.hanyans.gachacounter.wrapper.Game;
 
 
 /**
@@ -41,8 +42,11 @@ public class StorageManager implements Storage {
     public static final Path GENSHIN_DIR_PATH = Path.of("Genshin");
 
     /**
-     * Standard history data file path relative to either {@link #HSR_DIR_PATH}
-     * or {@link #GENSHIN_DIR_PATH}.
+     * UID name map data file path relative to a game directory.
+     */
+    public static final Path NAME_MAP_PATH = Path.of("NameMap.json");
+    /**
+     * Standard history data file path relative to a game directory.
      */
     public static final Path STND_HIST_PATH = Path.of("StandardHistory.json");
     /**
@@ -56,13 +60,11 @@ public class StorageManager implements Storage {
      */
     public static final Path WEAP_HIST_PATH = Path.of("WeaponHistory.json");
     /**
-     * Character events data file path relative to either {@link #HSR_DIR_PATH}
-     * or {@link #GENSHIN_DIR_PATH}.
+     * Character events data file path relative to a game directory.
      */
     public static final Path CHAR_EVENTS_PATH = Path.of("CharacterEvents.json");
     /**
-     * Weapon events data file path relative to either {@link #HSR_DIR_PATH} or
-     * {@link #GENSHIN_DIR_PATH}.
+     * Weapon events data file path relative to a game directory.
      */
     public static final Path WEAP_EVENTS_PATH = Path.of("WeaponEvents.json");
 
@@ -76,16 +78,28 @@ public class StorageManager implements Storage {
     @Override
     public LoadReport<GameGachaData> loadGachaData(Game game) {
         ArrayList<Throwable> exList = new ArrayList<>();
-        Path histPath = getGamePath(game, USER_DATA_DIR_PATH);
+        Path gamePath = getGamePath(game, USER_DATA_DIR_PATH);
         Path eventPath = getGamePath(game, EVENT_DIR_PATH);
         GameGachaData data = new GameGachaData(
                 game,
-                loadHistory(GachaType.STANDARD, histPath.resolve(STND_HIST_PATH), exList),
-                loadHistory(GachaType.CHARACTER, histPath.resolve(CHAR_HIST_PATH), exList),
-                loadHistory(GachaType.WEAPON, histPath.resolve(WEAP_HIST_PATH), exList),
+                loadNameMap(gamePath.resolve(NAME_MAP_PATH), exList),
+                loadHistory(GachaType.STANDARD, gamePath.resolve(STND_HIST_PATH), exList),
+                loadHistory(GachaType.CHARACTER, gamePath.resolve(CHAR_HIST_PATH), exList),
+                loadHistory(GachaType.WEAPON, gamePath.resolve(WEAP_HIST_PATH), exList),
                 loadEvent(GachaType.CHARACTER, eventPath.resolve(CHAR_EVENTS_PATH), exList),
                 loadEvent(GachaType.WEAPON, eventPath.resolve(WEAP_EVENTS_PATH), exList));
         return new LoadReport<>(data, exList);
+    }
+
+
+    private UidNameMap loadNameMap(Path path, ArrayList<Throwable> exList) {
+        UidNameMap nameMap = loadData(path, UidNameMap.class, exList, "UID NAME MAP");
+        if (nameMap == null) {
+            logger.info("An empty name map will be used");
+            return new UidNameMap();
+        }
+        logger.info("Successfully loaded name map");
+        return nameMap;
     }
 
 
@@ -115,18 +129,55 @@ public class StorageManager implements Storage {
     }
 
 
+    /**
+     * {@inheritDoc}
+     *
+     * <p>If given data is {@code null}, nothing will happen.
+     */
+    @Override
+    public ArrayList<Throwable> saveGachaData(GameGachaData data) {
+        ArrayList<Throwable> exList = new ArrayList<>();
+        if (data == null) {
+            return exList;
+        }
+        exList.addAll(saveNameMap(data.game, data.nameMap));
+        exList.addAll(saveBannerHistory(data.game, data.stndHist));
+        exList.addAll(saveBannerHistory(data.game, data.charHist));
+        exList.addAll(saveBannerHistory(data.game, data.weapHist));
+        return exList;
+    }
+
+
+    @Override
+    public ArrayList<Throwable> saveNameMap(Game game, UidNameMap nameMap) {
+        Path gamePath = getGamePath(game, USER_DATA_DIR_PATH).resolve(NAME_MAP_PATH);
+        ArrayList<Throwable> exList = new ArrayList<>();
+        try {
+            FileUtil.createFile(gamePath);
+            JsonUtil.serializeToFile(gamePath, nameMap);
+            logger.info("Successfully save the state of <NAME MAP>");
+        } catch (Throwable ex) {
+            exList.add(new IOException(String.format("[NAME MAP]:\n%s",
+                    ex.toString())));
+            logger.error(
+                    "Failed to save the state of <NAME MAP>", ex);
+        }
+        return exList;
+    }
+
+
     @Override
     public ArrayList<Throwable> saveBannerHistory(Game game, BannerHistory history) {
-        Path histPath = getGamePath(game, USER_DATA_DIR_PATH);
+        Path gamePath = getGamePath(game, USER_DATA_DIR_PATH);
         switch (history.getGachaType()) {
             case STANDARD:
-                histPath = histPath.resolve(STND_HIST_PATH);
+                gamePath = gamePath.resolve(STND_HIST_PATH);
                 break;
             case CHARACTER:
-                histPath = histPath.resolve(CHAR_HIST_PATH);
+                gamePath = gamePath.resolve(CHAR_HIST_PATH);
                 break;
             case WEAPON:
-                histPath = histPath.resolve(WEAP_HIST_PATH);
+                gamePath = gamePath.resolve(WEAP_HIST_PATH);
                 break;
             default:
                 throw new IllegalArgumentException(
@@ -135,8 +186,8 @@ public class StorageManager implements Storage {
 
         ArrayList<Throwable> exList = new ArrayList<>();
         try {
-            FileUtil.createFile(histPath);
-            JsonUtil.serializeToFile(histPath, history);
+            FileUtil.createFile(gamePath);
+            JsonUtil.serializeToFile(gamePath, history);
             logger.info("Successfully save the state of <%s HISTORY>", history.getGachaType());
         } catch (Throwable ex) {
             exList.add(new IOException(String.format("[%s HISTORY]:\n%s",

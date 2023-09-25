@@ -17,6 +17,7 @@ import com.hanyans.gachacounter.gui.updater.BannerCardUpdater;
 import com.hanyans.gachacounter.gui.updater.OverallCardUpdater;
 import com.hanyans.gachacounter.gui.updater.StatisticsUpdater;
 import com.hanyans.gachacounter.model.GachaItem;
+import com.hanyans.gachacounter.model.UidNameMap;
 import com.hanyans.gachacounter.model.count.AccPityFreqMap;
 import com.hanyans.gachacounter.model.count.GachaReport;
 import com.hanyans.gachacounter.model.count.ProcessedGachaEntry;
@@ -123,7 +124,7 @@ public class OverviewRenderTask extends ConsumerTask<GachaReport> {
         for (int i = 0; i < items.size(); i++) {
             GachaItem item = items.get(i);
             HashSet<ProcessedGachaEntry> entrySet = report.overallCount.get(item);
-            boxes.add(new GachaItemCountBox(report.game, item, entrySet).getRoot());
+            boxes.add(new GachaItemCountBox(report.game, item, entrySet, report.uidNameMap).getRoot());
             setProgress(i + 1, items.size());
             setMessage(String.format("%.2f%%\n%s",
                     progressProperty().get() * 100D,
@@ -146,18 +147,21 @@ public class OverviewRenderTask extends ConsumerTask<GachaReport> {
     private StatisticsUpdater.Arguments formStatsArgs(GachaReport report) {
         long startTime = System.currentTimeMillis();
         StatisticsUpdater.PlotData data5Norm = formPlotData(
-                report.freqMap5Norm, chartPrefs.getPityStep5Norm(), Constants.MAX_PITY_5_NORM);
+                report.uidNameMap, report.freqMap5Norm, chartPrefs.getPityStep5Norm(), Constants.MAX_PITY_5_NORM);
         StatisticsUpdater.PlotData data5Weap = formPlotData(
-                report.freqMap5Weap, chartPrefs.getPityStep5Weap(), Constants.MAX_PITY_5_WEAP);
+                report.uidNameMap, report.freqMap5Weap, chartPrefs.getPityStep5Weap(), Constants.MAX_PITY_5_WEAP);
         StatisticsUpdater.PlotData data4 = formPlotData(
-                report.freqMap4, chartPrefs.getPityStep4(), Constants.MAX_PITY_4);
+                report.uidNameMap, report.freqMap4, chartPrefs.getPityStep4(), Constants.MAX_PITY_4);
         long duration = System.currentTimeMillis() - startTime;
         logger.debug("Completed graph data rendering in %d ms", duration);
         return new StatisticsUpdater.Arguments(data5Norm, data5Weap, data4);
     }
 
 
-    private StatisticsUpdater.PlotData formPlotData(AccPityFreqMap accFreqMap, int pityStep, int maxPity) {
+    private StatisticsUpdater.PlotData formPlotData(
+                UidNameMap nameMap,
+                AccPityFreqMap accFreqMap,
+                int pityStep, int maxPity) {
         if (pityStep > 1) {
             accFreqMap = accFreqMap.condense(pityStep);
         }
@@ -165,7 +169,7 @@ public class OverviewRenderTask extends ConsumerTask<GachaReport> {
         FrequencyMap<Integer> combFreqMap = accFreqMap.combineAll();
         for (Map.Entry<Long, FrequencyMap<Integer>> entry : accFreqMap.entrySet()) {
             seriesList.add(formSeries(
-                    entry.getKey(),
+                    entry.getKey(), nameMap,
                     entry.getValue(), combFreqMap,
                     pityStep, maxPity));
         }
@@ -183,7 +187,7 @@ public class OverviewRenderTask extends ConsumerTask<GachaReport> {
 
 
     private XYChart.Series<String, Number> formSeries(
-                long uid,
+                long uid, UidNameMap nameMap,
                 FrequencyMap<Integer> freqMap, FrequencyMap<Integer> combFreqMap,
                 int pityStep, int maxPity) {
         ObservableList<XYChart.Data<String, Number>> datas = FXCollections.observableArrayList();
@@ -191,31 +195,33 @@ public class OverviewRenderTask extends ConsumerTask<GachaReport> {
         // so that there will not be gaps when the graph is displayed.
         for (int pity = pityStep; pity - maxPity < pityStep; pity += pityStep) {
             datas.add(formData(
-                    uid,
+                    nameMap.get(uid),
                     pity < maxPity ? pity : maxPity,
                     pity < maxPity ? pityStep : maxPity - (pity - pityStep),
                     freqMap.get(pity),
                     combFreqMap.get(pity)));
         }
-        return new XYChart.Series<>(String.valueOf(uid), datas);
+        return new XYChart.Series<>(
+                nameMap.get(uid),
+                datas);
     }
 
 
     private XYChart.Data<String, Number> formData(
-                long uid,
+                String name,
                 int pity, int pityStep,
                 int freq, int tot) {
         XYChart.Data<String, Number> data = new XYChart.Data<>(String.valueOf(pity), freq);
         if (pityStep > 1) {
-            data.setExtraValue(String.format("UID %d\nPity %d ~ %d\nFreq: %d of %d",
-                    uid,
+            data.setExtraValue(String.format("%s\nPity %d ~ %d\nFreq: %d of %d",
+                    name,
                     pity - pityStep + 1,
                     pity,
                     freq,
                     tot));
         } else {
-            data.setExtraValue(String.format("UID %d\nPity %d\nFreq: %d of %d",
-                    uid, pity, freq, tot));
+            data.setExtraValue(String.format("%s\nPity %d\nFreq: %d of %d",
+                    name, pity, freq, tot));
         }
         return data;
     }

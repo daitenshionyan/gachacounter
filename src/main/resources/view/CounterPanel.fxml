@@ -38,6 +38,11 @@
                         <MenuItem mnemonicParsing="false" onAction="#handlePreferenceEdit" text="Preference" />
                   </items>
                 </Menu>
+                  <Menu mnemonicParsing="false" text="Edit">
+                    <items>
+                      <MenuItem mnemonicParsing="false" onAction="#handleUidNameEdit" text="UID name" />
+                    </items>
+                  </Menu>
                   <Menu mnemonicParsing="false" text="Help">
                     <items>
                         <MenuItem mnemonicParsing="false" onAction="#handleUpdateData" text="Download data files" />

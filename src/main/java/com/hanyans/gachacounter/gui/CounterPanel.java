@@ -13,6 +13,7 @@ import com.hanyans.gachacounter.core.AppUpdateMessage;
 import com.hanyans.gachacounter.core.PopupMessage;
 import com.hanyans.gachacounter.core.util.FileUtil;
 import com.hanyans.gachacounter.gui.popup.MessagePopupWindow;
+import com.hanyans.gachacounter.gui.popup.NameMappingMenuWindow;
 import com.hanyans.gachacounter.gui.popup.PreferenceMenuWindow;
 import com.hanyans.gachacounter.gui.popup.UpdatePopupWindow;
 import com.hanyans.gachacounter.gui.task.OverviewRenderTask;
@@ -20,8 +21,9 @@ import com.hanyans.gachacounter.gui.updater.BannerCardUpdater;
 import com.hanyans.gachacounter.gui.updater.OverallCardUpdater;
 import com.hanyans.gachacounter.gui.updater.StatisticsUpdater;
 import com.hanyans.gachacounter.logic.Logic;
+import com.hanyans.gachacounter.mhy.Game;
+import com.hanyans.gachacounter.model.UidNameMap;
 import com.hanyans.gachacounter.model.preference.UserPreference;
-import com.hanyans.gachacounter.wrapper.Game;
 
 import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
@@ -381,11 +383,12 @@ public class CounterPanel extends UiComponent<VBox> {
     private void handleAddFilter(ActionEvent event) {
         logger.debug("-{HANDLE ADD FILTER}- action fired");
         accFilterCheckList.clearCheckList();
+        UidNameMap nameMap = logic.getUidNameMap();
         logic.getUidFilterMap().entrySet()
                 .stream()
                 .sorted((e1, e2) -> e1.getKey().compareTo(e2.getKey()))
                 .forEachOrdered(entry -> accFilterCheckList.addCheckListItem(
-                        entry.getKey(), entry.getValue()));
+                        entry.getKey(), nameMap.get(entry.getKey()), entry.getValue()));
         isFilterShowingProperty.set(true);
     }
 
@@ -439,6 +442,14 @@ public class CounterPanel extends UiComponent<VBox> {
         logger.debug("-{HANDLE PREFERENCE EDIT}- action fired");
         isFilterShowingProperty.set(false);
         PreferenceMenuWindow.displayAndWait(parentStage, logic);
+    }
+
+
+    @FXML
+    private void handleUidNameEdit(ActionEvent event) {
+        logger.debug("-{HANDLE UID NAME EDIT}- action fired");
+        isFilterShowingProperty.set(false);
+        NameMappingMenuWindow.displayAndWait(parentStage, logic);
     }
 
 

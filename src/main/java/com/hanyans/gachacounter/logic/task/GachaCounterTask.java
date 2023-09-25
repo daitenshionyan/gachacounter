@@ -1,12 +1,17 @@
 package com.hanyans.gachacounter.logic.task;
 
+import java.util.HashSet;
+import java.util.Objects;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.hanyans.gachacounter.core.task.RunnableTask;
+import com.hanyans.gachacounter.mhy.Game;
+import com.hanyans.gachacounter.model.GameGachaData;
+import com.hanyans.gachacounter.model.UidNameMap;
 import com.hanyans.gachacounter.model.count.BannerReport;
 import com.hanyans.gachacounter.model.count.GachaReport;
-import com.hanyans.gachacounter.wrapper.Game;
 
 
 /**
@@ -17,20 +22,31 @@ public class GachaCounterTask extends RunnableTask<GachaReport> {
 
     private final Game game;
 
+    private final UidNameMap uidNameMap;
     private final RunnableTask<BannerReport> stndCounter;
     private final RunnableTask<BannerReport> charCounter;
     private final RunnableTask<BannerReport> weapCounter;
 
 
-    public GachaCounterTask (
-                Game game,
-                RunnableTask<BannerReport> stndCounter,
-                RunnableTask<BannerReport> charCounter,
-                RunnableTask<BannerReport> weapCounter) {
-        this.game = game;
-        this.stndCounter = stndCounter;
-        this.charCounter = charCounter;
-        this.weapCounter = weapCounter;
+    public GachaCounterTask(GameGachaData gameGachaData) {
+        this(gameGachaData, null);
+    }
+
+
+    public GachaCounterTask(
+                GameGachaData gameGachaData,
+                HashSet<Long> uidFilters) {
+        Objects.requireNonNull(gameGachaData);
+        this.game = gameGachaData.game;
+        this.uidNameMap = gameGachaData.nameMap;
+        this.stndCounter = new CounterTask(gameGachaData.stndHist)
+                .setUidFilters(uidFilters);
+        this.charCounter = new CounterTask(gameGachaData.charHist)
+                .setRateUpMap(gameGachaData.charEvents)
+                .setUidFilters(uidFilters);
+        this.weapCounter = new CounterTask(gameGachaData.weapHist)
+                .setRateUpMap(gameGachaData.weapEvents)
+                .setUidFilters(uidFilters);
     }
 
 
@@ -55,6 +71,6 @@ public class GachaCounterTask extends RunnableTask<GachaReport> {
 
         logger.info("Completed gacha counting task in %d ms",
                 getRunTime());
-        return new GachaReport(game, stndCount, charCount, weapCount);
+        return new GachaReport(game, uidNameMap, stndCount, charCount, weapCount);
     }
 }
