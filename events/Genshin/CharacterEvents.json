@@ -523,5 +523,15 @@
       "Thoma",
       "Dori"
     ]
+  }, {
+    "begTime": "2023-11-08T06:00:00",
+    "endTime": "2023-11-28T17:59:00",
+    "rateUps": [
+      "Furina",
+      "Baizhu",
+      "Charlotte",
+      "Collei",
+      "Beidou"
+    ]
   } ]
 }
