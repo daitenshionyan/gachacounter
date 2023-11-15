@@ -80,6 +80,8 @@ public class CounterTask extends RunnableTask<BannerReport> {
         HashMap<Long, Boolean> isRateUp5 = new HashMap<>();
         AccPityFreqMap freqMap5 = new AccPityFreqMap();
         AccPityFreqMap freqMap4 = new AccPityFreqMap();
+        ProcessedGachaEntry prev5 = null;
+        ProcessedGachaEntry prev4 = null;
 
         // iterate through entries
         for (int i = 0; i < sortedEntries.size(); i++) {
@@ -99,6 +101,7 @@ public class CounterTask extends RunnableTask<BannerReport> {
             boolean isRateUpWon = false;
             pullSinceLast4.add(entry.uid);
             pullSinceLast5.add(entry.uid);
+            ProcessedGachaEntry processedEntry;
             switch (entry.rank) {
                 case 5:
                     pityCount = pullSinceLast5.get(entry.uid);
@@ -108,6 +111,9 @@ public class CounterTask extends RunnableTask<BannerReport> {
                     isRateUp4.put(entry.uid, isRateUp);
                     isRateUp5.put(entry.uid, isRateUp);
                     freqMap5.add(entry.uid, pityCount);
+                    processedEntry = new ProcessedGachaEntry(
+                            entry, pityCount, isRateUp, isRateUpWon, prev5);
+                    prev5 = processedEntry;
                     break;
                 case 4:
                     pityCount = pullSinceLast4.get(entry.uid);
@@ -115,12 +121,19 @@ public class CounterTask extends RunnableTask<BannerReport> {
                     pullSinceLast4.put(entry.uid, 0);
                     isRateUp4.put(entry.uid, isRateUp);
                     freqMap4.add(entry.uid, pityCount);
+                    processedEntry = new ProcessedGachaEntry(
+                            entry, pityCount, isRateUp, isRateUpWon, prev4);
+                    prev4 = processedEntry;
+                    break;
+                default:
+                    processedEntry = new ProcessedGachaEntry(
+                            entry, pityCount, isRateUp, isRateUpWon, null);
                     break;
             }
 
             // add entry count
             uids.add(entry.uid);
-            counter.add(new ProcessedGachaEntry(entry, pityCount, isRateUp, isRateUpWon));
+            counter.add(processedEntry);
         }
 
         logger.debug("Completed counting task for <%s> in %d ms",

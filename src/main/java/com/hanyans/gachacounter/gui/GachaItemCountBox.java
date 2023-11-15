@@ -53,6 +53,7 @@ public class GachaItemCountBox extends UiComponent<VBox> {
 
     private final Logger logger = LogManager.getFormatterLogger(GachaItemCountBox.class);
 
+    private final Game game;
     private final Collection<ProcessedGachaEntry> entries;
     private final UidNameMap uidNameMap;
 
@@ -75,6 +76,7 @@ public class GachaItemCountBox extends UiComponent<VBox> {
                 HashSet<ProcessedGachaEntry> entries,
                 UidNameMap uidNameMap) {
         super(FXML_FILE);
+        this.game = game;
         this.entries = entries.stream().sorted(Comparator.reverseOrder()).toList();
         this.uidNameMap = Objects.requireNonNull(uidNameMap);
         itemNameLabel.setText(item.name);
@@ -91,7 +93,7 @@ public class GachaItemCountBox extends UiComponent<VBox> {
                 getRoot().getStyleClass().add(STYLE_RANK_5);
                 break;
         }
-        initialiseDisplayImage(item, game);
+        initialiseDisplayImage(item);
         setTableVisibility(isShowing);
     }
 
@@ -104,7 +106,7 @@ public class GachaItemCountBox extends UiComponent<VBox> {
     }
 
 
-    private Path getImagePath(Game game, GachaItem item) {
+    private Path getImagePath(GachaItem item) {
         Path path;
         switch (game) {
             case HSR:
@@ -130,8 +132,8 @@ public class GachaItemCountBox extends UiComponent<VBox> {
     }
 
 
-    private void initialiseDisplayImage(GachaItem item, Game game) {
-        Path imagePath = getImagePath(game, item);
+    private void initialiseDisplayImage(GachaItem item) {
+        Path imagePath = getImagePath(item);
         double iconHeight = ICON_HEIGHT;
         double iconWidth = ICON_WIDTH_CHAR;
         try (InputStream is = FileUtil.getInputStream(imagePath)) {
@@ -185,6 +187,12 @@ public class GachaItemCountBox extends UiComponent<VBox> {
                 new SimpleObjectProperty<>(param.getValue().gachaType));
         tableView.getColumns().add(bannerColumn);
 
+        TableColumn<ProcessedGachaEntry, ProcessedGachaEntry> lostColumn = new TableColumn<>("Lost to");
+        lostColumn.setCellValueFactory(param ->
+                new SimpleObjectProperty<>(getLostItem(param.getValue())));
+        lostColumn.setCellFactory(table -> new LostEntryCell());
+        tableView.getColumns().add(lostColumn);
+
         TableColumn<ProcessedGachaEntry, ProcessedGachaEntry> pityColumn = new TableColumn<>("Pity");
         pityColumn.setCellValueFactory(param ->
                 new SimpleObjectProperty<>(param.getValue()));
@@ -193,6 +201,14 @@ public class GachaItemCountBox extends UiComponent<VBox> {
         tableView.getColumns().add(pityColumn);
 
         tableDisplayArea.getChildren().setAll(tableView);
+    }
+
+
+    private ProcessedGachaEntry getLostItem(ProcessedGachaEntry entry) {
+        if (!entry.isRateUp || entry.isRateUpWon) {
+            return null;
+        }
+        return entry.prevRankEntry.orElse(null);
     }
 
 
@@ -227,6 +243,28 @@ public class GachaItemCountBox extends UiComponent<VBox> {
             }
 
             setText(item.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+        }
+    }
+
+
+
+
+
+    private class LostEntryCell extends TableCell<ProcessedGachaEntry, ProcessedGachaEntry> {
+        @Override
+        protected void updateItem(ProcessedGachaEntry item, boolean empty) {
+            super.updateItem(item, empty);
+            if (item == null || empty) {
+                return;
+            }
+
+            Path path = null;
+            try {
+                path = getImagePath(new GachaItem(item.itemId, item.name, item.rank, item.itemType));
+            } catch (Throwable ex) {
+                // Ignore
+            }
+            setGraphic(new LostCountBox(path, item.pityCount).getRoot());
         }
     }
 

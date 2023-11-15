@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+
+<HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" spacing="5.0" xmlns="http://javafx.com/javafx/null" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <VBox alignment="CENTER" prefHeight="17.0" prefWidth="15.0" styleClass="item-icon-display-box" HBox.hgrow="NEVER">
+         <children>
+            <ImageView fx:id="displayImage" pickOnBounds="true" preserveRatio="true" />
+         </children>
+      </VBox>
+      <Label fx:id="countLabel" maxWidth="-Infinity" minWidth="-Infinity" styleClass="main-value-label" />
+   </children>
+</HBox>
