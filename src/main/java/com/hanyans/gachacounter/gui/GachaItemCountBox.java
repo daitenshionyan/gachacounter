@@ -165,7 +165,7 @@ public class GachaItemCountBox extends UiComponent<VBox> {
         TableView<ProcessedGachaEntry> tableView = new TableView<>();
         tableView.getItems().setAll(entries);
         tableView.columnResizePolicyProperty().set(TableView.CONSTRAINED_RESIZE_POLICY);
-        tableView.setFixedCellSize(25D);
+        tableView.setFixedCellSize(30D);
         tableView.prefHeightProperty().bind(tableView
                 .fixedCellSizeProperty()
                 .multiply(Bindings.size(tableView.getItems()).add(1.01)));
