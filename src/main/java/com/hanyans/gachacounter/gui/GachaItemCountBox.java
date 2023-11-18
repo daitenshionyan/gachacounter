@@ -29,9 +29,11 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
+import javafx.util.Duration;
 
 
 public class GachaItemCountBox extends UiComponent<VBox> {
@@ -251,6 +253,10 @@ public class GachaItemCountBox extends UiComponent<VBox> {
 
 
     private class LostEntryCell extends TableCell<ProcessedGachaEntry, ProcessedGachaEntry> {
+        private static final double ICON_HEIGHT = 17;
+        private static final double ICON_WIDTH_CHAR = 15;
+
+
         @Override
         protected void updateItem(ProcessedGachaEntry item, boolean empty) {
             super.updateItem(item, empty);
@@ -258,13 +264,27 @@ public class GachaItemCountBox extends UiComponent<VBox> {
                 return;
             }
 
-            Path path = null;
-            try {
-                path = getImagePath(new GachaItem(item.itemId, item.name, item.rank, item.itemType));
-            } catch (Throwable ex) {
+            Path path = getImagePath(new GachaItem(item.itemId, item.name, item.rank, item.itemType));
+            LostCountBox box = null;
+            try (InputStream is = FileUtil.getInputStream(path)) {
+                Image image = new Image(is, ICON_WIDTH_CHAR, ICON_HEIGHT, true, true);
+                box = new LostCountBox(image, item.pityCount);
+                setGraphic(box.getRoot());
+                setTooltip(item);
+            } catch (IOException ex) {
                 // Ignore
             }
-            setGraphic(new LostCountBox(path, item.pityCount).getRoot());
+        }
+
+
+        private void setTooltip(ProcessedGachaEntry entry) {
+            Tooltip tooltip = new Tooltip();
+            tooltip.setText(String.format("%s\nCount = %d\nTime = %s",
+                    entry.name,
+                    entry.pityCount,
+                    entry.time.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))));
+            tooltip.setShowDelay(Duration.millis(50));
+            Tooltip.install(this, tooltip);
         }
     }
 
