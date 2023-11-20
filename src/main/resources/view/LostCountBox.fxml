@@ -5,7 +5,6 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-
 <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" spacing="5.0" xmlns="http://javafx.com/javafx/null" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <VBox alignment="CENTER" prefHeight="17.0" prefWidth="15.0" styleClass="item-icon-display-box" HBox.hgrow="NEVER">
@@ -13,6 +12,6 @@
             <ImageView fx:id="displayImage" pickOnBounds="true" preserveRatio="true" />
          </children>
       </VBox>
-      <Label fx:id="countLabel" maxWidth="-Infinity" minWidth="-Infinity" styleClass="main-value-label" />
+      <Label fx:id="countLabel" alignment="CENTER" contentDisplay="CENTER" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="20.0" styleClass="main-value-label" textAlignment="CENTER" />
    </children>
 </HBox>
