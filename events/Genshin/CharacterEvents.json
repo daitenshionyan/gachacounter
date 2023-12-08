@@ -533,5 +533,15 @@
       "Collei",
       "Beidou"
     ]
+  }, {
+    "begTime": "2023-11-28T18:00:00",
+    "endTime": "2023-12-19T14:59:59",
+    "rateUps": [
+      "Cyno",
+      "Kamisato Ayato",
+      "Kirara",
+      "Xiangling",
+      "Kuki Shinobu"
+    ]
   } ]
 }
