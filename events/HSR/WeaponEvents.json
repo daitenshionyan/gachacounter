@@ -109,5 +109,45 @@
       "Post-Op Conversation",
       "The Birth of the Self"
     ]
+  }, {
+    "begTime": "2023-12-27T06:00:00",
+    "endTime": "2024-01-17T11:59:00",
+    "rateUps": [
+      "Past Self in Mirror",
+      "The Unreachable Side",
+      "Planetary Rendezvous",
+      "Day One of My New Life",
+      "A Secret Vow"
+    ]
+  }, {
+    "begTime": "2024-01-17T12:00:00",
+    "endTime": "2024-02-05T14:59:00",
+    "rateUps": [
+      "Baptism of Pure Thought",
+      "Patience Is All You Need",
+      "Perfect Timing",
+      "Only Silence Remains",
+      "Landau's Choice"
+    ]
+  }, {
+    "begTime": "2024-02-06T06:00:00",
+    "endTime": "2024-02-29T11:59:00",
+    "rateUps": [
+      "Reforged Remembrance",
+      "Brighter Than the Sun",
+      "Indelible Promise",
+      "Resolution Shines As Pearls of Sweat",
+      "Dance! Dance! Dance!"
+    ]
+  }, {
+    "begTime": "2024-02-29T12:00:00",
+    "endTime": "2024-03-26T14:59:00",
+    "rateUps": [
+      "Earthly Escapade",
+      "Before Dawn",
+      "Planetary Rendezvous",
+      "Under the Blue Sky",
+      "Geniuses' Repose"
+    ]
   } ]
 }

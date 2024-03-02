@@ -109,5 +109,45 @@
       "Lynx",
       "Asta"
     ]
+  }, {
+    "begTime": "2023-12-27T06:00:00",
+    "endTime": "2024-01-17T11:59:00",
+    "rateUps": [
+      "Ruan Mei",
+      "Blade",
+      "Xueyi",
+      "March 7th",
+      "Tingyun"
+    ]
+  }, {
+    "begTime": "2024-01-17T12:00:00",
+    "endTime": "2024-02-05T14:59:00",
+    "rateUps": [
+      "Dr. Ratio",
+      "Kafka",
+      "Sushang",
+      "Natasha",
+      "Hook"
+    ]
+  }, {
+    "begTime": "2024-02-06T06:00:00",
+    "endTime": "2024-02-29T11:59:00",
+    "rateUps": [
+      "Black Swan",
+      "Dan Heng • Imbibitor Lunae",
+      "Misha",
+      "Tingyun",
+      "Guinaifen"
+    ]
+  }, {
+    "begTime": "2024-02-29T12:00:00",
+    "endTime": "2024-03-26T14:59:00",
+    "rateUps": [
+      "Sparkle",
+      "Jing Yuan",
+      "Sampo",
+      "Qingque",
+      "Hanya"
+    ]
   } ]
 }
